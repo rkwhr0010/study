@@ -6,14 +6,11 @@ class 격자판최대합 {
 		int max = Integer.MIN_VALUE;
 		int n = 10;
 		
-		int[] array = IntStream.range(0, n)
-		         .toArray();
-		int[][] arr = Arrays.stream(array)
-		      .mapToObj(index->{
-		    	return new Random().ints(n, 1, 100)
-		    			           .toArray();
-		      }).toArray(int[][]::new);
-		
+		int[][] arr = IntStream.range(0, n)
+				               .mapToObj(index->{
+			    	               return new Random().ints(n, 1, 100)
+			    			                          .toArray();
+			                   }).toArray(int[][]::new);
 		prettyPrint(arr);
 		
 		int rowSum, colSum, cSum1=0,cSum2=0;
