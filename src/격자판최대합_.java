@@ -1,7 +1,7 @@
 import java.util.*;
 import java.util.stream.IntStream;
 
-class 격자판최대합 {	
+class 격자판최대합_ {	
 	public static void main(String[] args){
 		int max = Integer.MIN_VALUE;
 		int n = 10;
@@ -25,8 +25,8 @@ class 격자판최대합 {
 				rowSum += arr[i][j]; //같은 행 합
 				colSum += arr[j][i]; //같은 열 합
 			}
-			cSum1+=arr[i][i];     //좌상우하 for문 1개만 필요
-			cSum2+=arr[i][n-1-i]; //우상좌하 
+			cSum1+=arr[i][i];     //좌상우하 대각선 for문 1개만 필요
+			cSum2+=arr[i][n-1-i]; //우상좌하 대각선
 			
 			// 내가 틀린 부분 기존 값이 신규 값보다 더 클 수 있다는 것을 간과
 //			max = rowSum<colSum ? colSum : rowSum;

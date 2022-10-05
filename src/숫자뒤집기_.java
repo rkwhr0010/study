@@ -1,4 +1,4 @@
-public class 숫자뒤집기 {
+public class 숫자뒤집기_ {
 	public static void main(String[] args) {
 		int value = 12345;
 		int rest = 0;

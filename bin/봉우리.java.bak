@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 class 봉우리 {	
 	public static void main(String[] args){
 		//봉우리 크기
-		final int LENGTH = 5;
+		final int LENGTH = 10;
 		//봉우리 높이
 		final int HEIGTH = 10;
 		int answer=0;
@@ -22,7 +22,6 @@ class 봉우리 {
 						        	 return new Random().ints(LENGTH, 0, HEIGTH)
 						        			            .toArray();
 						         }).toArray(int[][]::new);
-		
 		prettyPrint(arr);
 		
 		// 타겟[i][j] 위치에 상 우 하 좌 위치 탐색 배열

@@ -1,5 +1,5 @@
 //1 가위   2 바위   3 보
-public class 가위바위보 {
+public class 가위바위보_ {
 	//메인 컨셉 , 한쪽으로 이기는 경우의 수만 나열한다.
 	//그러면 나머지는 반대 쪽이 이기는 것이다.
 	public static void main(String[] args) {
@@ -18,5 +18,8 @@ public class 가위바위보 {
 			else sb.append("B"); 
 		}
 		System.out.println(sb);
+		
+		sb.delete(0, sb.length());
+		
 	}
 }
