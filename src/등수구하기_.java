@@ -2,11 +2,12 @@
 
 import java.util.*;
 // 핵심은 중복 점수 등수가 왜 문제가 없는
-class 등수구하기 {	
+class 등수구하기_ {	
 		
 	public static void main(String[] args){
-		등수구하기 T = new 등수구하기();
-		int[] scoreArr = {90,75,70,80,80,60,75,95};
+		int[] scoreArr = new Random().ints(15, 0, 101)
+				                     .toArray();
+		
 		final int LENGTH = scoreArr.length;
 		int[] answer = new int[LENGTH];
 		int rank = 1;
@@ -22,24 +23,8 @@ class 등수구하기 {
 			answer[i] = rank;
 			rank = 1;
 		}
-		
+		System.out.println(Arrays.toString(scoreArr));
 		System.out.println(Arrays.toString(answer));
-		/*
-		int[] array = Arrays.stream(arr)
-		      .distinct()
-		      .sorted()
-		      .toArray();
-		
-		for(int j=array.length-1;j>=0;j--) {
-			for(int i=0; i<n;i++) {
-				if(arr[i] == array[j]) {
-					answer[i] = rank;
-					cnt++;
-				}
-			}
-			rank+= cnt;
-			cnt = 0;
-		}*/
 		
 	}
 }

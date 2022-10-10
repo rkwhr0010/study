@@ -1,4 +1,4 @@
-public class 단어뒤집기 {
+public class 단어뒤집기_ {
 	public static void main(String[] args) {
 		String word = "가나다라마바사";
 		int lt = 0;
