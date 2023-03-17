@@ -1,4 +1,4 @@
-package twopointer;
+package algorithm.twopointer;
 
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;

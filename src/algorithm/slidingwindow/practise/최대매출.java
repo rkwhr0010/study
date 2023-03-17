@@ -1,4 +1,4 @@
-package slidingwindow.practise;
+package algorithm.slidingwindow.practise;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

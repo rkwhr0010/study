@@ -1,4 +1,4 @@
-package slidingwindow;
+package algorithm.slidingwindow;
 
 import java.util.Arrays;
 import java.util.stream.IntStream;

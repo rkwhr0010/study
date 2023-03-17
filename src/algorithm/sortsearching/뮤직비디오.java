@@ -1,4 +1,4 @@
-package sortsearching;
+package algorithm.sortsearching;
 
 import java.util.Arrays;
 import java.util.Random;
