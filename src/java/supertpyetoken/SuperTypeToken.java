@@ -1,4 +1,4 @@
-package supertpyetoken;
+package java.supertpyetoken;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

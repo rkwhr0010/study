@@ -1,4 +1,4 @@
-package twopointer.practise;
+package algorithm.twopointer.practise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
