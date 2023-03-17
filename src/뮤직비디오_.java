@@ -19,7 +19,7 @@ class 뮤직비디오_ {
 	public static void main(String[] args){
 		int answer=0;
 		int[] arr = new Random().ints(10, 1,10)
-								.sorted()
+//								.sorted()
 				                .toArray();
 		System.out.println(Arrays.toString(arr));
 		int lt = arr[arr.length-1]; //가장 큰 노래 길이가 최소 한 1곡은 다 들어감
