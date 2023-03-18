@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1.0">
+  <zoom_level>7</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>224</x>
+      <y>63</y>
+      <w>203</w>
+      <h>98</h>
+    </coordinates>
+    <panel_attributes>designpattern.observer::NewsAgency
+--
+-news: String
+-channels = new ArrayList(): List&lt;Channel&gt;
+--
++addObserver(Channel channel): void
++removeObserver(Channel channel): void
++setNews(String news): void
+--
+
+fg=BLACK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>630</x>
+      <y>70</y>
+      <w>182</w>
+      <h>84</h>
+    </coordinates>
+    <panel_attributes>designpattern.observer::NewsChannel
+--
+-news: String
+--
++update(Object news): void
++getNews(): String
++setNews(String news): void
+--
+
+fg=BLACK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>448</x>
+      <y>84</y>
+      <w>154</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+designpattern.observer::Channel
+--
+--
++update(Object o): void
+--
+
+fg=BLACK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>455</x>
+      <y>427</y>
+      <w>182</w>
+      <h>49</h>
+    </coordinates>
+    <panel_attributes>designpattern.observer::ObserverDriver
+--
+--
++main(String[] args): void
+--
+
+fg=BLACK</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>525</x>
+      <y>140</y>
+      <w>210</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.
+&lt;&lt;Implement&gt;&gt;
+fg=BLACK
+layer=2</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;140.0;280.0;140.0;280.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>203</x>
+      <y>28</y>
+      <w>700</w>
+      <h>336</h>
+    </coordinates>
+    <panel_attributes>halign=center
+Oberser Pattern
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -1,4 +1,4 @@
-package designpattern.observer;
+package designpattern.observer.normal;
 
 class NewsChannel implements Channel {
 	private String news;
@@ -6,6 +6,7 @@ class NewsChannel implements Channel {
 	@Override
 	public void update(Object news) {
 		setNews((String) news);
+		System.out.println(this.getClass().getSimpleName() +":"+getNews());
 	}
 
 	public String getNews() {

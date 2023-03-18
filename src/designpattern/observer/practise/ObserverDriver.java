@@ -1,85 +1,51 @@
 package designpattern.observer.practise;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
+
+@SuppressWarnings("deprecation")
 public class ObserverDriver {
 	public static void main(String[] args) {
+		NewsAgency<Boolean> newsAgency = new NewsAgency<>();
+//		newsAgency.addObserver(new NewsChannel<String>());
+//		newsAgency.addObserver(new NewsChannel<String>());
+		NewsChannel<Integer> newsChannel = new NewsChannel<Integer>();
+		NewsChannel<String> newsChannel2 = new NewsChannel<String>();
+		newsChannel.setNews(123123);
+		newsChannel2.setNews("하나둘셋");
+		newsAgency.addObserver(newsChannel);
+		newsAgency.addObserver(newsChannel2);
+		newsAgency.setNews(true);
+		
+		
+		System.out.println(newsChannel.getNews()+"@" +newsChannel.hashCode());
+		System.out.println(newsChannel2.getNews()+"@" +newsChannel.hashCode());
+		
 		
 	}
 	
-	static interface PullingChannel{
-		void update();
-	}
-	
-	static class NewsPullingChannel implements PullingChannel{
-		private final NewsAgency<?, ?> agnecy;
-		String news;
+	static class NewsChannel<T> implements Observer{
+		private T news;
 		
-		public NewsPullingChannel(NewsAgency<?, ?> agnecy) {
-			this.agnecy = agnecy;
-		}
-
+		@SuppressWarnings("unchecked")
 		@Override
-		public void update() {
-			this.news = this.agnecy.getNews();
+		public void update(Observable o, Object news) {
+			this.news = (T) news;
+			System.out.println(this.news+"  "+this.hashCode());
 		}
 		
+		public T getNews() {return news;}
+		public void setNews(T news) {this.news = news;}
 	}
 	
-	
-	
-	static interface Channel {
-		void update(String news);
-	}
-	static class NewsChannel implements Channel{
-		private String news;
-		@Override
-		public void update(String news) {
-			setNews(news);
-		}
-		public String getNews() {
-			return news;
-		}
-		public void setNews(String news) {
+	static class NewsAgency<T> extends Observable{
+		private T news;
+		
+		public void setNews(T news) {
 			this.news = news;
-		}
-		
-	}
-	
-	static class NewsAgency<C extends Channel,P extends PullingChannel>{
-		private String news;
-		private List<C> channels = new ArrayList<>();
-		private List<P> pullingChannels = new ArrayList<>();
-		
-		public void setNews(String news) {
-			this.news = news;
-			nofifyObserver();
-			nofifyObserver2();
-		}
-		
-		private void nofifyObserver2() {
-			for(P channel : pullingChannels) {
-				channel.update();
-			}
-		}
-
-		public String getNews() {
-			return news;
-		}
-
-		private void nofifyObserver() {
-			for(C channel : channels) {
-				channel.update(this.news);
-			}
-		}
-		
-		public void addObserver(C channel) {
-			this.channels.add(channel);
-		}
-		
-		public void removeObserver(C channel) {
-			this.channels.remove(channel);
+			super.setChanged();
+			super.notifyObservers(news);
 		}
 	}
 }

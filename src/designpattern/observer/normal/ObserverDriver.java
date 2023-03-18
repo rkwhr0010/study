@@ -1,4 +1,4 @@
-package designpattern.observer;
+package designpattern.observer.normal;
 
 /**
 관찰자는 행동 디자인 패턴입니다. 
@@ -10,19 +10,17 @@ Observable은 관찰자에게 상태의 변화를 알리는 객체입니다.
 public class ObserverDriver {
 	public static void main(String[] args) {
 		NewsAgency agency = new NewsAgency();
-		NewsChannel observer = new NewsChannel();
-		NewsChannel observer2 = new NewsChannel();
+		Channel observer = new NewsChannel();
+		Channel observer2 = new EduChannel();
 		
 		agency.addObserver(observer);
 		agency.addObserver(observer2);
 		
-		agency.setNews("속보");
+		agency.setNews("속보...블라블라....");
 		
-		String news = observer.getNews();
-		String news2 = observer2.getNews();
 		
-		assert "속보".equals(news);
-		assert "속보".equals(news2);
+		
+		
 		
 	}
 }

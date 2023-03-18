@@ -1,4 +1,4 @@
-package designpattern.observer;
+package designpattern.observer.normal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +24,5 @@ public class NewsAgency {
 			channel.update(this.news);
 		}
 	}
-	
 	
 }

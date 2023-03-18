@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:PapyrusJava="http://www.eclipse.org/papyrus/PapyrusJava/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_m4oNcMVDEe2enYiSLj8eBQ" name="best_practice">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_m7LLIMVDEe2enYiSLj8eBQ">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_rT3CoMVDEe2enYiSLj8eBQ" name="best_practice">
+      <packagedElement xmi:type="uml:Package" xmi:id="_rVbI4MVDEe2enYiSLj8eBQ" name="designpattern">
+        <packagedElement xmi:type="uml:Package" xmi:id="_rVcXAMVDEe2enYiSLj8eBQ" name="callback"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_tpRa0MVDEe2enYiSLj8eBQ" name="observer">
+          <packagedElement xmi:type="uml:Interface" xmi:id="_OXJ7YMVGEe2enYiSLj8eBQ" name="Channel" visibility="public">
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXLJgMVGEe2enYiSLj8eBQ" name="update" visibility="public">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXLJgcVGEe2enYiSLj8eBQ" name="o" type="_tpUeIcVDEe2enYiSLj8eBQ"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_x-s4QMVqEe2zGYWnEzMheQ" name="Operation2"/>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_OXM-sMVGEe2enYiSLj8eBQ" name="NewsAgency" visibility="public">
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_OXNlwMVGEe2enYiSLj8eBQ" name="news" visibility="private" type="_wYvcUMVEEe2enYiSLj8eBQ" isUnique="false"/>
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_OXOM0MVGEe2enYiSLj8eBQ" name="channels" visibility="private" type="_OXJ7YMVGEe2enYiSLj8eBQ" isUnique="false">
+              <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OXOz4MVGEe2enYiSLj8eBQ"/>
+              <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OXOz4cVGEe2enYiSLj8eBQ" value="*"/>
+              <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_OXOz4sVGEe2enYiSLj8eBQ" name="defaultValue">
+                <language>JAVA</language>
+                <body>new ArrayList&lt;>()</body>
+              </defaultValue>
+            </ownedAttribute>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXQCAMVGEe2enYiSLj8eBQ" name="addObserver" specification="_OXPa8MVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    channels.add(channel);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXQpEcVGEe2enYiSLj8eBQ" name="removeObserver" specification="_OXQCAcVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    channels.remove(channel);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXR3MMVGEe2enYiSLj8eBQ" name="setNews" specification="_OXRQIMVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    this.news = news;&#xD;
+    for (Channel channel : channels) {&#xD;
+        channel.update(this.news);&#xD;
+    }&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXPa8MVGEe2enYiSLj8eBQ" name="addObserver" visibility="public" method="_OXQCAMVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXPa8cVGEe2enYiSLj8eBQ" name="channel" type="_OXJ7YMVGEe2enYiSLj8eBQ"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXQCAcVGEe2enYiSLj8eBQ" name="removeObserver" visibility="public" method="_OXQpEcVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXQpEMVGEe2enYiSLj8eBQ" name="channel" type="_OXJ7YMVGEe2enYiSLj8eBQ"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXRQIMVGEe2enYiSLj8eBQ" name="setNews" visibility="public" method="_OXR3MMVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXRQIcVGEe2enYiSLj8eBQ" name="news" type="_wYvcUMVEEe2enYiSLj8eBQ"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_OXTFUMVGEe2enYiSLj8eBQ" name="NewsChannel">
+            <ownedAttribute xmi:type="uml:Property" xmi:id="_OXTsYcVGEe2enYiSLj8eBQ" name="news" visibility="private" type="_wYvcUMVEEe2enYiSLj8eBQ" isUnique="false"/>
+            <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_OXTsYMVGEe2enYiSLj8eBQ" name="NewsChannel implements Channel" client="_OXTFUMVGEe2enYiSLj8eBQ" supplier="_OXJ7YMVGEe2enYiSLj8eBQ" contract="_OXJ7YMVGEe2enYiSLj8eBQ"/>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXVhkMVGEe2enYiSLj8eBQ" name="update" specification="_OXUTcMVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    setNews((String) news);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXWIocVGEe2enYiSLj8eBQ" name="getNews" specification="_OXVhkcVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    return news;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXWvscVGEe2enYiSLj8eBQ" name="setNews" specification="_OXWIosVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    this.news = news;&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXUTcMVGEe2enYiSLj8eBQ" name="update" visibility="public" method="_OXVhkMVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXU6gMVGEe2enYiSLj8eBQ" name="news" type="_tpUeIcVDEe2enYiSLj8eBQ"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXVhkcVGEe2enYiSLj8eBQ" name="getNews" visibility="public" method="_OXWIocVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXWIoMVGEe2enYiSLj8eBQ" type="_wYvcUMVEEe2enYiSLj8eBQ" direction="return"/>
+            </ownedOperation>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXWIosVGEe2enYiSLj8eBQ" name="setNews" visibility="public" method="_OXWvscVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXWvsMVGEe2enYiSLj8eBQ" name="news" type="_wYvcUMVEEe2enYiSLj8eBQ"/>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Class" xmi:id="_OXYk4MVGEe2enYiSLj8eBQ" name="ObserverDriver" visibility="public">
+            <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_OXaaEMVGEe2enYiSLj8eBQ" name="main" specification="_OXZL8MVGEe2enYiSLj8eBQ">
+              <language>JAVA</language>
+              <body>&#xD;
+    NewsAgency agency = new NewsAgency();&#xD;
+    NewsChannel observer = new NewsChannel();&#xD;
+    NewsChannel observer2 = new NewsChannel();&#xD;
+    agency.addObserver(observer);&#xD;
+    agency.addObserver(observer2);&#xD;
+    agency.setNews(&quot;속보&quot;);&#xD;
+    String news = observer.getNews();&#xD;
+    String news2 = observer2.getNews();&#xD;
+    assert &quot;속보&quot;.equals(news);&#xD;
+    assert &quot;속보&quot;.equals(news2);&#xD;
+</body>
+            </ownedBehavior>
+            <ownedOperation xmi:type="uml:Operation" xmi:id="_OXZL8MVGEe2enYiSLj8eBQ" name="main" visibility="public" isStatic="true" method="_OXaaEMVGEe2enYiSLj8eBQ">
+              <ownedParameter xmi:type="uml:Parameter" xmi:id="_OXZzAMVGEe2enYiSLj8eBQ" name="args" type="_wYvcUMVEEe2enYiSLj8eBQ">
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_OXZzAcVGEe2enYiSLj8eBQ"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_OXZzAsVGEe2enYiSLj8eBQ" value="*"/>
+              </ownedParameter>
+            </ownedOperation>
+          </packagedElement>
+          <packagedElement xmi:type="uml:Dependency" xmi:id="_kRqOYMVHEe2enYiSLj8eBQ" client="_OXM-sMVGEe2enYiSLj8eBQ" supplier="_OXJ7YMVGEe2enYiSLj8eBQ"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_tpT3EMVDEe2enYiSLj8eBQ" name="java">
+      <packagedElement xmi:type="uml:Package" xmi:id="_tpT3EcVDEe2enYiSLj8eBQ" name="java">
+        <packagedElement xmi:type="uml:Package" xmi:id="_tpUeIMVDEe2enYiSLj8eBQ" name="lang">
+          <packagedElement xmi:type="uml:Class" xmi:id="_tpUeIcVDEe2enYiSLj8eBQ" name="Object"/>
+          <packagedElement xmi:type="uml:Class" xmi:id="_wYvcUMVEEe2enYiSLj8eBQ" name="String"/>
+        </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_rUgi4MVDEe2enYiSLj8eBQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rUkNQMVDEe2enYiSLj8eBQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/PapyrusJava/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://PapyrusJava_PROFILES/PapyrusJava.profile.uml#_j9REUByGEduN1bTiWJ0lyw"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_rVA5MMVDEe2enYiSLj8eBQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rVBgQMVDEe2enYiSLj8eBQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/papyrus/Codegen/1#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://Codegen_PROFILES/Codegen.profile.uml#_fPDsIBa-EearhdjjJ6cVzQ"/>
+    </profileApplication>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_rVCuYMVDEe2enYiSLj8eBQ">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_rVD8gMVDEe2enYiSLj8eBQ" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <PapyrusJava:External xmi:id="_tpbL0MVDEe2enYiSLj8eBQ" name="java.lang.Object" base_Classifier="_tpUeIcVDEe2enYiSLj8eBQ"/>
+  <PapyrusJava:External xmi:id="_wYyfoMVEEe2enYiSLj8eBQ" name="java.lang.String" base_Classifier="_wYvcUMVEEe2enYiSLj8eBQ"/>
+</xmi:XMI>
