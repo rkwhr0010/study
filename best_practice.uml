@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:PapyrusJava="http://www.eclipse.org/papyrus/PapyrusJava/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:PapyrusJava="http://www.eclipse.org/papyrus/PapyrusJava/1" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
   <uml:Model xmi:id="_m4oNcMVDEe2enYiSLj8eBQ" name="best_practice">
     <packageImport xmi:type="uml:PackageImport" xmi:id="_m7LLIMVDEe2enYiSLj8eBQ">
       <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
@@ -110,7 +110,161 @@
             </ownedOperation>
           </packagedElement>
           <packagedElement xmi:type="uml:Dependency" xmi:id="_kRqOYMVHEe2enYiSLj8eBQ" client="_OXM-sMVGEe2enYiSLj8eBQ" supplier="_OXJ7YMVGEe2enYiSLj8eBQ"/>
+          <packagedElement xmi:type="uml:Package" xmi:id="_TPA-8MYGEe2R1Oyn9CblQw" name="pulling">
+            <packagedElement xmi:type="uml:Class" xmi:id="_TPJh0MYGEe2R1Oyn9CblQw" name="EduPulling" visibility="public">
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_TPOaUMYGEe2R1Oyn9CblQw" name="agency" visibility="private" isLeaf="true" type="_TPNzQMYGEe2R1Oyn9CblQw" isUnique="false"/>
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_TPQ2kMYGEe2R1Oyn9CblQw" name="news" visibility="private" type="_wYvcUMVEEe2enYiSLj8eBQ" isUnique="false"/>
+              <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_TPLXAMYGEe2R1Oyn9CblQw" name="EduPulling implements Pulling" client="_TPJh0MYGEe2R1Oyn9CblQw" supplier="_TPKI4MYGEe2R1Oyn9CblQw" contract="_TPKI4MYGEe2R1Oyn9CblQw"/>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TSJLcMYGEe2R1Oyn9CblQw" name="EduPulling" specification="_TPSEsMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.agency = agency;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TSP5IMYGEe2R1Oyn9CblQw" name="update" specification="_TSNc4MYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    System.out.println(&quot;어떠한 조건에 만족하지 않아 값을 가져오지 않음&quot;);&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TSZqIMYGEe2R1Oyn9CblQw" name="getNews" specification="_TSUKkMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    return news;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TSgX0MYGEe2R1Oyn9CblQw" name="setNews" specification="_TSctcMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.news = news;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TPSEsMYGEe2R1Oyn9CblQw" name="EduPulling" visibility="public" method="_TSJLcMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TSDE0MYGEe2R1Oyn9CblQw" name="agency" type="_TPNzQMYGEe2R1Oyn9CblQw"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TSNc4MYGEe2R1Oyn9CblQw" name="update" visibility="public" method="_TSP5IMYGEe2R1Oyn9CblQw"/>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TSUKkMYGEe2R1Oyn9CblQw" name="getNews" visibility="public" method="_TSZqIMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TSXN4MYGEe2R1Oyn9CblQw" type="_wYvcUMVEEe2enYiSLj8eBQ" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TSctcMYGEe2R1Oyn9CblQw" name="setNews" visibility="public" method="_TSgX0MYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TSfJsMYGEe2R1Oyn9CblQw" name="news" type="_wYvcUMVEEe2enYiSLj8eBQ"/>
+              </ownedOperation>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Interface" xmi:id="_TPKI4MYGEe2R1Oyn9CblQw" name="Pulling">
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TT-XcMYGEe2R1Oyn9CblQw" name="update" visibility="private"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_TPNzQMYGEe2R1Oyn9CblQw" name="NewsAgency" visibility="public">
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_TSlQUMYGEe2R1Oyn9CblQw" name="news" visibility="private" type="_wYvcUMVEEe2enYiSLj8eBQ" isUnique="false"/>
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_TSo6sMYGEe2R1Oyn9CblQw" name="list" visibility="private" type="_TPKI4MYGEe2R1Oyn9CblQw" isUnique="false">
+                <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TSr-AMYGEe2R1Oyn9CblQw"/>
+                <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TStzMMYGEe2R1Oyn9CblQw" value="*"/>
+                <defaultValue xmi:type="uml:OpaqueExpression" xmi:id="_TSvBUMYGEe2R1Oyn9CblQw" name="defaultValue">
+                  <language>JAVA</language>
+                  <body>new ArrayList&lt;>()</body>
+                </defaultValue>
+              </ownedAttribute>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TS1vAMYGEe2R1Oyn9CblQw" name="addObserver" specification="_TSxdkMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.list.add(pulling);&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TS8csMYGEe2R1Oyn9CblQw" name="removeObserver" specification="_TS4yUMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    list.remove(pulling);&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TTAuIMYGEe2R1Oyn9CblQw" name="setNews" specification="_TS-48MYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.news = news;&#xD;
+    for (Pulling pulling : list) {&#xD;
+        pulling.update();&#xD;
+    }&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TTGNsMYGEe2R1Oyn9CblQw" name="getNews" specification="_TTBVMMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    return this.news;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TSxdkMYGEe2R1Oyn9CblQw" name="addObserver" visibility="public" method="_TS1vAMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TSzSwMYGEe2R1Oyn9CblQw" name="pulling" type="_TPKI4MYGEe2R1Oyn9CblQw"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TS4yUMYGEe2R1Oyn9CblQw" name="removeObserver" visibility="public" method="_TS8csMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TS7OkMYGEe2R1Oyn9CblQw" name="pulling" type="_TPKI4MYGEe2R1Oyn9CblQw"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TS-48MYGEe2R1Oyn9CblQw" name="setNews" visibility="public" method="_TTAuIMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TS_gAMYGEe2R1Oyn9CblQw" name="news" type="_wYvcUMVEEe2enYiSLj8eBQ"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TTBVMMYGEe2R1Oyn9CblQw" name="getNews" visibility="public" method="_TTGNsMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TTEYgMYGEe2R1Oyn9CblQw" type="_wYvcUMVEEe2enYiSLj8eBQ" direction="return"/>
+              </ownedOperation>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_TTLtQMYGEe2R1Oyn9CblQw" name="NewsPulling" visibility="public">
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_TTP-sMYGEe2R1Oyn9CblQw" name="agency" visibility="private" isLeaf="true" type="_TPNzQMYGEe2R1Oyn9CblQw" isUnique="false"/>
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_TTUQIMYGEe2R1Oyn9CblQw" name="news" visibility="private" type="_wYvcUMVEEe2enYiSLj8eBQ" isUnique="false"/>
+              <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_TTNicMYGEe2R1Oyn9CblQw" name="NewsPulling implements Pulling" client="_TTLtQMYGEe2R1Oyn9CblQw" supplier="_TPKI4MYGEe2R1Oyn9CblQw" contract="_TPKI4MYGEe2R1Oyn9CblQw"/>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TThEcMYGEe2R1Oyn9CblQw" name="NewsPulling" specification="_TTX6gMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.agency = agency;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TTl88MYGEe2R1Oyn9CblQw" name="update" specification="_TTkHwMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    setNews(this.agency.getNews());&#xD;
+    System.out.println(&quot;어떠한 조건에 만족해 값을 가져옮 ... &quot; + this.getNews());&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TTtRsMYGEe2R1Oyn9CblQw" name="getNews" specification="_TTpnUMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    return news;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TT1NgMYGEe2R1Oyn9CblQw" name="setNews" specification="_TTw8EMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.news = news;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TTX6gMYGEe2R1Oyn9CblQw" name="NewsPulling" visibility="public" method="_TThEcMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TTfPQMYGEe2R1Oyn9CblQw" name="agency" type="_TPNzQMYGEe2R1Oyn9CblQw"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TTkHwMYGEe2R1Oyn9CblQw" name="update" visibility="public" method="_TTl88MYGEe2R1Oyn9CblQw"/>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TTpnUMYGEe2R1Oyn9CblQw" name="getNews" visibility="public" method="_TTtRsMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TTrcgMYGEe2R1Oyn9CblQw" type="_wYvcUMVEEe2enYiSLj8eBQ" direction="return"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TTw8EMYGEe2R1Oyn9CblQw" name="setNews" visibility="public" method="_TT1NgMYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TTzYUMYGEe2R1Oyn9CblQw" name="news" type="_wYvcUMVEEe2enYiSLj8eBQ"/>
+              </ownedOperation>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_TT5e8MYGEe2R1Oyn9CblQw" name="ObserverDriver" visibility="public">
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_TT9JUcYGEe2R1Oyn9CblQw" name="main" specification="_TT6tEMYGEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    NewsAgency newsAgency = new NewsAgency();&#xD;
+    newsAgency.addObserver(() -> {&#xD;
+    });&#xD;
+    newsAgency.addObserver(new EduPulling(newsAgency));&#xD;
+    newsAgency.addObserver(new NewsPulling(newsAgency));&#xD;
+    newsAgency.setNews(&quot;긴급속보&quot;);&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_TT6tEMYGEe2R1Oyn9CblQw" name="main" visibility="public" isStatic="true" method="_TT9JUcYGEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_TT8iQMYGEe2R1Oyn9CblQw" name="args" type="_wYvcUMVEEe2enYiSLj8eBQ">
+                  <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_TT8iQcYGEe2R1Oyn9CblQw"/>
+                  <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_TT9JUMYGEe2R1Oyn9CblQw" value="*"/>
+                </ownedParameter>
+              </ownedOperation>
+            </packagedElement>
+          </packagedElement>
         </packagedElement>
+        <packagedElement xmi:type="uml:Package" xmi:id="_2GhdcMYTEe2R1Oyn9CblQw" name="strategy"/>
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_tpT3EMVDEe2enYiSLj8eBQ" name="java">
@@ -119,6 +273,11 @@
           <packagedElement xmi:type="uml:Class" xmi:id="_tpUeIcVDEe2enYiSLj8eBQ" name="Object"/>
           <packagedElement xmi:type="uml:Class" xmi:id="_wYvcUMVEEe2enYiSLj8eBQ" name="String"/>
         </packagedElement>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_2GwuAMYTEe2R1Oyn9CblQw" name="importedTypes">
+      <packagedElement xmi:type="uml:Package" xmi:id="_2GxVEMYTEe2R1Oyn9CblQw" name="primitivetype">
+        <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_2Gx8IMYTEe2R1Oyn9CblQw" name="Integer"/>
       </packagedElement>
     </packagedElement>
     <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_rUgi4MVDEe2enYiSLj8eBQ">
@@ -142,4 +301,6 @@
   </uml:Model>
   <PapyrusJava:External xmi:id="_tpbL0MVDEe2enYiSLj8eBQ" name="java.lang.Object" base_Classifier="_tpUeIcVDEe2enYiSLj8eBQ"/>
   <PapyrusJava:External xmi:id="_wYyfoMVEEe2enYiSLj8eBQ" name="java.lang.String" base_Classifier="_wYvcUMVEEe2enYiSLj8eBQ"/>
+  <standard:Create xmi:id="_TR9lQMYGEe2R1Oyn9CblQw" base_BehavioralFeature="_TPSEsMYGEe2R1Oyn9CblQw"/>
+  <standard:Create xmi:id="_TTa90MYGEe2R1Oyn9CblQw" base_BehavioralFeature="_TTX6gMYGEe2R1Oyn9CblQw"/>
 </xmi:XMI>

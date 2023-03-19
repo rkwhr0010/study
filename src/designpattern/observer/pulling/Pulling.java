@@ -1,5 +1,5 @@
 package designpattern.observer.pulling;
 
 interface Pulling{
-	void update();
+	public void update();
 }
