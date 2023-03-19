@@ -265,6 +265,81 @@
           </packagedElement>
         </packagedElement>
         <packagedElement xmi:type="uml:Package" xmi:id="_2GhdcMYTEe2R1Oyn9CblQw" name="strategy"/>
+        <packagedElement xmi:type="uml:Package" xmi:id="_kbnK0MYnEe2R1Oyn9CblQw" name="behavior">
+          <packagedElement xmi:type="uml:Package" xmi:id="_kbnK0cYnEe2R1Oyn9CblQw" name="strategy">
+            <packagedElement xmi:type="uml:Class" xmi:id="_kbnx4MYnEe2R1Oyn9CblQw" name="AttackContext" visibility="public">
+              <ownedAttribute xmi:type="uml:Property" xmi:id="_kboY8cYnEe2R1Oyn9CblQw" name="strategy" visibility="private" type="_kevXUMYnEe2R1Oyn9CblQw" isUnique="false"/>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kckNEMYnEe2R1Oyn9CblQw" name="AttackContext" specification="_kboY8sYnEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    super();&#xD;
+    this.strategy = strategy;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kcmCQMYnEe2R1Oyn9CblQw" name="setStrategy" specification="_kck0IMYnEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    this.strategy = strategy;&#xD;
+</body>
+              </ownedBehavior>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kcn3cMYnEe2R1Oyn9CblQw" name="attack" specification="_kcnQYMYnEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    strategy.attack();&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kboY8sYnEe2R1Oyn9CblQw" name="AttackContext" visibility="public" method="_kckNEMYnEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_kci-8MYnEe2R1Oyn9CblQw" name="strategy" type="_kevXUMYnEe2R1Oyn9CblQw"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kck0IMYnEe2R1Oyn9CblQw" name="setStrategy" visibility="public" method="_kcmCQMYnEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_kclbMMYnEe2R1Oyn9CblQw" name="strategy" type="_kevXUMYnEe2R1Oyn9CblQw"/>
+              </ownedOperation>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kcnQYMYnEe2R1Oyn9CblQw" name="attack" visibility="public" method="_kcn3cMYnEe2R1Oyn9CblQw"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Interface" xmi:id="_kevXUMYnEe2R1Oyn9CblQw" name="Strategy" visibility="public">
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kexMgMYnEe2R1Oyn9CblQw" name="attack" visibility="private"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_kcpFkMYnEe2R1Oyn9CblQw" name="BowStrategy" visibility="public">
+              <generalization xmi:type="uml:Generalization" xmi:id="_kcpsoMYnEe2R1Oyn9CblQw"/>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kcqTscYnEe2R1Oyn9CblQw" name="attack" specification="_kcqTsMYnEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    System.out.println(&quot;화살을 쏜다.&quot;);&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kcqTsMYnEe2R1Oyn9CblQw" name="attack" visibility="public" method="_kcqTscYnEe2R1Oyn9CblQw"/>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_kcsI4MYnEe2R1Oyn9CblQw" name="Driver" visibility="public">
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kcvMMMYnEe2R1Oyn9CblQw" name="main" specification="_kctXAMYnEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    AttackContext context = new AttackContext(() -> System.out.println(&quot;기본 공격!&quot;));&#xD;
+    context.attack();&#xD;
+    context.setStrategy(new BowStrategy());&#xD;
+    context.attack();&#xD;
+    context.setStrategy(new SwordStrategy());&#xD;
+    context.attack();&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kctXAMYnEe2R1Oyn9CblQw" name="main" visibility="public" isStatic="true" method="_kcvMMMYnEe2R1Oyn9CblQw">
+                <ownedParameter xmi:type="uml:Parameter" xmi:id="_kct-EMYnEe2R1Oyn9CblQw" name="args" type="_wYvcUMVEEe2enYiSLj8eBQ">
+                  <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kculIMYnEe2R1Oyn9CblQw"/>
+                  <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kculIcYnEe2R1Oyn9CblQw" value="*"/>
+                </ownedParameter>
+              </ownedOperation>
+            </packagedElement>
+            <packagedElement xmi:type="uml:Class" xmi:id="_keyaoMYnEe2R1Oyn9CblQw" name="SwordStrategy" visibility="public">
+              <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_kezBsMYnEe2R1Oyn9CblQw" name="SwordStrategy implements Strategy" client="_keyaoMYnEe2R1Oyn9CblQw" supplier="_kevXUMYnEe2R1Oyn9CblQw" contract="_kevXUMYnEe2R1Oyn9CblQw"/>
+              <ownedBehavior xmi:type="uml:OpaqueBehavior" xmi:id="_kezowcYnEe2R1Oyn9CblQw" name="attack" specification="_kezowMYnEe2R1Oyn9CblQw">
+                <language>JAVA</language>
+                <body>&#xD;
+    System.out.println(&quot;검을 휘두른다.&quot;);&#xD;
+</body>
+              </ownedBehavior>
+              <ownedOperation xmi:type="uml:Operation" xmi:id="_kezowMYnEe2R1Oyn9CblQw" name="attack" visibility="public" method="_kezowcYnEe2R1Oyn9CblQw"/>
+            </packagedElement>
+          </packagedElement>
+        </packagedElement>
       </packagedElement>
     </packagedElement>
     <packagedElement xmi:type="uml:Package" xmi:id="_tpT3EMVDEe2enYiSLj8eBQ" name="java">
@@ -303,4 +378,5 @@
   <PapyrusJava:External xmi:id="_wYyfoMVEEe2enYiSLj8eBQ" name="java.lang.String" base_Classifier="_wYvcUMVEEe2enYiSLj8eBQ"/>
   <standard:Create xmi:id="_TR9lQMYGEe2R1Oyn9CblQw" base_BehavioralFeature="_TPSEsMYGEe2R1Oyn9CblQw"/>
   <standard:Create xmi:id="_TTa90MYGEe2R1Oyn9CblQw" base_BehavioralFeature="_TTX6gMYGEe2R1Oyn9CblQw"/>
+  <standard:Create xmi:id="_kchw0MYnEe2R1Oyn9CblQw" base_BehavioralFeature="_kboY8sYnEe2R1Oyn9CblQw"/>
 </xmi:XMI>
