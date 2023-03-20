@@ -7,6 +7,7 @@ public class 뮤직비디오 {
 	public static void main(String[] args) {
 		int[] arr = new Random().ints(20, 1, 6).toArray();
 		int musicLen = 20;
+		Arrays.sort(arr);
 		
 		//최소는 가장큰 한곡
 		int lt = Arrays.stream(arr).max().getAsInt();
