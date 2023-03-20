@@ -4,7 +4,7 @@ package algorithm.dfs;
  * 깊이 우선 탐색은 무조건 끝까지 탐색한다. 
  * 깊이를 10 지정 시 10까지 다 탐색 후 그 결과를 기반으로 값을 도출
  */
-public class 깊이우선탐색DFS {
+public class 부분집합DFS {
 	static int n;
 	static int[] ch;
 	
