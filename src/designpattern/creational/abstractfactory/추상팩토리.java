@@ -1,6 +1,6 @@
-package designpattern.structural.abstractfactory;
+package designpattern.creational.abstractfactory;
 
-import designpattern.structural.abstractfactory.KingdomFactoryProvider.KingdomType;
+import designpattern.creational.abstractfactory.KingdomFactoryProvider.KingdomType;
 
 /**
  * <pre> 
