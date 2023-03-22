@@ -1,4 +1,4 @@
-package designpattern.callback;
+package designpattern.etc.callback;
 
 import java.util.Optional;
 

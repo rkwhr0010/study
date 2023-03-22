@@ -1,4 +1,4 @@
-package designpattern.callback;
+package designpattern.etc.callback;
 
 public class SimpleTask extends Task{
 
