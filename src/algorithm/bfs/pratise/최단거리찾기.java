@@ -1,5 +1,6 @@
-package algorithm.bfs;
+package algorithm.bfs.pratise;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -23,36 +24,29 @@ public class 최단거리찾기 {
 		start = 4;
 		end = 50;
 		BFS();
+		System.out.println(answer);
 	}
 
 	private static void BFS() {
-		Queue<Integer> q = new LinkedList<>();
+		Queue<Integer> q = new LinkedList<Integer>();
 		q.offer(start);
 		while(!q.isEmpty()) {
+			answer++;
 			int len = q.size();
-			answer++;// 회차 갱신
-			System.out.print(answer+"회차 ");
 			for (int i = 0; i < len; i++) {
-				int value = q.poll();
-				if(value==end) {
-					System.out.println(value + " 도착");
-					return;
-				}
+				int v = q.poll();
+				
 				for(int next : dis) {
-					int nextValue = next+value;
-//					if(nextValue==end) {
-//						answer++;// 회차 갱신
-//						System.out.print(answer+"회차 ");
-//						System.out.println(nextValue + " 도착");
-//						return;
-//					}
-					if(nextValue>=1 && nextValue <=10000  && chk[nextValue]==false) {
-						q.offer(nextValue);
+					int nv = v + next;
+					if(nv >= 1 && nv <= 10000 && chk[nv]==false) {
+						if(nv==end) {
+							answer++;
+							return;
+						}
+						q.offer(nv);
 					}
 				}
-				System.out.print(value+" ");
 			}
-			System.out.println();
 		}
 	}
 }

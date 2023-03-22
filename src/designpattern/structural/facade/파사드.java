@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * <pre>
+ * 
  * 하위 시스템의 인터페이스 집합에 통합 인터페이스를 제공합니다. 
  * Facade는 하위 시스템을 사용하기 쉽게 만드는 상위 수준 인터페이스를 정의합니다.
  * 
@@ -17,7 +18,7 @@ import java.util.List;
  * 복잡한 하위 시스템에서 클라이언트 구현을 분리합니다. 덕분에 기존 하위 시스템을 변경할 수 있고 클라이언트에 영향을 주지 않습니다.
  * 
  * 
- * 키워드 : 통합 인터페이스, 집합 인터페이스, 복잡한 인터페이스 숨김, 느슨한 결합으로 분리
+ * 키워드 : 통합 인터페이스, 집합 인터페이스, 복잡한 인터페이스 숨김, 느슨한 결합으로 분리,최소 지식 원칙
  * </pre>
  */
 public class 파사드 {
@@ -104,6 +105,7 @@ public class 파사드 {
 	}
 	
 	static class DwarvenGoldmineFacade {
+		//공통 객체들이 아닌 상이한 객체들을 묶어 다루는 것이 더 일반적이다.
 		private final List<DwarvenMineWorker> workers;
 
 		public DwarvenGoldmineFacade() {
