@@ -45,7 +45,7 @@ public class ObserverDriver {
 		public void setNews(T news) {
 			this.news = news;
 			super.setChanged();
-			super.notifyObservers(news);
+			super.notifyObservers(this.news);
 		}
 	}
 }

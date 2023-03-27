@@ -1,6 +1,7 @@
 package designpattern.behavioral.observer.pulling;
 
 public class EduPulling implements Pulling {
+	@SuppressWarnings("unused")
 	private final NewsAgency agency;
 	private String news;
 	
@@ -19,6 +20,7 @@ public class EduPulling implements Pulling {
 
 	public void setNews(String news) {
 		this.news = news;
+//		agency.getNews();
 	}
 	
 

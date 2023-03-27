@@ -96,8 +96,8 @@ public class 커맨드패턴 {
 		TextFileOperation openTextFileOperation = new OpenTextFileOperation(textFile);
 		TextFileOperation saveTextFileOperation = new SaveTextFileOperation(textFile);
 		
-		System.out.println(executor.executeOperation(new OpenTextFileOperation(new TextFile("파일1.txt"))));
-		System.out.println(executor.executeOperation(new SaveTextFileOperation(new TextFile("파일1.txt"))));
+		System.out.println(executor.executeOperation( openTextFileOperation ));
+		System.out.println(executor.executeOperation( saveTextFileOperation ));
 		System.out.println(executor.executeOperation(()->"파일 읽고 쓰고 다한다 마!"));
 	}
 	

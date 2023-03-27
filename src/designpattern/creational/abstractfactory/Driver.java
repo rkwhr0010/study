@@ -66,6 +66,7 @@ public class Driver {
 	}
 	
 	static class AnimalFactory implements AbstractFactory{
+		@SuppressWarnings("unchecked")
 		@Override
 		public Animal create(String type) {
 			Animal animal = null;
@@ -78,6 +79,7 @@ public class Driver {
 		}
 	}
 	static class ColorFactory implements AbstractFactory{
+		@SuppressWarnings("unchecked")
 		@Override
 		public Color create(String type) {
 			if("Red".equalsIgnoreCase(type)) {

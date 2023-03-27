@@ -3,12 +3,12 @@ package algorithm.bfs;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
 
 public class 그래프최단거리 {
 	static int n, m, answer = 0;
 	static ArrayList<ArrayList<Integer>> graph;
-	static int[] ch, dis;
+	static int[] ch ;
+	static int[] dis ;
 
 	public static void BFS(int v) {
 		ch[v] = 1;
@@ -30,9 +30,9 @@ public class 그래프최단거리 {
 	public static void main(String[] args) {
 		n = 6;
 		m = 9;
-		graph = new ArrayList<ArrayList<Integer>>();
+		graph = new ArrayList<>();
 		for (int i = 0; i <= n; i++) {
-			graph.add(new ArrayList<Integer>());
+			graph.add(new ArrayList<>());
 		}
 		ch = new int[n + 1];
 		dis = new int[n + 1];

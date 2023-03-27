@@ -31,11 +31,11 @@ public class 최단거리찾기 {
 		while(!q.isEmpty()) {
 			int len = q.size();
 			answer++;// 회차 갱신
-			System.out.print(answer+"회차 ");
+			System.out.print(answer+" times ");
 			for (int i = 0; i < len; i++) {
 				int value = q.poll();
 				if(value==end) {
-					System.out.println(value + " 도착");
+					System.out.println(value + " end");
 					return;
 				}
 				for(int next : dis) {
