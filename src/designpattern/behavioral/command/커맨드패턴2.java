@@ -11,13 +11,6 @@ public class 커맨드패턴2 {
 	static interface Command{
 		void execute();
 	}
-	/**
-	 * 리시버
-	 */
-	static class Document{
-		public void write() {System.out.println("쓰기!!!");}
-		public void read() {System.out.println("읽기!!!");}
-	}
 	//구상 커맨드
 	static class WriteCommand implements Command{
 		private Document document;
@@ -39,6 +32,13 @@ public class 커맨드패턴2 {
 		public void execute() {
 			document.read();
 		}
+	}
+	/**
+	 * 리시버
+	 */
+	static class Document{
+		public void write() {System.out.println("쓰기!!!");}
+		public void read() {System.out.println("읽기!!!");}
 	}
 	
 	static class DocumentInvoker{
