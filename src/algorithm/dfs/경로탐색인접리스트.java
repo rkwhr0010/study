@@ -24,7 +24,6 @@ public class 경로탐색인접리스트 {
 		m = 9;
 		ch = new int[n+1];
 		graph = new ArrayList<>();
-		
 		for (int i = 0; i <= n; i++) {
 			graph.add(new ArrayList<>());
 		}

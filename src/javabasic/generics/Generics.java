@@ -1,16 +1,11 @@
 package javabasic.generics;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Generics {
-	public static void main(String[] args) {
-		List<Integer> list = Arrays.asList(1,2,3,4);
-//		method1(list);List<Object>불가
-		method2_1(list);// List<?> == <? extends Object>  가능
-		
-		
-	}
+
 	
 	//? 와일드카드는 ? extends Object와 같다고 헀는데 Object를 안쓰는 이유는
 	//호출하는 쪽에서 List<Object> 타입만 넣을 수 있기 때문이다. 
@@ -29,6 +24,49 @@ public class Generics {
 //			obj.compareTo();
 		}
 	}
+	public static void main(String[] args) {
+		List<Integer> list = Arrays.asList(1,2,3,4,5);
+		
+		reverse3(list);
+		System.out.println(list);
+	}
+	
+	
+	//API 설계에서 T타입의 노출은 내부에서 T타입을 사용한다는 것을 의미한다.
+	//내부에서 T 타입을 사용안한다면, 숨기는 것이 권장된다
+	static <T> void reverse1(List<T> list) {
+		List<T> temp = new ArrayList<>(list);
+		for (int i = 0, len = list.size(); i < len; i++) {
+			temp.set(i, list.get(len-1-i));
+		}
+	}
+	//The method set(int, capture#5-of ?) in the type List<capture#5-of ?> is not applicable for the arguments (int, capture#6-of ?)
+	static void reverse2(List<?> list) {
+		List<?> temp = new ArrayList<>(list);
+		for (int i = 0, len = list.size(); i < len; i++) {
+			temp.set(i, list.get(len-1-i));
+		}
+	}
+	//숨길 시 와일드 카드를 사용하는데 캡쳐문제가 발생한다.
+	//이럴때 헬퍼 메서드를 사용하라고 권장한다. 어찌되었건, T가 노출되지 않는다. private
+	static void reverse3(List<?> list) {
+		reverseHelper(list);
+	}
+	private static <T> void reverseHelper(List<T> list) {
+		List<T> temp = new ArrayList<>(list);
+		for (int i = 0, len = temp.size(); i < len; i++) {
+			list.set(i, temp.get(len-1-i));
+		}
+	}
+	//다른 방법 raw 타입을 쓴다. 어차피 T 타입을 이용하지 않을 것이므로 논리적으로 문제는 없다.
+	static void reverse4(List<?> list) {
+		List temp = new ArrayList<>(list);
+		for (int i = 0, len = list.size(); i < len; i++) {
+			temp.set(i, list.get(len-1-i));
+		}
+	}
+	
+	
 	
 	
 }
