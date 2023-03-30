@@ -1,10 +1,10 @@
 package algorithm.bfs;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-import algorithm.bfs.미로최단.Point;
 
 public class 미로최단 {
 	class Point{
@@ -35,24 +35,42 @@ public class 미로최단 {
 		}	
 	}
 	void BFS2(int x,int y) {
-		Queue<Point> q = new LinkedList<>();
+		Queue<Point> Q = new LinkedList<>();
+		Q.offer(new Point(x, y));
+		board[x][y] = 1;
+		while(!Q.isEmpty()) {
+			Point p = Q.poll();
+			for (int i = 0; i < dx.length; i++) {
+				
+				int nx = p.x+dx[i];
+				int ny = p.y+dy[i];
+				if(nx>=1 && nx <= 7 && ny >= 1 && ny <=7 && board[nx][ny]==0) {
+					board[nx][ny]=1;
+					Q.offer(new Point(nx, ny));
+					dis[nx][ny] = dis[p.x][p.y] +1;
+				}
+			}
+		}
+	}
+	void BFS3(int x,int y) {
+		Queue<Point> q = new LinkedList<미로최단.Point>();
 		q.offer(new Point(x, y));
-		
+		board[x][y] = 1;
 		while(!q.isEmpty()) {
-			int len = q.size();
-			for (int i = 0; i < len; i++) {
-				Point point = q.poll();
-				int nx = x + point.x;
-				int ny = y + point.y;
-				if(nx>=1 && nx<=7 && ny>=1 && ny<=7 && board[nx][ny]==0) {
-					board[nx][ny]= 1;
-					dis[nx][ny] = dis[point.x][point.y]+1;
+			Point p = q.poll();
+			for (int i = 0; i < dx.length; i++) {
+				int nx = p.x+dx[i];
+				int ny = p.y+dy[i];
+				if(nx>=1 && nx <=7 && ny>=1 && ny<=7 && board[nx][ny]==0) {
+					board[nx][ny] = 1;
+					dis[nx][ny] = dis[p.x][p.y]+1;
 					q.offer(new Point(nx, ny));
 				}
 			}
 		}
-		
 	}
+	
+	
 	
 
 	public static void main(String[] args){
@@ -65,7 +83,7 @@ public class 미로최단 {
 				board[i][j]=kb.nextInt();
 			}
 		}
-		T.BFS2(1, 1);
+		T.BFS3(1, 1);
 		if(dis[7][7]==0) System.out.println(-1);
 		else System.out.println(dis[7][7]);
 	}
