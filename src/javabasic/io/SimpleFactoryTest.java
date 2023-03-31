@@ -14,19 +14,10 @@ public class SimpleFactoryTest {
 			return name;
 		}
 		
-		public void prepare() {
-			System.out.println("준비중 ... " + name);
-		}
-		public void bake() {
-			System.out.println("굽는 중 ... "+ name);
-		}
-		public void cut() {
-			System.out.println("짜르는 중 ... " + name);
-		}
-		public void box() {
-			System.out.println("포장 중 ... "+ name);
-		}
-		
+		public void prepare() {	System.out.println("준비중 ... " + name);	}
+		public void bake() {System.out.println("굽는 중 ... "+ name);	}
+		public void cut() {	System.out.println("짜르는 중 ... " + name);	}
+		public void box() {	System.out.println("포장 중 ... "+ name);	}
 		@Override
 		public String toString() {
 			StringBuilder sb = new StringBuilder();
