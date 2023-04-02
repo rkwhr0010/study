@@ -614,14 +614,14 @@ public class CommandTest4 {
 
 	// 클라이언트, 커맨드 객체 생성, 인보커에게 커맨드 객체 전달
 	public static void main(String[] args) {
-
+		//인보커
 		RemoteControl remoteControl = new RemoteControl();
-
+		//리시버
 		Light light = new Light("Living Room");
 		TV tv = new TV("Living Room");
 		Stereo stereo = new Stereo("Living Room");
 		Hottub hottub = new Hottub();
- 
+		//커맨드
 		LightOnCommand lightOn = new LightOnCommand(light);
 		StereoOnCommand stereoOn = new StereoOnCommand(stereo);
 		TVOnCommand tvOn = new TVOnCommand(tv);
