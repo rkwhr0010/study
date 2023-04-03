@@ -18,7 +18,7 @@ public class 미로탐색 {
 			}
 		}
 		board[1][1]=1;
-		T.DFS3(1, 1);
+		T.DFS2(1, 1);
 		System.out.print(answer);
 	}
 
@@ -37,23 +37,22 @@ public class 미로탐색 {
 			}
 		}
 	}
-	
-	private void DFS3(int x, int y) {
-		if(x==7 && y == 7) {
-			answer++;
-		}else {
+	void DFS2(int x, int y) {
+		if(x==7&&y==7)answer++;
+		else {
 			for (int i = 0; i < dx.length; i++) {
-				int nx = x+dx[i];
-				int ny = y+dy[i];
-				if(nx>=1&&nx<=7&&ny>=1&&ny<=7&&board[nx][ny]==0) {
-					board[nx][ny] = 1;
-					DFS3(nx,ny);
-					board[nx][ny] = 0;
+				int nx = x + dx[i];
+				int ny = y + dy[i];
+				if(nx>=1 && nx<=7 && ny>=1 && ny<=7 && board[nx][ny]==0) {
+					board[nx][ny]=1;
+					DFS2(nx,ny);
+					board[nx][ny]=0;
 				}
 			}
 		}
 		
 	}
+	
 }
 /**
 0 0 0 0 0 0 0
