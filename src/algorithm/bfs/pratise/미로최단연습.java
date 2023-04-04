@@ -37,25 +37,22 @@ public class 미로최단연습 {
 			}
 		}
 	}
-	
 	void BFS2(int x, int y) {
-		Queue<Point> Q = new LinkedList<>();
-		Q.add(new Point(x, y));
-		board[x][y]= 1;
+		LinkedList<Point> Q = new LinkedList<>();
+		Q.offer(new Point(x, y));
+		board[x][y] = 1;
 		while(!Q.isEmpty()) {
 			Point p = Q.poll();
-			for(int i=0;i<dx.length;i++) {
-				int nx = p.x+dx[i];
-				int ny = p.y+dy[i];
-				if(nx>=1&&nx<=7&&ny>=1&&ny<=7&&board[nx][ny]==0) {
-					board[nx][ny] = 1;
+			for (int i = 0; i < dx.length; i++) {
+				int nx = p.x + dx[i];
+				int ny = p.y + dy[i];
+				if(nx>=1 && nx <=7 && ny>=1 && ny<=7 && board[nx][ny]==0) {
+					board[nx][ny]=1;
+					dis[nx][ny] = dis[p.x][p.y] +1;
 					Q.offer(new Point(nx, ny));
-					dis[nx][ny] = dis[p.x][p.y]+1; 
 				}
 			}
-			
 		}
-		
 	}
 	
 	

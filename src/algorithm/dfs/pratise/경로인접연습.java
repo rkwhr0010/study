@@ -1,8 +1,9 @@
 package algorithm.dfs.pratise;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class 경로인접 {
+public class 경로인접연습 {
 	static int n, m, answer=0;
 	static ArrayList<ArrayList<Integer>> graph;
 	static int[] ch;
@@ -29,9 +30,24 @@ public class 경로인접 {
 		DFS(1);
 		System.out.println(answer);
 	}
+	static void DFS2(int i) {
+		if(i==n) answer ++ ;
+		else {
+			for(int nv : graph.get(i)) {
+				if(ch[nv]==0) {
+					ch[nv]=1;
+					DFS2(nv);
+					ch[nv] =0;
+				}
+			}
+		}
+	}
+	
 
 	private static void DFS(int i) {
-		if(i==n) answer++;
+		if(i==n) {
+			answer++;
+		}
 		else {
 			for(int nv : graph.get(i)) {
 				if(ch[nv]==0) {

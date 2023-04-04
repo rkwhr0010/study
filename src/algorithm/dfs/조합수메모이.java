@@ -1,8 +1,8 @@
 package algorithm.dfs;
 
 public class 조합수메모이 {
-	static int n = 33;
-	static int r = 19;
+	static int n = 6;
+	static int r = 4;
 	static int[][] dy = new int[n+1][r+1];
 	
 	public static void main(String[] args) {
