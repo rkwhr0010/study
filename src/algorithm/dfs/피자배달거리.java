@@ -38,26 +38,25 @@ public class 피자배달거리 {
 			}
 		}
 	}
-	void DFS2(int lv,int s) {
+	void DFS2(int lv, int s) {
 		if(lv == m) {
 			int sum = 0;
 			for(Point h : hs) {
 				int dis = Integer.MAX_VALUE;
 				for(int p : combi) {
-					dis = min(dis,abs(h.x - pz.get(p).x )+ abs(h.y - pz.get(p).y ));
+					dis = min(dis, abs(h.x-pz.get(p).x) + abs(h.y-pz.get(p).y)); 
 				}
 				sum += dis;
 			}
-			answer = min(answer,sum);
+			answer = min(answer, sum);
 			
 		}else {
 			for (int i = s; i < len; i++) {
-				combi[lv] = i;
-				DFS2(lv+1,s+1);
+				combi[lv] = s;
+				DFS2(lv+1,i+1);
 			}
 		}
 	}
-	
 	
 	public static void main(String[] args){
 		피자배달거리 T = new 피자배달거리();

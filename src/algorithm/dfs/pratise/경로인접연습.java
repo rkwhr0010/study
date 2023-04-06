@@ -27,7 +27,7 @@ public class 경로인접연습 {
 		graph.get(4).add(2);
 		graph.get(4).add(5);
 		ch[1]=1;
-		DFS(1);
+		DFS2(1);
 		System.out.println(answer);
 	}
 	static void DFS2(int i) {
@@ -43,23 +43,4 @@ public class 경로인접연습 {
 		}
 	}
 	
-
-	private static void DFS(int i) {
-		if(i==n) {
-			answer++;
-		}
-		else {
-			for(int nv : graph.get(i)) {
-				if(ch[nv]==0) {
-					ch[nv] = 1;
-					DFS(nv);
-					ch[nv] = 0;
-					
-				}
-			}
-			
-		}
-		
-		
-	}
 }
