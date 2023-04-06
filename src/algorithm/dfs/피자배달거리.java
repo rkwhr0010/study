@@ -1,5 +1,7 @@
 package algorithm.dfs;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+import static java.lang.Math.*;
 
 public class 피자배달거리 {
 	static class Point{
@@ -9,7 +11,7 @@ public class 피자배달거리 {
 			this.y=y;
 		}
 	}
-	
+	/*N개 정사각형 도시 크기, 그 안 피자가게 M개를 제외하고 다 폐업, 집들과 피자가게 거리가 최소인 피자가게만 생존*/
 	static int n; //도시 크기 정사각형
 	static int m; //피자가게 선택 수
 	static int len; // 피자가게 수
@@ -23,11 +25,11 @@ public class 피자배달거리 {
 			for(Point h : hs){
 				int dis=Integer.MAX_VALUE;
 				for(int i : combi){
-					dis=Math.min(dis, Math.abs(h.x-pz.get(i).x)+Math.abs(h.y-pz.get(i).y));
+					dis=min(dis, abs(h.x-pz.get(i).x)+abs(h.y-pz.get(i).y));
 				}
 				sum+=dis;
 			}
-			answer=Math.min(answer, sum);
+			answer=min(answer, sum);
 		}
 		else{
 			for(int i=s; i<len; i++){
@@ -36,28 +38,26 @@ public class 피자배달거리 {
 			}
 		}
 	}
-
-	void DFS2(int lv, int s) {
+	void DFS2(int lv,int s) {
 		if(lv == m) {
-			System.out.println(Arrays.toString(combi));
 			int sum = 0;
-			for(Point house : hs) {
+			for(Point h : hs) {
 				int dis = Integer.MAX_VALUE;
-				for(int i : combi) { // 피자선택
-					//피자거리
-					dis = Math.min(dis, Math.abs(house.x - pz.get(i).x)+Math.abs(house.y - pz.get(i).y) );
+				for(int p : combi) {
+					dis = min(dis,abs(h.x - pz.get(p).x )+ abs(h.y - pz.get(p).y ));
 				}
-				//피자 도시거리
 				sum += dis;
 			}
-			answer=Math.min(answer, sum);
-		} else {
+			answer = min(answer,sum);
+			
+		}else {
 			for (int i = s; i < len; i++) {
 				combi[lv] = i;
-				DFS2(lv+1,i+1);
+				DFS2(lv+1,s+1);
 			}
 		}
 	}
+	
 	
 	public static void main(String[] args){
 		피자배달거리 T = new 피자배달거리();
