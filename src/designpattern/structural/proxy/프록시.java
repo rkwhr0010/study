@@ -47,6 +47,11 @@ public class 프록시 {
 	static interface ExpensiveObject {
 	    void process();
 	}
+	static class NullExpensiveObject implements ExpensiveObject{
+		@Override
+		public void process() {	}
+		
+	}
 	
 	static class ExpensiveObjectImpl implements ExpensiveObject {
 	    public ExpensiveObjectImpl() {

@@ -89,7 +89,7 @@ public class SimpleComposite {
 		
 		
 //		root.print();
-		BFS(root);
+//		BFS(root);
 	}
 	
 	static void BFS(Component root) {
