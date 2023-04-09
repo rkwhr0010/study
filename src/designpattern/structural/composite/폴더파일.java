@@ -1,4 +1,4 @@
-package designpattern.headfirst.chapter9;
+package designpattern.structural.composite;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -97,11 +97,9 @@ public class 폴더파일 {
 		fof.print();
 		
 	}
-	
 	static void copy(File file, FolderOrFile folderOrFile) {
 		if(file.isDirectory()) {
 			folderOrFile.add(new MyFolder(file.getName(), true));
-			
 			for(File f : file.listFiles()) {
 				copy(f , folderOrFile);
 			}
