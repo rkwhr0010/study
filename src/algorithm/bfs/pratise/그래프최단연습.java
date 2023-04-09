@@ -1,14 +1,35 @@
 package algorithm.bfs.pratise;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
-public class 그래프최단 {
+public class 그래프최단연습 {
 	static int n = 0;
 	static int m = 0;
 	static int answer = 0;
 	static ArrayList<ArrayList<Integer>> graph;
 	static int[] ch ;
 	static int[] dis ;
+	
+	private static void BFS(int i) {
+		ch[i] = 1;
+		dis[i] = 0;
+		Queue<Integer> q = new LinkedList<Integer>();
+		q.add(i);
+		while(!q.isEmpty()) {
+			Integer cur = q.poll();
+			for(int next : graph.get(cur)) {
+				if(ch[next]==0) {
+					ch[next]= 1;
+					dis[next]=dis[cur]+1;
+					q.add(next);
+				}
+			}
+		}
+	}
+	
+	
 	
 	public static void main(String[] args) {
 		n = 6;
@@ -33,14 +54,6 @@ public class 그래프최단 {
 			System.out.println(i + " : " + dis[i]);
 		}
 	}
-
-	private static void BFS(int i) {
-		ch[i] = 1;
-		dis[i] = 0;
-		
-		
-	}
-	
 	
 	
 }

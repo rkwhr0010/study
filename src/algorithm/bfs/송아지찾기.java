@@ -3,13 +3,13 @@ package algorithm.bfs;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class 최단거리찾기 {
+public class 송아지찾기 {
 	//한 턴당 움직이는 경우의 수
 	static int[] dis = {1,-1,5};
 	//최대 거리
 	static int max;
 	//메모이제이션
-	static boolean[] chk;
+	static int[] chk;
 	//시작 위치
 	static int start;
 	//목적지
@@ -19,7 +19,7 @@ public class 최단거리찾기 {
 	
 	public static void main(String[] args) {
 		max = 10000;
-		chk = new boolean[max+1];//0사용 안함
+		chk = new int[max+1];//0사용 안함
 		start = 4;
 		end = 50;
 		BFS();
@@ -39,15 +39,16 @@ public class 최단거리찾기 {
 					return;
 				}
 				for(int next : dis) {
-					int nextValue = next+value;
+					int nv = next+value;
 //					if(nextValue==end) {
 //						answer++;// 회차 갱신
 //						System.out.print(answer+"회차 ");
 //						System.out.println(nextValue + " 도착");
 //						return;
 //					}
-					if(nextValue>=1 && nextValue <=10000  && chk[nextValue]==false) {
-						q.offer(nextValue);
+					if(nv>=1 && nv <=10000  && chk[nv]==0) {
+						chk[nv]= 1;
+						q.offer(nv);
 					}
 				}
 				System.out.print(value+" ");

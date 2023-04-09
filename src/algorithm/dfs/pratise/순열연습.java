@@ -10,37 +10,39 @@ public class 순열연습 {
 	static int[] pm = new int[size];
 	
 	public static void main(String[] args) {
-		DFS4(0);
+		DFS2(0);
 	}
-
-	static void DFS3(int lv) {
+	
+	static void DFS(int lv) {
 		if(lv == size) {
 			System.out.println(Arrays.toString(pm));
 		}else {
-			for (int i = 0; i < arr.length; i++) {
-				if(chk[i]==0) {
-					chk[i] = 1;
+			for(int i=0;i<arr.length;i++) {
+				if(chk[lv] == 0 ) {
+					chk[lv] = 1;
 					pm[lv] = arr[i];
-					DFS3(lv+1);
-					chk[i] = 0;
+					DFS(lv+1);
+					chk[lv] = 0;
 				}
 			}
 		}
 	}
-	static void DFS4(int lv) {
+	
+	static void DFS2(int lv) {
 		if(lv == size) {
 			System.out.println(Arrays.toString(pm));
-		}else {
-			for (int i = 0; i < arr.length; i++) {
-				if(chk[i] == 0) {
-					chk[i] = 1;
+		} else {
+			for(int i=0;i<arr.length;i++) {
+				if(chk[lv] == 0) {
+					chk[lv] = 1;
 					pm[lv] = arr[i];
-					DFS4(lv+1);
-					chk[i] = 0;
+					DFS2(lv+1);
+					chk[lv] = 0;
 				}
 			}
 		}
 	}
+	
 	
 	
 }

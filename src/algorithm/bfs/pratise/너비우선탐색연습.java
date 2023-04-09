@@ -3,7 +3,7 @@ package algorithm.bfs.pratise;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class 너비 {
+public class 너비우선탐색연습 {
 	static class Node{
 		public Node lt,rt;
 		public int value;

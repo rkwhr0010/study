@@ -2,7 +2,7 @@ package algorithm.dfs.pratise;
 
 import java.util.stream.Stream;
 
-public class 합부분집합 {
+public class 합부분집합연습 {
 	static Integer[] intArr = {1,3,5,6,7,10};
 	static Integer total = Stream.<Integer>of(intArr).reduce(0, Integer::sum);
 	static Boolean flag = false;
