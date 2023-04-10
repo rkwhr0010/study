@@ -35,17 +35,19 @@ public class 토마토연습 {
 	}
 	
 	void BFS2() {
-		while(!Q.isEmpty()) {
+		while(!Q.isEmpty()){
 			Point p = Q.poll();
-			for (int i = 0; i < dx.length; i++) {
+			for(int i = 0 ;i <dx.length;i++) {
 				int nx = p.x + dx[i];
 				int ny = p.y + dy[i];
-				if(nx>=0 && nx<n && ny>=0 && ny<m && board[nx][ny]==0){
-					board[nx][ny]= 1;
-					dis[nx][ny] = dis[p.x][p.y] +1;
-					Q.offer(new Point(nx, ny));
+				if(nx>=0 && nx<n && ny>=0 && ny<m &&board[nx][ny]== 0) {
+					board[nx][ny] = 1;
+					dis[nx][ny] = dis[p.x][p.y]+1;
+					Q.add(new Point(nx, ny));
 				}
 			}
+			
+			
 		}
 	}
 	
@@ -63,7 +65,7 @@ public class 토마토연습 {
 				if(board[i][j]==1) Q.offer(new Point(i, j));
 			}
 		}
-		T.BFS2();
+		T.BFS();
 		for(int[] arr : dis) {
 			System.out.println(Arrays.toString(arr));
 		}

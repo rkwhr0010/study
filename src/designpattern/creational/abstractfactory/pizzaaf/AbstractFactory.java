@@ -1,8 +1,8 @@
 package designpattern.creational.abstractfactory.pizzaaf;
 
-import designpattern.creational.abstractfactory.pizzaaf.PizzaDrive.PizzaStore.PizzaType;
+import designpattern.creational.abstractfactory.pizzaaf.AbstractFactory.PizzaStore.PizzaType;
 
-public class PizzaDrive {
+public class AbstractFactory {
 	public static void main(String[] args) {
 		PizzaStore nyStore = new NYPizzaStore();
 		PizzaStore chicagoStore = new ChicagoPizzaStore();
