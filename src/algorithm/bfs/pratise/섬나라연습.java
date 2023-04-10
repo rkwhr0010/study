@@ -38,6 +38,9 @@ public class 섬나라연습 {
 //	}
 //	static Direction direction = new Direction();
 	static int answer=0, n;
+	static boolean bewteen(int data, int a, int b) {
+		return a<=data && data <b;
+	}
 	
 	void sol(int[][] board){
 		Queue<Point> q = new LinkedList<>();
@@ -45,11 +48,30 @@ public class 섬나라연습 {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if(board[i][j]==1) {
-					BFS(i,j,board,q);
+//					BFS(i,j,board,q);
+					BFS2(i,j,board,q);
 				}
 			}
 		}
 	}
+	void BFS2(int x, int y, int[][]board, Queue<Point> q) {
+		q.offer(new Point(x, y));
+		board[x][y] = 0;
+		answer++;
+		
+		while(!q.isEmpty()) {
+			Point p = q.poll();
+			for(Direction d : Direction.values()) {
+				int nx = p.x+d.x;
+				int ny = p.y+d.y;
+				if(bewteen(nx, 0, n) && bewteen(ny, 0, n) && board[nx][ny]==1) {
+					q.offer(new Point(nx, ny));
+					board[nx][ny] = 0;
+				}
+			}
+		}
+	}
+	
 	
 	private void BFS(int x, int y, int[][] board,Queue<Point> q) {
 		answer ++;

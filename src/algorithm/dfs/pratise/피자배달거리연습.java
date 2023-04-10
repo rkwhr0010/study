@@ -1,9 +1,11 @@
-package algorithm.dfs;
+package algorithm.dfs.pratise;
+import static java.lang.Math.abs;
+import static java.lang.Math.min;
+
 import java.util.ArrayList;
 import java.util.Scanner;
-import static java.lang.Math.*;
 
-public class 피자배달거리 {
+public class 피자배달거리연습 {
 	static class Point{
 		public int x, y;
 		Point(int x, int y){
@@ -19,47 +21,28 @@ public class 피자배달거리 {
 	static int[] combi;
 	static ArrayList<Point> hs, pz;
 	
-	public void DFS(int L, int s){
-		if(L==m){
-			int sum=0;
-			for(Point h : hs){
-				int dis=Integer.MAX_VALUE;
-				for(int i : combi){
-					dis=min(dis, abs(h.x-pz.get(i).x)+abs(h.y-pz.get(i).y));
-				}
-				sum+=dis;
-			}
-			answer=min(answer, sum);
-		}
-		else{
-			for(int i=s; i<len; i++){
-				combi[L]=i;
-				DFS(L+1, i+1);
-			}
-		}
-	}
-	void DFS2(int lv, int s) {
+	void DFS4(int lv, int s) {
 		if(lv == m) {
-			int sum = 0;
+			int citySum = 0;
 			for(Point h : hs) {
-				int dis = Integer.MAX_VALUE;
+				int houseSum = Integer.MAX_VALUE;
 				for(int p : combi) {
-					dis = min(dis, abs(h.x-pz.get(p).x) + abs(h.y-pz.get(p).y)); 
+					houseSum = min(houseSum, abs(h.x-pz.get(p).x)+abs(h.y-pz.get(p).y));
 				}
-				sum += dis;
+				citySum += houseSum;
 			}
-			answer = min(answer, sum);
-			
+			answer = min(answer,citySum);
 		}else {
-			for (int i = s; i < len; i++) {
-				combi[lv] = s;
-				DFS2(lv+1,i+1);
+			for(int i=s;i<len;i++) {
+				combi[lv] = i;
+				DFS4(lv+1, i+1);
 			}
 		}
 	}
 	
+	
 	public static void main(String[] args){
-		피자배달거리 T = new 피자배달거리();
+		피자배달거리연습 T = new 피자배달거리연습();
 		Scanner kb = new Scanner(System.in);
 		n=kb.nextInt();
 		m=kb.nextInt();
@@ -72,9 +55,10 @@ public class 피자배달거리 {
 				else if(tmp==2) pz.add(new Point(i, j));
 			}
 		}
+		kb.close();
 		len=pz.size();
 		combi=new int[m];
-		T.DFS2(0, 0);
+		T.DFS4(0, 0);
 		System.out.println(answer);
 	}
 }
