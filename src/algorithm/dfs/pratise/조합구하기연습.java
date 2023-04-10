@@ -9,28 +9,30 @@ public class 조합구하기연습 {
 	static int[] com = new int[sel];
 	
 	public static void main(String[] args) {
-		DFS2(0,1);
+		DFS(0,1);
 		System.out.println(cnt);
 	}
-	private static void DFS(int lv, int s) {
-		if(lv==sel) {
-			cnt++;
-			System.out.println(Arrays.toString(com));
-		}else {
-			for (int i = s; i <= size; i++) {
-				com[lv] = i;
-				DFS(lv+1,i+1);
-			}
-		}
-	}
-	static void DFS2(int lv, int s) {
+	
+	static void DFS3(int lv, int s) {
 		if(lv == sel) {
 			cnt++;
 			System.out.println(Arrays.toString(com));
 		}else {
-			for (int i = s; i <= size; i++) {
+			for(int i=s;i<=size;i++) {
 				com[lv] = i;
-				DFS2(lv+1,i+1);
+				DFS3(lv+1,i+1);
+			}
+		}
+	}
+	
+	static void DFS(int lv, int s) {
+		if(lv == sel) {
+			cnt++;
+			System.out.println(Arrays.toString(com));
+		}else {
+			for(int i=s;i<=size;i++) {
+				com[lv] = i;
+				DFS(lv+1,i+1);
 			}
 		}
 	}
