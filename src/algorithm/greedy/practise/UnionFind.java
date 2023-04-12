@@ -37,7 +37,17 @@ public class UnionFind {
 		else return uni[v] = find(uni[v]);
 	}
 	
+	static void uni(int a, int b) {
+		int fa = find1(a);
+		int fb = find1(b);
+		if(fa != fb) uni[fa] = fb;
+	}
 	
+	private static int find1(int v) {
+		if(v == uni[v]) return uni[v];
+		else return uni[v] = find(uni[v]);
+	}
+
 	public static void main(String[] args){
 		Scanner kb = new Scanner(System.in);
 		int n=9; //반 학생수
