@@ -19,44 +19,18 @@ public class UnionFind {
 		if(fa!=fb) unf[fa]=fb;
 	}
 	
-	static void uni1(int a, int b) {
-		int fa = find1(a);
-		int fb = find1(b);
-		if(fa != fb) uni[fa] = fb;
-	}
-	
-	static int find1(int v) {
-		if(v == uni[v]) return uni[v];
-		else return uni[v] = find1(uni[v]);
-	}
-	
 	static void union(int a, int b) {
-		int fa = find(a);
+		int fa = find(b);
 		int fb = find(b);
-		if(fa != fb) unf[fa]=fb;
+		if(fa != fb) unf[fa] = fb;
+		
 	}
-	static int find(int v) {
+	private static int find(int v) {
 		if(v == unf[v]) return unf[v];
-		else return unf[v] = find(unf[v]);
+		return unf[v] = find(unf[v]);
 	}
-	static int fi (int v) {
-		if(uni[v] == v) return uni[v];
-		else return uni[v] = fi(uni[v]);
-	}
-	static int fi2(int v) {
-		if(uni[v] == v) return v;
-		else return uni[v] = find(uni[v]);
-	}
-	
-	static void uni(int a, int b) {
-		int fa = find1(a);
-		int fb = find1(b);
-		if(fa != fb) uni[fa] = fb;
-	}
-	
 
 	public static void main(String[] args){
-		Scanner kb = new Scanner(System.in);
 		int n=9; //반 학생수
 		int m=7; //숫자 쌍 수
 		int[][] node = 
@@ -75,7 +49,7 @@ public class UnionFind {
 		for(int i=1; i<=m; i++){
 			int a=node[i][0];
 			int b=node[i][1];
-			uni1(a, b);
+			union(a, b);
 		}
 		//a와 b는 친구니?
 		int fa=Find(3);

@@ -1,11 +1,12 @@
-package algorithm.greedy;
+package algorithm.greedy.practise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.IntStream;
 
-public class 최소스패닝트리크루스칼 {
+
+public class 최소스패닝트리크루스칼연습 {
 	private static class Edge implements Comparable<Edge>{
 		private final int v1;
 		private final int v2;
@@ -86,8 +87,6 @@ public class 최소스패닝트리크루스칼 {
 		return unf[v] = find(unf[v]);
 	}
 }
-
-
 /*
  * 모든 도시를 연결하면서 드는 최소비용을 출려한다.
 9 12
@@ -104,12 +103,6 @@ public class 최소스패닝트리크루스칼 {
 7 8 35
 8 9 15
 
-
-196
-
-*/
-/*
- * 모든 도시를 연결하면서 드는 최소비용을 출려한다.
 
 196
 
