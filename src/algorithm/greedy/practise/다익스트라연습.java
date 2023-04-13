@@ -50,6 +50,25 @@ public class 다익스트라연습 {
 		}
 	}
 	
+	static void sol2(int v) {
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		dis[v] = 0;
+		q.offer(new Edge(v,0));
+		while(!q.isEmpty()) {
+			Edge cur = q.poll();
+			if(cur.cost>dis[cur.vex]) continue;
+			
+			for(Edge next : graph.get(cur.vex)) {
+				if(dis[next.vex] > cur.cost + next.cost ) {
+					dis[next.vex] = cur.cost + next.cost;
+					q.offer(new Edge(next.vex, cur.cost + next.cost));
+				}
+			}
+		}
+	}
+
+	
+	
 	public static void main(String[] args){
 		//{간선시작, 간선끝, 가중치}
 		int[][] arr = 
@@ -80,7 +99,7 @@ public class 다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		sol(1);
+		sol2(1);
 		System.out.println("== 정점 별 최소 비용 ==");
 		for(int i=2; i<graph.size(); i++){
 			if(dis[i]!=Integer.MAX_VALUE) System.out.println(i+" : "+dis[i]);

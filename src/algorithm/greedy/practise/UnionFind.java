@@ -19,6 +19,17 @@ public class UnionFind {
 		if(fa!=fb) unf[fa]=fb;
 	}
 	
+	static void uni1(int a, int b) {
+		int fa = find1(a);
+		int fb = find1(b);
+		if(fa != fb) uni[fa] = fb;
+	}
+	
+	static int find1(int v) {
+		if(v == uni[v]) return uni[v];
+		else return uni[v] = find1(uni[v]);
+	}
+	
 	static void union(int a, int b) {
 		int fa = find(a);
 		int fb = find(b);
@@ -43,10 +54,6 @@ public class UnionFind {
 		if(fa != fb) uni[fa] = fb;
 	}
 	
-	private static int find1(int v) {
-		if(v == uni[v]) return uni[v];
-		else return uni[v] = find(uni[v]);
-	}
 
 	public static void main(String[] args){
 		Scanner kb = new Scanner(System.in);
@@ -68,7 +75,7 @@ public class UnionFind {
 		for(int i=1; i<=m; i++){
 			int a=node[i][0];
 			int b=node[i][1];
-			Union(a, b);
+			uni1(a, b);
 		}
 		//a와 b는 친구니?
 		int fa=Find(3);

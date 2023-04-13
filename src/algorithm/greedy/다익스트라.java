@@ -1,6 +1,8 @@
 package algorithm.greedy;
 
 import java.util.*;
+import java.util.stream.Stream;
+
 class Edge implements Comparable<Edge>{
     public int vex;
 	public int cost;
@@ -15,119 +17,85 @@ class Edge implements Comparable<Edge>{
 }
 
 class 다익스트라 {
-	static int n, m;
+	private static class Edge implements Comparable<Edge>{
+	    private final int vex;
+	    private final int cost;
+		
+		private Edge(int vex, int cost) {
+	        this.vex = vex;
+	        this.cost = cost;
+	    }
+	    public int compareTo(Edge ob){
+	        return Integer.compare(this.cost,ob.cost);
+	    }
+	    public String toString() {
+	    	return "["+vex+", "+cost+"]";
+	    }
+	}
 	static ArrayList<ArrayList<Edge>> graph;
 	static int[] dis;
-	public void solution(int v){
-		PriorityQueue<Edge> pQ = new PriorityQueue<>();
-		pQ.offer(new Edge(v, 0));
-		dis[v]=0;
-		while(!pQ.isEmpty()){
-			Edge tmp=pQ.poll();
-			int now=tmp.vex;
-			int nowCost=tmp.cost;
-			if(nowCost>dis[now]) continue;
-			for(Edge ob : graph.get(now)){
-				if(dis[ob.vex]>nowCost+ob.cost){
-					dis[ob.vex]=nowCost+ob.cost;
-					pQ.offer(new Edge(ob.vex, nowCost+ob.cost));
-				}
-			}
-		}
-	}
-	void sol(int v) {
-		PriorityQueue<Edge> queue = new PriorityQueue<>();
+	
+	static void sol(int v) {
+		//내부적으로 이분검색을 사용해 시간 복잡도가 log n
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		//시작 정점은 거리 0
 		dis[v] = 0;
-		queue.add(new Edge(v, 0));
-		
-		while(!queue.isEmpty()) {
-			//현시점 가장 비용 위치
-			Edge e = queue.poll();
-			int vex = e.vex;
-			int cost = e.cost;
-			if(cost> dis[vex]) continue;
-			for(Edge next : graph.get(vex)) {
-				//다음 경로, 현재까지비용+다음비용
-				if(dis[next.vex] > cost+next.cost) {
-					dis[next.vex] = cost+next.cost;
-					queue.add(new Edge(next.vex, cost+next.cost));
+		//시작 정점은 비용 0
+		q.offer(new Edge(v, 0));
+		while(!q.isEmpty()) {
+			//자료구조 상 가장 비용이 작은 정점이 나온다.
+			Edge cur = q.poll();
+			//현재 가장 작은 비용이 이미 저장된 비용보다 크면 확인할 필요가 없다.
+			if(cur.cost>dis[cur.vex]) continue;
+			//graph.get(cur.vex)은 n번 수행된다.
+			//graph.get(cur.vex) 결과로 나온 Edge는 최소 n번 이상 수행된다.
+			for(Edge next : graph.get(cur.vex)) {
+				//다음 경로 비용 계산 시작
+				//다음 경로에 이미 저장된 비용 > 현재까지 누산된 비용 + 다음 경로까지 비용
+				if(dis[next.vex] > cur.cost + next.cost ) {
+					dis[next.vex] = cur.cost + next.cost;
+					//중요_ 현재까지 누산된 비용을 다음 경로까지 물고간다.
+					q.offer(new Edge(next.vex, cur.cost + next.cost));
 				}
 			}
 		}
 	}
 	
-	
-	void solution2(int v) {
-		PriorityQueue<Edge> pq = new PriorityQueue<>();
-		pq.offer(new Edge(v, 0));
-		dis[v] = 0;
-		while(!pq.isEmpty()) {
-			Edge edge = pq.poll();
-			int now = edge.vex;
-			int cost = edge.cost;
-			
-			//최소 정로를 구하는 것이기에 현재 코스트보다 구해진 코스트가 크면 넘어간다.
-			//단, 이 조건을 반드시 만족하려면 cost가 음수여선 안된다.
-			if(cost>dis[now]) continue;
-			
-			//현재 위치에서 갈 수 있는 모든 경로를 순회
-			for(Edge e : graph.get(now)) {
-				//다음으로 갈 위치의 경로 비용보다 현재 비용 + 다음 경로비용이 더 작다면 교체해야 한다.
-				if(dis[e.vex] > cost+e.cost) {
-					dis[e.vex] = cost+e.cost;
-					//더 작은 비용만 큐에 넣는다.
-					//더 컸다면 무슨 짓을 해도 현재보다 더 작은 값이 나올 수 없기 때문에 저장을 안한다.
-					//이유는 cost는 반드시 정수라는 조건이 걸려있기 때문이다.
-					pq.offer(new Edge(e.vex, cost+e.cost));
-				}
-			}
-		}
-	}
-	
-
 	public static void main(String[] args){
-		다익스트라 T = new 다익스트라();
-		Scanner kb = new Scanner(System.in);
-		n=kb.nextInt();
-		m=kb.nextInt();
+		//{간선시작, 간선끝, 가중치}
+		int[][] arr = 
+			{{1, 2, 12}
+			,{1, 3, 4 }
+			,{2, 1, 2 }
+			,{2, 3, 5 }
+			,{2, 5, 5 }
+			,{3, 4, 5 }
+			,{4, 2, 2 }
+			,{4, 5, 5 }
+			,{6, 4, 5 }	};
+		
 		graph = new ArrayList<ArrayList<Edge>>();
-		for(int i=0; i<=n; i++){
-			graph.add(new ArrayList<Edge>());
-		}
-		dis=new int[n+1];
+		graph.add(new ArrayList<>()); // 0 번 미사용
+		System.out.println("==정점 만큼 골라내기==");
+		Arrays.stream(arr)
+			.flatMap(data -> Stream.of(data[0],data[1]))
+			.distinct()
+			.peek(data -> System.out.print(data+", "))
+			.forEach( data -> graph.add(new ArrayList<>()));
+		//거리비용 저장 배열
+		dis = new int[graph.size()];
 		Arrays.fill(dis, Integer.MAX_VALUE);
-		for(int i=0; i<m; i++){
-			int a=kb.nextInt();
-			int b=kb.nextInt();
-			int c=kb.nextInt();
-			graph.get(a).add(new Edge(b, c));
-		}
-		T.sol(1);
-		for(int i=2; i<=n; i++){
+		
+		System.out.println("\n==간선 정보==");
+		Arrays.stream(arr)
+			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
+			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
+		
+		sol(1);
+		System.out.println("== 정점 별 최소 비용 ==");
+		for(int i=2; i<graph.size(); i++){
 			if(dis[i]!=Integer.MAX_VALUE) System.out.println(i+" : "+dis[i]);
 			else System.out.println(i+" : impossible");
 		}
 	}
 }
-/*
-6 9
-1 2 12
-1 3 4
-2 1 2
-2 3 5
-2 5 5
-3 4 5
-4 2 2
-4 5 5
-6 4 5
-
-2 : 11
-3 : 4
-4 : 9
-5 : 14
-6 : impossible
-
-
- * 
- */
-
