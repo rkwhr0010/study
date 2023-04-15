@@ -1,8 +1,6 @@
 package algorithm.greedy.practise;
 
-import java.util.Scanner;
-
-public class UnionFind {
+public class UnionFind연습 {
 	
 	static int[] unf; //집합번호를 저장하는 배열 unf[1] = 5 ; 1은 5 그룹에 속한다.
 	static int[] uni;
@@ -19,16 +17,18 @@ public class UnionFind {
 		if(fa!=fb) unf[fa]=fb;
 	}
 	
+	static int find(int v) {
+		if(v==unf[v]) return unf[v];
+		else return unf[v] = find(unf[v]);
+	}
+	
 	static void union(int a, int b) {
-		int fa = find(b);
+		int fa = find(a);
 		int fb = find(b);
-		if(fa != fb) unf[fa] = fb;
+		if(fa!=fb) unf[fa]=fb;
 		
 	}
-	private static int find(int v) {
-		if(v == unf[v]) return unf[v];
-		return unf[v] = find(unf[v]);
-	}
+	
 
 	public static void main(String[] args){
 		int n=9; //반 학생수

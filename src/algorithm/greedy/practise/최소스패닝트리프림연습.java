@@ -40,7 +40,7 @@ public class 최소스패닝트리프림연습 {
 	
 	static ArrayList<ArrayList<Edge>> graph = new ArrayList<ArrayList<Edge>>();
 	static int[] ch;
-	
+	static int answer=0;
 	public static void main(String[] args){
 		
 		Arrays.stream(inputArr)
@@ -57,13 +57,12 @@ public class 최소스패닝트리프림연습 {
 			//이문제는 양방향으로 한 줄만 더 추가
 			graph.get(arr[1]).add(new Edge(arr[0], arr[2]));
 		}
-		System.out.println(extracted());
+		sol(1);
+		System.out.println(answer);
 	}
 	
-	
-	
-	private static int extracted() {
-		int answer=0;
+	private static void extracted(int v) {
+		
 		PriorityQueue<Edge> pQ = new PriorityQueue<>();
 		pQ.offer(new Edge(1, 0));
 		while(!pQ.isEmpty()){
@@ -77,7 +76,24 @@ public class 최소스패닝트리프림연습 {
 				}
 			}
 		}
-		return answer;
+	}
+	
+	static void sol(int v) {
+		PriorityQueue<Edge> Q = new PriorityQueue<>();
+		Q.add(new Edge(v, 0));
+		
+		while(!Q.isEmpty()) {
+			Edge c = Q.poll();
+			if(ch[c.vex] == 0) {
+				ch[c.vex] = 1;
+				answer+= c.cost;
+				for(Edge n : graph.get(c.vex)) {
+					if(ch[n.vex]==0) Q.add(new Edge(n.vex, n.cost));
+				}
+			}
+			
+		}
+		
 	}
 	
 }

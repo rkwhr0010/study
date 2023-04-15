@@ -55,16 +55,23 @@ public class 최소스패닝트리크루스칼연습 {
 		Collections.sort(arr);
 		
 		for(Edge ob : arr){
-			int fv1=find(ob.v1);
-			int fv2=find(ob.v2);
-			
 			//같으면 이미 그룹, 다르면 그룹을 맺어줌
-			if(fv1!=fv2){
+			if(find(ob.v1)!=find(ob.v2)){
 				answer+=ob.cost;
-				union(ob.v1, ob.v2);
+				uni(ob.v1, ob.v2);
 			}
 		}
+		
 		System.out.println(answer);
+	}
+	static int find(int v) {
+		if(v==unf[v])return unf[v];
+		else return unf[v] = find(unf[v]);
+	}
+	static void uni(int a, int b) {
+		int fa = find(a);
+		int fb = find(b);
+		if(fa!=fb)unf[fa]=fb;
 	}
 	
 	public static int Find(int v){
@@ -75,16 +82,6 @@ public class 최소스패닝트리크루스칼연습 {
 		int fa=Find(a);
 		int fb=Find(b);
 		if(fa!=fb) unf[fa]=fb;
-	}
-	
-	static void union(int a, int b) {
-		int fa = find(a);
-		int fb = find(b);
-		if(fa != fb) unf[fa] = fb;
-	}
-	private static int find(int v) {
-		if(v == unf[v]) return unf[v];
-		return unf[v] = find(unf[v]);
 	}
 }
 /*
