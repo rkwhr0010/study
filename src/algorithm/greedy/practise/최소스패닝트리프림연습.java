@@ -81,7 +81,6 @@ public class 최소스패닝트리프림연습 {
 	static void sol(int v) {
 		PriorityQueue<Edge> Q = new PriorityQueue<>();
 		Q.add(new Edge(v, 0));
-		
 		while(!Q.isEmpty()) {
 			Edge c = Q.poll();
 			if(ch[c.vex] == 0) {
@@ -91,10 +90,28 @@ public class 최소스패닝트리프림연습 {
 					if(ch[n.vex]==0) Q.add(new Edge(n.vex, n.cost));
 				}
 			}
-			
 		}
-		
 	}
+	
+	static void sol2(int v) {
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		q.add(new Edge(v, 0));
+		
+		while(!q.isEmpty()) {
+			Edge c = q.poll();
+			if(ch[c.vex] ==0 ) {
+				ch[c.vex] = 1;
+				answer+= c.cost;
+				
+				for(Edge n : graph.get(c.vex)) {
+					if(ch[n.vex] == 0) {
+						q.add(new Edge(n.vex, n.cost));
+					}
+				}
+			}
+		}
+	}
+	
 	
 }
 /*
