@@ -1,9 +1,7 @@
 package algorithm.dynamicprogramming;
 
-import java.util.Scanner;
-
 public class 최대부분증가수열 {
-static int dy[];
+	static int dy[];
 	
  	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -17,12 +15,15 @@ static int dy[];
 		System.out.println(sol1(arr));
 		sc.close();
 	}
-
-	private static int solution(int[] arr) {
+	
+	static int solution(int[] arr) {
 		int answer = 0;
 		dy[0] = 1;
 		
-		for(int i=1; i<arr.length;i++) {
+		//수열 순회
+		for(int i=1;i<arr.length;i++) {
+			
+			//수열 수 저장
 			int max = 0;
 			
 			for(int j = i-1;j>=0;j--) {
@@ -30,7 +31,9 @@ static int dy[];
 					max = dy[j];
 				}
 			}
-			dy[i] = max +1;
+			//구해진 수열 수에 +1
+			dy[i] = max+1;
+			//최종적으로 가장 횟수 많은 부분 수열을 구함
 			answer = Math.max(answer, dy[i]);
 		}
 		return answer;
