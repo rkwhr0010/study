@@ -1,5 +1,7 @@
 package algorithm.dynamicprogramming;
 
+import java.util.Scanner;
+
 public class 최대부분증가수열 {
 	static int dy[];
 	
