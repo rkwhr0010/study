@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class 동전교환{
 	static int n, m;
 	static int[] dy;
-	public int solution(int[] coin){
+	static int solution(int[] coin){
 		Arrays.fill(dy, Integer.MAX_VALUE);
 		dy[0]=0;
 		for(int i=0; i<n; i++){
@@ -17,33 +17,40 @@ public class 동전교환{
 		return dy[m];
 	}
 	
-	int sol(int[] coin) {
+	static int sol(int[] coin) {
 		Arrays.fill(dy, Integer.MAX_VALUE);
-		dy[0] = 0;
-		
+		dy[0] = 0 ;
 		for(int i=0;i<coin.length;i++) {
-			for(int j=coin[i]; j<=m ;j++) {
+			for(int j=coin[i];j<=m;j++) {
 				dy[j] = Math.min(dy[j], dy[j-coin[i]]+1);
 			}
 		}
 		return dy[m];
 	}
-
-	int sol1(int[] coin) {
+	
+	static int sol1(int[] coin) {
 		Arrays.fill(coin, Integer.MAX_VALUE);
 		dy[0] = 0;
-		
 		for(int i=0;i<coin.length;i++) {
 			for(int j=coin[i];j<=m;j++) {
-				dy[j] = Math.min(dy[j], dy[j-coin[j]]+1);
+				dy[j] = Math.min(dy[j], dy[j-coin[i]]+1);
 			}
 		}
-		
+		return dy[m];
+	}
+	
+	static int so(int[] coin) {
+		Arrays.fill(coin, Integer.MAX_VALUE);
+		dy[0] = 0;
+		for(int i=0; i<coin.length;i++) {
+			for(int j=coin[i];j<=m;j++) {
+				dy[j] = Math.min(dy[j], dy[j-coin[i]]+1);
+			}
+		}
 		return dy[m];
 	}
 	
 	public static void main(String[] args){
-		동전교환 T = new 동전교환();
 		Scanner kb = new Scanner(System.in);
 		n=kb.nextInt();
 		int[] arr=new int[n];
@@ -52,7 +59,7 @@ public class 동전교환{
 		}
 		m=kb.nextInt();
 		dy=new int[m+1];
-		System.out.print(T.sol(arr));
+		System.out.print(sol(arr));
 	}
 }
 /*

@@ -2,7 +2,6 @@ package algorithm.dynamicprogramming;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-<<<<<<< HEAD
 
 /**
  * 벽돌은 가장 넓은 것이 아래에 위치
@@ -10,10 +9,7 @@ import java.util.Collections;
  */
 public class 가장높은탑쌓기{
 
-=======
-import java.util.Scanner;
-class 가장높은탑쌓기{
->>>>>>> branch 'master' of https://github.com/rkwhr0010/best_practise.git
+
 	static class Brick implements Comparable<Brick>{
 		public final int width, heigth, weight;
 		public Brick(int width, int heigth, int weight) {
@@ -76,8 +72,6 @@ class 가장높은탑쌓기{
 		}
 		return answer;
 	}
-<<<<<<< HEAD
-=======
 	static int sol2(ArrayList<Brick> arr) {
 		int ans = 0;
 		Collections.sort(arr);
@@ -152,20 +146,4 @@ class 가장높은탑쌓기{
 		return Arrays.stream(dy).max().getAsInt();
 	}
 	
-	public static void main(String[] args){
-		가장높은탑쌓기 T = new 가장높은탑쌓기();
-		Scanner kb = new Scanner(System.in);
-		int n=kb.nextInt();
-		ArrayList<Brick> arr=new ArrayList<>();
-		dy=new int[n];
-		for(int i=0; i<n; i++){
-			int a=kb.nextInt();
-			int b=kb.nextInt();
-			int c=kb.nextInt();
-			arr.add(new Brick(a, b, c));
-		}
-		kb.close();
-		System.out.print(T.sola(arr));
-	}
->>>>>>> branch 'master' of https://github.com/rkwhr0010/best_practise.git
 }
