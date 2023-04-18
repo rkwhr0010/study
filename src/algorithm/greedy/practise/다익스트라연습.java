@@ -91,7 +91,21 @@ public class 다익스트라연습 {
 		}
 	}
 	
-	
+	static void sola(int v) {
+		PriorityQueue<Edge> Q = new PriorityQueue<>();
+		dis[v] = 0;
+		Q.offer(new Edge(v, 0));
+		
+		while(!Q.isEmpty()) {
+			Edge c = Q.poll();
+			for(Edge n : graph.get(c.vex)) {
+				if(dis[n.vex] > c.cost+n.cost ) {
+					dis[n.vex] = c.cost+n.cost ;
+					Q.add(new Edge(n.vex, c.cost+n.cost));
+				}
+			}
+		}
+	}
 	
 	
 	

@@ -1,7 +1,7 @@
 package algorithm.dynamicprogramming;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Scanner;
 class 가장높은탑쌓기{
 	static class Brick implements Comparable<Brick>{
@@ -74,7 +74,38 @@ class 가장높은탑쌓기{
 		return ans;
 	}
 	
+	int sola(ArrayList<Brick> arr) {
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		
+		for(int i= 1;i<arr.size();i++) {
+			int hei = 0;
+			for(int j=i-1;j>=0;j--) {
+				if(arr.get(i).weight < arr.get(j).weight && dy[j] > hei ) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + arr.get(i).heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
 	
+	int solb(ArrayList<? extends Brick> arr) {
+		
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		
+		for(int i= 1;i<arr.size();i++) {
+			int hei = 0;
+			for(int j=i-1;j>=0;j--) {
+				if(arr.get(i).weight < arr.get(j).weight && dy[j] > hei ) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + arr.get(i).heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
 	
 	public static void main(String[] args){
 		가장높은탑쌓기 T = new 가장높은탑쌓기();
@@ -89,7 +120,7 @@ class 가장높은탑쌓기{
 			arr.add(new Brick(a, b, c));
 		}
 		kb.close();
-		System.out.print(T.sol2(arr));
+		System.out.print(T.sola(arr));
 	}
 }
 /*

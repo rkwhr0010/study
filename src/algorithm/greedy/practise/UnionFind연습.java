@@ -29,6 +29,16 @@ public class UnionFind연습 {
 		
 	}
 	
+	static int f(int v) {
+		if(v == unf[v])  return unf[v];
+		else return unf[v] = f(unf[v]);
+	}
+	static void u(int a, int b) {
+		int fa = f(a);
+		int fb = f(b);
+		if(fa!=fb) unf[fa] =fb;
+	}
+	
 
 	public static void main(String[] args){
 		int n=9; //반 학생수
