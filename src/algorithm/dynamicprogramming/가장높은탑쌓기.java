@@ -1,6 +1,8 @@
 package algorithm.dynamicprogramming;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+<<<<<<< HEAD
 
 /**
  * 벽돌은 가장 넓은 것이 아래에 위치
@@ -8,6 +10,10 @@ import java.util.Collections;
  */
 public class 가장높은탑쌓기{
 
+=======
+import java.util.Scanner;
+class 가장높은탑쌓기{
+>>>>>>> branch 'master' of https://github.com/rkwhr0010/best_practise.git
 	static class Brick implements Comparable<Brick>{
 		public final int width, heigth, weight;
 		public Brick(int width, int heigth, int weight) {
@@ -70,4 +76,96 @@ public class 가장높은탑쌓기{
 		}
 		return answer;
 	}
+<<<<<<< HEAD
+=======
+	static int sol2(ArrayList<Brick> arr) {
+		int ans = 0;
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		ans = dy[0];
+		
+		for(int i = 1 ; i < arr.size();i++) {
+			int max = 0;
+			for(int j = i-1; j>= 0;j--) {
+				if(arr.get(i).weight>arr.get(j).weight && dy[j] >max)
+					max = dy[j];
+			}
+			dy[i] = max+ arr.get(i).heigth ;
+			ans = Math.max(ans, dy[i]);
+		}
+		return ans;
+	}
+	
+	int sol(ArrayList<Brick> arr) {
+		int ans = 0;
+		//너비가 커야 그 위에 쌓을 수 있다.
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		ans = dy[0];
+		
+		for(int i = 1 ; i < arr.size() ; ++i) {
+			int max_h= 0 ;
+			Brick main = arr.get(i);
+			for(int j = i-1; j>=0 ; --j ) {
+				Brick other = arr.get(j);
+				if(main.weight < other.weight && dy[j] > max_h ) {
+					max_h = dy[j];
+				}
+			}
+			dy[i] = arr.get(i).heigth + max_h;
+			ans = Math.max(ans, dy[i]);
+		}
+		
+		return ans;
+	}
+	
+	int sola(ArrayList<Brick> arr) {
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		
+		for(int i= 1;i<arr.size();i++) {
+			int hei = 0;
+			for(int j=i-1;j>=0;j--) {
+				if(arr.get(i).weight < arr.get(j).weight && dy[j] > hei ) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + arr.get(i).heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
+	
+	int solb(ArrayList<? extends Brick> arr) {
+		
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		
+		for(int i= 1;i<arr.size();i++) {
+			int hei = 0;
+			for(int j=i-1;j>=0;j--) {
+				if(arr.get(i).weight < arr.get(j).weight && dy[j] > hei ) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + arr.get(i).heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
+	
+	public static void main(String[] args){
+		가장높은탑쌓기 T = new 가장높은탑쌓기();
+		Scanner kb = new Scanner(System.in);
+		int n=kb.nextInt();
+		ArrayList<Brick> arr=new ArrayList<>();
+		dy=new int[n];
+		for(int i=0; i<n; i++){
+			int a=kb.nextInt();
+			int b=kb.nextInt();
+			int c=kb.nextInt();
+			arr.add(new Brick(a, b, c));
+		}
+		kb.close();
+		System.out.print(T.sola(arr));
+	}
+>>>>>>> branch 'master' of https://github.com/rkwhr0010/best_practise.git
 }
