@@ -1,6 +1,6 @@
-package designpattern.etc.compositepattern;
+package designpattern.etc.combining;
 
-public class Exam001Basic {
+public class Exam002Adapter {
 	//인터페이스
 	static interface Quackable{
 		void quack();
@@ -26,6 +26,22 @@ public class Exam001Basic {
 		}
 	}
 	
+	//어댑터 패턴
+	static class Goose{
+		void honk() {
+			System.out.println("끾끾");
+		}
+	}
+	static class GooseAdapter implements Quackable{
+		Goose goose;
+		public GooseAdapter(Goose goose) {
+			this.goose = goose;
+		}
+		public void quack() {
+			goose.honk();
+		}
+	}
+	
 	static class DuckSimulator{
 		void simulate() {
 			//인터페이스로 변수 다루기
@@ -33,6 +49,7 @@ public class Exam001Basic {
 			Quackable redheadDuck = new RedheadDuck();
 			Quackable duckCall = new DuckCall();
 			Quackable rubberDuck = new RubberDuck();
+			Quackable gooseAdapter = new GooseAdapter(new Goose());
 			
 			System.out.println("\n오리 시뮬레이션 게임");
 			
@@ -40,6 +57,7 @@ public class Exam001Basic {
 			simulate(redheadDuck);
 			simulate(duckCall);
 			simulate(rubberDuck);
+			simulate(gooseAdapter);
 		}
 		
 		//인터페이스로 메서드 인자로 다루기

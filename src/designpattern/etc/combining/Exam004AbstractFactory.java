@@ -1,6 +1,6 @@
-package designpattern.etc.compositepattern;
+package designpattern.etc.combining;
 
-public class Exam003Decorator {
+public class Exam004AbstractFactory {
 	//인터페이스
 	static interface Quackable{
 		void quack();
@@ -63,13 +63,52 @@ public class Exam003Decorator {
 		
 	}
 	
+	//추상 팩토리
+	abstract static class AbstractDuckFactory{
+		public abstract Quackable createMallardDuck();
+		public abstract Quackable createRedheadDuck();
+		public abstract Quackable createDuckCall();
+		public abstract Quackable createRubberDuck();
+	}
+	
+	//팩토리 군
+	static class DuckFactory extends AbstractDuckFactory{
+		public Quackable createMallardDuck() {
+			return new MallardDuck();
+		}
+		public Quackable createRedheadDuck() {
+			return new RedheadDuck();
+		}
+		public Quackable createDuckCall() {
+			return new DuckCall();
+		}
+		public Quackable createRubberDuck() {
+			return new RubberDuck();
+		}
+	}
+	//와...추상 팩토리 패턴을 이런 식으로 사용하네
+	static class CountingDuckFactory extends AbstractDuckFactory{
+		public Quackable createMallardDuck() {
+			return new QuackCounter(new MallardDuck());
+		}
+		public Quackable createRedheadDuck() {
+			return new QuackCounter(new RedheadDuck());
+		}
+		public Quackable createDuckCall() {
+			return new QuackCounter(new DuckCall());
+		}
+		public Quackable createRubberDuck() {
+			return new QuackCounter(new RubberDuck());
+		}
+	}
+	
 	static class DuckSimulator{
-		void simulate() {
+		void simulate(AbstractDuckFactory duckFactory) {
 			//인터페이스로 변수 다루기
-			Quackable mallardDuck = new QuackCounter(new MallardDuck());
-			Quackable redheadDuck = new QuackCounter(new RedheadDuck());
-			Quackable duckCall = new QuackCounter(new DuckCall());
-			Quackable rubberDuck = new QuackCounter(new RubberDuck());
+			Quackable mallardDuck = duckFactory.createMallardDuck();
+			Quackable redheadDuck = duckFactory.createRedheadDuck();
+			Quackable duckCall = duckFactory.createDuckCall();
+			Quackable rubberDuck = duckFactory.createRubberDuck();
 			Quackable gooseAdapter = new GooseAdapter(new Goose());
 			
 			System.out.println("오리 시뮬레이션 게임");
@@ -92,7 +131,8 @@ public class Exam003Decorator {
 	
 	public static void main(String[] args) {
 		DuckSimulator duckSimulator = new DuckSimulator();
-		duckSimulator.simulate();
+		AbstractDuckFactory duckFactory = new CountingDuckFactory();
+		duckSimulator.simulate(duckFactory);
 	}
 	
 	
