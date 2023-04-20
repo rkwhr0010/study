@@ -14,6 +14,8 @@ public class 최대부분증가수열연습 {
 		int[] arr = {5, 3, 7, 8, 6, 2, 9, 4};
 		dy = new int[arr.length];
 		
+		solution(arr);
+		
 	}
 	static int solution(int[] arr) {
 		int answer = 0;

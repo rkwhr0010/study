@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.stream.Stream;
-
+/**
+가중치 방향그래프에서 1번 정점에서 모든 정점으로의 최소 거리비용을 출력하는 프로
+그램을 작성하세요. 
+ */
 public class 다익스트라연습 {
 	private static class Edge implements Comparable<Edge>{
 	    private final int vex;
@@ -50,87 +53,28 @@ public class 다익스트라연습 {
 		}
 	}
 	
-	static void sol11(int v) {
-		PriorityQueue<Edge> Q = new PriorityQueue<>();
-		dis[v] = 0;
-		Q.add(new Edge(v, 0));
-		
-		while(!Q.isEmpty()) {
-			Edge cur = Q.poll();
-			
-			if(dis[cur.vex] <cur.cost ) continue;
-			
-			for(Edge n : graph.get(cur.vex)) {
-				if(dis[n.vex] > cur.cost+n.cost) {
-					dis[n.vex] = cur.cost+n.cost;
-					Q.add(new Edge(n.vex , cur.cost+n.cost));
-				}
-				
-			}
-			
-		}
-		
-	}
-	
-	
-	static void sol4(int v) {
+	static void sol1(int v) {
+		//최소비용을 위한 큐
 		PriorityQueue<Edge> q = new PriorityQueue<>();
+		//현재 위치 최소비용
 		dis[v] = 0;
-		q.add(new Edge(v, 0));
+		//현재 상태를 가진 정점객체
+		q.offer(new Edge(v, 0));
 		
 		while(!q.isEmpty()) {
-			Edge cur = q.poll();
-			if(cur.cost > dis[cur.vex]) continue;
-			for(Edge next : graph.get(cur.vex)) {
-				if(dis[next.vex] > cur.cost + next.cost) {
-					dis[next.vex] = cur.cost + next.cost;
-					q.add(new Edge(next.vex, cur.cost + next.cost));
+			//우선순위큐 특성상 최소 비용 정점순으로 나옴
+			Edge min = q.poll();
+			//현재 정점위치에서 다음 경로로 가능 비용 계산
+			for(Edge next : graph.get(min.vex)) {
+				//혹시, 다음 경로에 저장된 비용이, 지금까지 비용+다음 비용 보다 크냐
+				if(dis[next.vex] > min.cost+next.cost) {
+					//더 적으니 비용 갱신
+					dis[next.vex] = min.cost+next.cost ;
+					q.offer(new Edge(next.vex, min.cost+next.cost));
 				}
 			}
 		}
 	}
-
-	static void sol1(int v) {
-		PriorityQueue<Edge> Q = new PriorityQueue<>();
-		Q.add(new Edge(v, 0));
-		dis[v] = 0;
-		
-		while(!Q.isEmpty()) {
-			//가장 작은 값
-			Edge c = Q.poll();
-			
-			//지금까지 누산해온 값이 큐 코스트에 저장돼 있다.
-			//그 값이 dis에 저장된 값보다 크면 계산할 가치가 없다.
-			if(c.cost > dis[c.vex]) continue;
-			
-			//현재 정점에서 다음 경로들
-			for(Edge n : graph.get(c.vex)) {
-				//여기 정점은 누산된 cost가 아닌 날 데이터
-				if(dis[n.vex]> c.cost+ n.cost) {
-					dis[n.vex] = c.cost+ n.cost;
-					Q.add(new Edge(n.vex, c.cost+ n.cost));
-				}
-			}
-		}
-	}
-	
-	static void sola(int v) {
-		PriorityQueue<Edge> Q = new PriorityQueue<>();
-		dis[v] = 0;
-		Q.offer(new Edge(v, 0));
-		
-		while(!Q.isEmpty()) {
-			Edge c = Q.poll();
-			for(Edge n : graph.get(c.vex)) {
-				if(dis[n.vex] > c.cost+n.cost ) {
-					dis[n.vex] = c.cost+n.cost ;
-					Q.add(new Edge(n.vex, c.cost+n.cost));
-				}
-			}
-		}
-	}
-	
-	
 	
 	
 	public static void main(String[] args){
@@ -163,7 +107,7 @@ public class 다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		sol11(1);
+		sol1(1);
 		System.out.println("== 정점 별 최소 비용 ==");
 		for(int i=2; i<graph.size(); i++){
 			if(dis[i]!=Integer.MAX_VALUE) System.out.println(i+" : "+dis[i]);

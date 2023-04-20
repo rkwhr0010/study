@@ -66,6 +66,28 @@ public class 가장높은탑쌓기연습{
 					.max()
 					.getAsInt();
 	}
+	
+	static int sol1(ArrayList<Brick> arr) {
+		//너비순 정렬
+		Collections.sort(arr);
+		//현재 벽돌이 가장 넓다.
+		dy[0] = arr.get(0).heigth;
+		//현재 벽돌 제외 반복
+		for(int i=1;i<arr.size();i++) {
+			//다음 높이 저장소
+			int hei = 0;
+			//현재 기준 이전만 탐색
+			for(int j=i-1;j>=0;j--) {
+				//현재 무게, 이전 무게가 더 크면, 쌓는데, 이미 저장된 높이가 더클때
+				if(arr.get(i).weight < arr.get(j).weight && dy[j] >hei ) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + arr.get(i).heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
+	
 }
 
 /*
