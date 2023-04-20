@@ -48,12 +48,15 @@ public class 최소스패닝트리크루스칼연습 {
 			.count();
 		
 		unf=new int[n+1];
+		
+		System.out.println(sol1(arr, n));
+	}
+
+	private static void sol(ArrayList<Edge> arr, int n) {
 		int answer=0;
 		for(int i=1; i<=n; i++) unf[i]=i;
-		
 		//최소 비용이 나오는 이유, 정렬
 		Collections.sort(arr);
-		
 		for(Edge ob : arr){
 			//같으면 이미 그룹, 다르면 그룹을 맺어줌
 			if(find(ob.v1)!=find(ob.v2)){
@@ -61,9 +64,24 @@ public class 최소스패닝트리크루스칼연습 {
 				uni(ob.v1, ob.v2);
 			}
 		}
-		
 		System.out.println(answer);
 	}
+	
+	static int sol1(ArrayList<Edge>arr, int n) {
+		int ans = 0;
+		for(int i=1; i<=n; i++) unf[i]=i;
+		Collections.sort(arr);
+		for(Edge e : arr) {
+			if(find(e.v1) != find(e.v2) ) {
+				uni(e.v1, e.v2);
+				ans += e.cost;
+			}
+		}
+		return ans;
+	}
+	
+	
+	
 	static int find(int v) {
 		if(v==unf[v])return unf[v];
 		else return unf[v] = find(unf[v]);

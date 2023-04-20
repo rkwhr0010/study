@@ -57,10 +57,14 @@ public class 최소스패닝트리프림연습 {
 			//이문제는 양방향으로 한 줄만 더 추가
 			graph.get(arr[1]).add(new Edge(arr[0], arr[2]));
 		}
-		sol(1);
+		so(1);
 		System.out.println(answer);
 	}
-	
+/*
+원더랜드에 문제가 생겼다. 원더랜드의 각 도로를 유지보수하는 재정이 바닥난 것이다.
+원더랜드는 모든 도시를 서로 연결하면서 최소의 유지비용이 들도록 도로를 선택하고 나머지
+도로는 폐쇄하려고 한다.
+ */
 	private static void extracted(int v) {
 		
 		PriorityQueue<Edge> pQ = new PriorityQueue<>();
@@ -72,7 +76,33 @@ public class 최소스패닝트리프림연습 {
 				ch[ev]=1;
 				answer+=tmp.cost;
 				for(Edge ob : graph.get(ev)){
-					if(ch[ob.vex]==0) pQ.offer(new Edge(ob.vex, ob.cost));
+					if(ch[ob.vex]==0) 
+						pQ.offer(new Edge(ob.vex, ob.cost));
+				}
+			}
+		}
+	}
+	
+	static void so(int v) {
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		q.offer(new Edge(v, 0));
+//		ch[v] = 1;
+		
+		while(!q.isEmpty()) {
+			Edge now = q.poll();
+			//현재 위치가 처음이니?
+			if(ch[now.vex] == 0) {
+				//현재위치 방문 체크
+				ch[now.vex] = 1;
+				answer += now.cost;
+				//처음 방문이니 비용 누산
+				//현 위치에 연결된 다른 경로
+				for(Edge next : graph.get(now.vex)) {
+					//다음 경로를 방문한적 없으면, 굳이 다시 while쪽 로직을 태울필요 없다.
+					//즉, ch 이중 체크가 아니다.
+					if(ch[next.vex] == 0) {
+						q.offer(new Edge(next.vex, next.cost));
+					}
 				}
 			}
 		}
@@ -87,7 +117,9 @@ public class 최소스패닝트리프림연습 {
 				ch[c.vex] = 1;
 				answer+= c.cost;
 				for(Edge n : graph.get(c.vex)) {
-					if(ch[n.vex]==0) Q.add(new Edge(n.vex, n.cost));
+					if(ch[n.vex]==0) {
+						Q.add(new Edge(n.vex, n.cost));
+					}
 				}
 			}
 		}
