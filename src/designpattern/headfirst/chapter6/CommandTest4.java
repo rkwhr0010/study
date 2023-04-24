@@ -203,11 +203,8 @@ public class CommandTest4 {
 	}
 
 	static class NoCommand implements Command {
-		public void execute() {
-		}
-
-		public void undo() {
-		}
+		public void execute() {	}
+		public void undo() {}
 	}
 
 	static class LightOnCommand implements Command {

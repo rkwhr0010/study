@@ -1,7 +1,7 @@
 package algorithm.dynamicprogramming;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-<<<<<<< HEAD
 
 /**
  * 벽돌은 가장 넓은 것이 아래에 위치
@@ -10,9 +10,6 @@ import java.util.Collections;
 public class 가장높은탑쌓기{
 
 
-=======
-class 가장높은탑쌓기{
->>>>>>> branch 'master' of https://github.com/rkwhr0010/best_practise.git
 	static class Brick implements Comparable<Brick>{
 		public final int width, heigth, weight;
 		public Brick(int width, int heigth, int weight) {
@@ -75,7 +72,6 @@ class 가장높은탑쌓기{
 		}
 		return answer;
 	}
-<<<<<<< HEAD
 	static int sol2(ArrayList<Brick> arr) {
 		int ans = 0;
 		Collections.sort(arr);
@@ -150,6 +146,4 @@ class 가장높은탑쌓기{
 		return Arrays.stream(dy).max().getAsInt();
 	}
 	
-=======
->>>>>>> branch 'master' of https://github.com/rkwhr0010/best_practise.git
 }

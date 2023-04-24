@@ -23,7 +23,6 @@ public class 가장높은탑쌓기연습{
 			return String.valueOf(width);
 		}
 	}
-	
 	static int[] dy;
 	
 	public static void main(String[] args){
@@ -46,8 +45,52 @@ public class 가장높은탑쌓기연습{
 			int c= input[i][2] ;
 			arr.add(new Brick(a, b, c));
 		}
-		System.out.print(sol(arr));
+		System.out.print(sol1(arr));
 	}
+	
+	static int sol2(ArrayList<Brick> arr) {
+		Collections.sort(arr);
+		//dy 는 따로 초기화하지 않았으므로, 기본형인 0 으로 될 것
+		dy[0] = arr.get(0).heigth;
+		//메인 순회
+		for(int i=1/*1부터*/;i<arr.size();i++) {
+			Brick now = arr.get(i);
+			int hei = 0;
+			//메인 순회 이전부터 탐색해 나아간다.
+			for(int j=i-1;j>=0;j--) {
+				Brick prev = arr.get(j);
+				//현재 무게가, 이전 블록 무게보다 작아야 쌓을 수 있다.
+				if(now.weight < prev.weight 
+						//첫 순회 hei는 0이므로 dy[j]가 크다면 이미 저장된 값이 존재하는지 체크하는 용도다.
+						//이후 순회는 게중 가장큰 것이 존재를 찾는다.
+						&& dy[j]>hei) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + now.heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
+	
+	static int sol1(ArrayList<Brick> arr) {
+		Collections.sort(arr);
+		dy[0] = arr.get(0).heigth;
+		for(int i=1/*1부터*/;i<arr.size();i++) {
+			Brick now = arr.get(i);
+			//i 이전 전부 탐색
+			int hei = 0;
+			for(int j=i-1;j>=0;j--) {
+				Brick prev = arr.get(j);
+				if(now.weight<prev.weight && dy[j]>hei) {
+					hei = dy[j];
+				}
+			}
+			dy[i] = hei + now.heigth;
+		}
+		return Arrays.stream(dy).max().getAsInt();
+	}
+	
+	
 	
 	static int sol(ArrayList<Brick> arr) {
 		Collections.sort(arr);
@@ -67,39 +110,8 @@ public class 가장높은탑쌓기연습{
 					.getAsInt();
 	}
 	
-	static int sol1(ArrayList<Brick> arr) {
-		//너비순 정렬
-		Collections.sort(arr);
-		//현재 벽돌이 가장 넓다.
-		dy[0] = arr.get(0).heigth;
-		//현재 벽돌 제외 반복
-		for(int i=1;i<arr.size();i++) {
-			//다음 높이 저장소
-			int hei = 0;
-			//현재 기준 이전만 탐색
-			for(int j=i-1;j>=0;j--) {
-				//현재 무게, 이전 무게가 더 크면, 쌓는데, 이미 저장된 높이가 더클때
-				if(arr.get(i).weight < arr.get(j).weight && dy[j] >hei ) {
-					hei = dy[j];
-				}
-			}
-			dy[i] = hei + arr.get(i).heigth;
-		}
-		return Arrays.stream(dy).max().getAsInt();
-	}
 	
 }
 
-/*
- * 
-5
-25 3 4
-4 4 6
-9 2 3
-16 2 5
-1 5 2
-
-10
- * 
- */
+/*  10 */
 
