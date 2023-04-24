@@ -53,6 +53,30 @@ public class 다익스트라연습 {
 		}
 	}
 	
+	static void sol2(int v) {
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		//현재위치로 가는 비용은 당연히 0
+		dis[v] = 0;
+		//현재 상태값을 보존한, 정점 저장
+		q.offer(new Edge(v, 0));
+		while(!q.isEmpty()) {
+			//우선순위 큐 중, 가장 작은 비용 상태정보(누산된 비용)
+			Edge state = q.poll();
+			//현재까지 누산된 비용이, 현재 정점에 저장된 비용보다 크면, 탐색할 필요 없다.
+			if(state.cost>dis[state.vex]) continue;
+			//현재 위치에서 다음 정점 경로 순회
+			for(Edge edge : graph.get(state.vex)) {
+				//현재 정점에 저장된 비용이, 지금까지 누산된 비용 + 다음 경로 비용보다 크면 바꾼다.
+				if(dis[edge.vex]>state.cost + edge.cost) {
+					dis[edge.vex] = state.cost + edge.cost;
+					//현재까지 경로에 누산된 비용 상태를 저장
+					q.offer(new Edge(edge.vex, dis[edge.vex]));
+				}
+			}
+		}
+	}
+	
+	
 	static void sol1(int v) {
 		//최소비용을 위한 큐
 		PriorityQueue<Edge> q = new PriorityQueue<>();
@@ -107,7 +131,9 @@ public class 다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		sol1(1);
+		sol2(1);
+		
+		
 		System.out.println("== 정점 별 최소 비용 ==");
 		for(int i=2; i<graph.size(); i++){
 			if(dis[i]!=Integer.MAX_VALUE) System.out.println(i+" : "+dis[i]);
