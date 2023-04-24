@@ -29,11 +29,10 @@ public class 순열연습 {
 	}
 	
 	static void DFS2(int lv) {
-		if(lv == size) {
-			System.out.println(Arrays.toString(pm));
-		} else {
-			for(int i=0;i<arr.length;i++) {
-				if(chk[lv] == 0) {
+		if(lv == size) System.out.println(Arrays.toString(pm));
+		else {
+			for(int i=0;i< arr.length;i++) {
+				if(chk[lv]==0) {
 					chk[lv] = 1;
 					pm[lv] = arr[i];
 					DFS2(lv+1);

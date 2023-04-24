@@ -1,5 +1,7 @@
 package algorithm.dfs.pratise;
 
+import java.util.Arrays;
+
 public class 부분집합연습 {
 	static int len;
 	static int[] chk;
@@ -26,12 +28,13 @@ public class 부분집합연습 {
 	}
 	
 	static void DFS3(int lv) {
-		if(lv > len) chkPrint();
+		if(lv == len+1) System.out.println(Arrays.toString(chk));
 		else {
-			chk[lv] = 1;
+			chk[lv] =1;
 			DFS3(lv+1);
 			chk[lv] = 0;
 			DFS3(lv+1);
+				
 		}
 	}
 	
