@@ -5,7 +5,7 @@ import static java.lang.Math.min;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class 피자배달거리연습 {
+public class 피자배달거리연습_조합구하기응용 {
 	static class Point{
 		public int x, y;
 		Point(int x, int y){
@@ -23,14 +23,7 @@ public class 피자배달거리연습 {
 	
 	void DFS4(int lv, int s) {
 		if(lv == m) {
-			int citySum = 0;
-			for(Point h : hs) {
-				int houseSum = Integer.MAX_VALUE;
-				for(int p : combi) {
-					houseSum = min(houseSum, abs(h.x-pz.get(p).x)+abs(h.y-pz.get(p).y));
-				}
-				citySum += houseSum;
-			}
+			int citySum = cal();
 			answer = min(answer,citySum);
 		}else {
 			for(int i=s;i<len;i++) {
@@ -40,12 +33,42 @@ public class 피자배달거리연습 {
 		}
 	}
 	
+	void DFS(int lv, int s) {
+		//피자 선택 경우의 수가 다 찼다.
+		if( lv == m ) {
+			int city = cal();
+			answer = min(answer, city);
+		} else {
+			for(int i=s;i<len;i++) {
+				combi[lv] = i;
+				DFS(lv+1,i+1);
+			}
+		}
+	}
+
+	private int cal() {
+		//도시의 피자배달 거리
+		int city = 0 ;
+		//선택된 피자 가게 수와 집집 마다 비용 계산
+		for(Point h : hs) {
+			//집의 피자배달 거리
+			int house = Integer.MAX_VALUE;
+			//선택된 피자가게들, 중 가장 작은 집배달 거리를 구한다. 
+			for(int pizza : combi) {
+				//가장 적은 피자 <=> 집 간 거리
+				house = min(house,abs(h.x-pz.get(pizza).x)+abs(h.y-pz.get(pizza).y));
+			}
+			//여기 도달 시 가장 작은 집 배달거리가 구해진다.
+			city += house;
+		}
+		return city;
+	}
 	
 	public static void main(String[] args){
-		피자배달거리연습 T = new 피자배달거리연습();
+		피자배달거리연습_조합구하기응용 T = new 피자배달거리연습_조합구하기응용();
 		Scanner kb = new Scanner(System.in);
-		n=kb.nextInt();
-		m=kb.nextInt();
+		n= 4; //도시 크기(정사각형)
+		m= 4; //살아남을 피자 가게 수
 		pz=new ArrayList<>();
 		hs=new ArrayList<>();
 		for(int i=0; i<n; i++){
@@ -58,12 +81,11 @@ public class 피자배달거리연습 {
 		kb.close();
 		len=pz.size();
 		combi=new int[m];
-		T.DFS4(0, 0);
+		T.DFS(0, 0);
 		System.out.println(answer);
 	}
 }
 /*
-4 4
 0 1 2 0
 1 0 2 1
 0 2 1 2

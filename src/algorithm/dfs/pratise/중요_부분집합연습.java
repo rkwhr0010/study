@@ -1,15 +1,19 @@
 package algorithm.dfs.pratise;
 
-import java.util.Arrays;
-
-public class 부분집합연습 {
+/*
+ * 주어진 수에서 최대 조합수
+ */
+public class 중요_부분집합연습 {
 	static int len;
 	static int[] chk;
+	static int cnt = 0;
 	
 	public static void main(String[] args) {
-		len = 5;
+		len = 3;
 		chk = new int[len+1];//index 0 자리 사용하기 싫음
 		DFS3(1);
+		
+		System.out.println("\n" +cnt);
 	}
 	private static void DFS(int lv) {
 		if(lv == len+1) {
@@ -28,7 +32,11 @@ public class 부분집합연습 {
 	}
 	
 	static void DFS3(int lv) {
-		if(lv == len+1) System.out.println(Arrays.toString(chk));
+		if(lv == len+1) {
+			++cnt;
+			chkPrint();
+		}
+//		if(lv == len+1) System.out.println(Arrays.toString(chk));
 		else {
 			chk[lv] =1;
 			DFS3(lv+1);
