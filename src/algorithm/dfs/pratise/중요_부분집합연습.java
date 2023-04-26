@@ -1,7 +1,9 @@
 package algorithm.dfs.pratise;
 
+import java.util.Arrays;
+
 /*
- * 주어진 수에서 최대 조합수
+ * 주어진 요소 수에서 최대 조합수
  */
 public class 중요_부분집합연습 {
 	static int len;
@@ -11,7 +13,7 @@ public class 중요_부분집합연습 {
 	public static void main(String[] args) {
 		len = 3;
 		chk = new int[len+1];//index 0 자리 사용하기 싫음
-		DFS3(1);
+		DFS2(1);
 		
 		System.out.println("\n" +cnt);
 	}
@@ -31,22 +33,19 @@ public class 중요_부분집합연습 {
 		}
 	}
 	
-	static void DFS3(int lv) {
-		if(lv == len+1) {
-			++cnt;
+	static void DFS2(int lv) {
+		if(lv == len +1) {
 			chkPrint();
-		}
-//		if(lv == len+1) System.out.println(Arrays.toString(chk));
-		else {
-			chk[lv] =1;
-			DFS3(lv+1);
+		}else {
+			chk[lv] = 1;
+			DFS2(lv+1);
 			chk[lv] = 0;
-			DFS3(lv+1);
-				
+			DFS2(lv+1);
 		}
 	}
 	
 	private static void chkPrint() {
+		System.out.print(Arrays.toString(chk) + "   ");
 		for (int i = 1; i <= len; i++) {
 			if(chk[i]==1) System.out.print(i+" ");
 		}

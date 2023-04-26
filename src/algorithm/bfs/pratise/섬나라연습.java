@@ -44,17 +44,19 @@ public class 섬나라연습 {
 	
 	void sol(int[][] board){
 		Queue<Point> q = new LinkedList<>();
+		q.offer(new Point(0, 0));
+		board[0][0] = 0;
 		
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < n; j++) {
 				if(board[i][j]==1) {
 //					BFS(i,j,board,q);
-					BFS2(i,j,board,q);
 				}
 			}
 		}
 	}
-	void BFS2(int x, int y, int[][]board, Queue<Point> q) {
+	void BFS2(int x, int y, int[][]board) {
+		Queue<Point> q = new LinkedList<>();
 		q.offer(new Point(x, y));
 		board[x][y] = 0;
 		answer++;
@@ -101,7 +103,8 @@ public class 섬나라연습 {
 				arr[i][j]=kb.nextInt();
 			}
 		}
-		T.sol(arr);
+//		T.sol(arr);
+		T.BFS2(0,0,arr);
 		System.out.println(answer);
 	}
 }

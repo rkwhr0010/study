@@ -40,7 +40,7 @@ public class 중요_중복없는조합구하기연습 {
 		}
 	}
 	
-	//조합수
+	//조합수 메모이제이션
 	static int count(int n, int r) {
 		if(n==r|| r==0) return 1;
 		else if(dy[n][r]>0) return dy[n][r];
