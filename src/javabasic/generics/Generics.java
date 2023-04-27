@@ -44,7 +44,7 @@ public class Generics {
 	static void reverse2(List<?> list) {
 		List<?> temp = new ArrayList<>(list);
 		for (int i = 0, len = list.size(); i < len; i++) {
-//			temp.set(i, list.get(len-1-i));
+			temp.set(i, list.get(len-1-i));
 		}
 	}
 	//숨길 시 와일드 카드를 사용하는데 캡쳐문제가 발생한다.
