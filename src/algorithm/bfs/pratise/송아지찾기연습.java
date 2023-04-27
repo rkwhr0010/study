@@ -8,7 +8,7 @@ public class 송아지찾기연습 {
 	static int[] dis = {1,-1,5};
 	//최대 거리
 	static int max;
-	//메모이제이션
+	//방명록
 	static int[] chk;
 	//시작 위치
 	static int start;
