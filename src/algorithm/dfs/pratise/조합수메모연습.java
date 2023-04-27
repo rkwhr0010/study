@@ -6,7 +6,7 @@ public class 조합수메모연습 {
 	static int[][] dy = new int[n+1][r+1];
 	
 	public static void main(String[] args) {
-		System.out.println(DFS3(n, r));
+		System.out.println(DFS5(n, r));
 	}
 	static int DFS2(int n, int r) {
 		if(n==r|| r==0) return 1;
@@ -23,7 +23,31 @@ public class 조합수메모연습 {
 	private static int DFS(int n, int r) {
 		if(n == r || r == 0) return 1;
 		else if (dy[n][r]>0) return dy[n][r];
-		else return dy[n][r] =DFS(n-1,r-1)+DFS(n-1,r);
+		else return dy[n][r] = DFS(n-1,r-1)+DFS(n-1,r);
+	}
+	
+	static int DFS4(int n,int r) {
+		if(n==r || r == 0) return 1;
+		else if (dy[n][r]>0) return dy[n][r];
+		else return dy[n][r] = DFS4(n-1,r-1)+ DFS(n-1,r);
+		
+	}
+	static int DFS5 (int n, int r) {
+		if(n==r || r == 0) return 1;
+		else if(dy[n][r]>0) return dy[n][r];
+		else return dy[n][r] = DFS5(n-1,r-1) + DFS5(n-1,r);
+	}
+	
+	static int DFS6(int n, int r) {
+		if(n==r || r==0) return 1;
+		else if(dy[n][r]>0) return dy[n][r];
+		else return dy[n][r] = DFS6(n-1,r-1) + DFS6(n-1,r);
+	}
+	
+	static int DFSS(int n , int r) {
+		if(n == r || r == 0 ) return 1;
+		else if (dy[n][r]>0) return dy[n][r];
+		else return dy[n][r] = DFSS(n-1,r-1) + DFSS(n-1, r);
 	}
 	
 	
