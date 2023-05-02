@@ -1,6 +1,5 @@
 package algorithm.bfs.pratise;
 
-import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -38,45 +37,6 @@ public class 중요_미로최단연습 {
 		}
 	}
 	
-	
-	static void BFS(int x, int y) {
-		Queue<Route> Q = new LinkedList<>();
-		Q.offer(new Route(x, y));
-		board[x][y] = 1;
-		
-		while(!Q.isEmpty()) {
-			Route p = Q.poll();
-			for (int i = 0; i < dx.length; i++) {
-				int nx = p.x+dx[i];
-				int ny = p.y+dy[i];
-				if(fromClosedTo(nx, ny) && board[nx][ny]==0) {
-					board[nx][ny]=1;
-					Q.offer(new Route(nx, ny));
-					dis[nx][ny]= dis[p.x][p.y]+1;
-				}
-			}
-		}
-	}
-	static void BFS4(int x, int y) {
-		LinkedList<Route> q = new LinkedList<>();
-		q.offer(new Route(x, y));
-		board[x][y]=1;
-		
-		while(!q.isEmpty()) {
-			Route r = q.poll();
-			for(int i=0;i<dy.length;i++) {
-				int nx = r.x+dx[i];
-				int ny = r.y+dy[i];
-				if(fromClosedTo(nx, ny)&& board[nx][ny]==0) {
-					board[nx][ny] = 1;
-					dis[nx][ny] = dis[r.x][r.y]+1;
-					q.offer(new Route(nx, ny));
-				}
-				
-			}
-		}
-	}
-	
 	static void B(int x, int y) {
 		LinkedList<Route> list = new LinkedList<>();
 		//현재 시작점
@@ -106,15 +66,15 @@ public class 중요_미로최단연습 {
 	
 	static void BB(int x, int y) {
 		//선입 선출을 위함
-		ArrayDeque<Route> deque = new ArrayDeque<>();
+		Queue<Route> q = new LinkedList<>();
 		//방명록 작성
 		board[x][y] = 1;
-		deque.offer(new Route(x, y));
+		q.offer(new Route(x, y));
 		
 		//비어있냐
-		while(!deque.isEmpty()) {
+		while(!q.isEmpty()) {
 			//현재 위치
-			Route now = deque.pollFirst();
+			Route now = q.poll();
 			//다음으로 갈 위치값 
 			for(int i=0; i<dx.length;i++) {
 				int nx = now.x + dx[i];
@@ -124,22 +84,65 @@ public class 중요_미로최단연습 {
 					//방명록 작성
 					board[nx][ny]  = 1;
 					dis[nx][ny]  = dis[now.x][now.y] +1;
-					deque.offer(new Route(nx, ny));
+					q.offer(new Route(nx, ny));
+				}
+			}
+		}
+	}
+	static void B2(int x,int y) {
+		Queue<Route> q = new LinkedList<>();
+		q.offer(new Route(x, y));
+		board[x][y] = 1;
+		while(!q.isEmpty()) {
+			Route now = q.poll();
+			for(int i=0;i<dx.length;i++) {
+				int nx = dx[i]+now.x;
+				int ny = dy[i]+now.y;
+				if(fromClosedTo(nx, ny) && board[nx][ny] == 0) {
+					board[nx][ny] = 1;
+					dis[nx][ny] = dis[now.x][now.y] + 1;
+					q.offer(new Route(nx, ny));
 				}
 			}
 		}
 	}
 	
+	//간선 정보
+	static void B3(final int x, final int y) {
+		//간선 정보를 저장할 큐
+		Queue<Route> q = new LinkedList<>();
+		//현재까지 간성 정보 저장
+		q.offer(new Route(x, y));
+		//방명록 체크
+		board[x][y] = 1;
+		//현재 상태정보 탐색
+		while(!q.isEmpty()) {
+			//현까지 상태값 
+			Route now = q.poll();
+			for(int i=0;i<dx.length;i++) {
+				//다음 경로 좌표얻기
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+				//유효성 검사 && 첫 방문인지
+				if(fromClosedTo(nx, ny) && board[nx][ny] == 0) {
+					//방문 체크
+					board[nx][ny] = 1;
+					//값 계산 핵심@@ 다음 경로까지 현재경로 값 +1
+					dis[nx][ny] = dis[now.x][now.y] +1;
+					//상태 갱신
+					q.offer(new Route(nx, ny));
+				}
+			}
+		}
+	}
 	
 	private static boolean fromClosedTo(int nx, int ny) {
 		return nx>=1 && nx <=7 && ny>=1 && ny<=7;
 	}
 	
-	
-	
 	public static void main(String[] args) {
 //		BFS2(1, 1);
-		BB(1, 1);
+		B3(1, 1);
 		if(dis[7][7]==0) System.out.println(-1);
 		else System.out.println(dis[7][7]);
 	}

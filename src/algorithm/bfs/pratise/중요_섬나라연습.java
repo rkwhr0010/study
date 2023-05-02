@@ -1,6 +1,8 @@
 package algorithm.bfs.pratise;
 
 import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.Queue;
 /*
 N*N의 섬나라 아일랜드의 지도가 격자판의 정보로 주어집니다. 각 섬은 1로 표시되어 상하좌
 우와 대각선으로 연결되어 있으며, 0은 바다입니다. 섬나라 아일랜드에 몇 개의 섬이 있는지
@@ -27,7 +29,7 @@ public class 중요_섬나라연습 {
 	}
 	static int answer=0, n;
 	static int[][] input;
-	static ArrayDeque<Point> q = new ArrayDeque<>();
+	static Queue<Point> q = new LinkedList<>();
 	
 	static {
 		 int[][] input2 ={
@@ -66,13 +68,13 @@ public class 중요_섬나라연습 {
 		q.offer(new Point(x, y));
 		
 		while(!q.isEmpty()) {
-			Point now = q.pollFirst();
+			Point now = q.poll();
 			//주변 면적 탐색
 			for(Direction next : Direction.values()) {
 				int nx = now.x+next.x;
 				int ny = now.y+next.y;
 				//다음 섬 면적에 땅이 있냐?
-				if(valid(board, nx, ny)) {
+				if(valid(nx, ny)&& board[nx][ny]==1) {
 					//있으면 지운다.
 					board[nx][ny] = 0;
 					//지운 위치 값 저장
@@ -82,50 +84,84 @@ public class 중요_섬나라연습 {
 		}
 	}
 	
-	static void find(int[][] board) {
-		//섬 탐색
+	//섬찾기
+	static void f1(int[][] board) {
 		for(int i=0;i<board.length;i++) {
 			for(int j=0;j<board[i].length;j++) {
-				//섬발견
-				if(board[i][j]==1) {
-					delete(i,j,board);
+				//섬찾기 알고리즘
+				if(board[i][j] == 1) {
+					//찾은 섬 지우기
+					d1(i,j,board);
 				}
-				
 			}
 		}
 	}
-
-	private static void delete(int i, int j, int[][] board) {
-		board[i][j] = 0;//발견된 섬 지우기
-		q.offer(new Point(i, j));
-		++answer; //발견 증가가
-		
-		//발견된 섬 위치에서 주변 땅 탐색해 지우기
+	
+	private static void d1(int x, int y, int[][] board) {
+		answer++;//섬 하나 지웠다.
+		q.offer(new Point(x, y)); //현재 섬 상태 저장
+		board[x][y] = 0; //현재 위치는 지운다.
 		while(!q.isEmpty()) {
-			Point now = q.poll();
-			//주변 탐색
+			//현재 위치
+			Point cur = q.poll();
+			//다음 위치 탐색
 			for(Direction next : Direction.values()) {
-				int nx = now.x + next.x;
-				int ny = now.y + next.y;
-				//땅이냐?
-				if(valid(board, nx, ny)) {
-					//지우기
+				int nx = cur.x + next.x;
+				int ny = cur.y + next.y;
+				//다음 위치에 땅이있니?
+				if(valid(nx, ny)&&board[nx][ny]==1) {
+					//땅 지우기
 					board[nx][ny] = 0;
+					//현재 상태값 저장
 					q.offer(new Point(nx, ny));
 				}
 				
 			}
 			
 		}
-		
 	}
+	//점 지도 받음
+	static void f2(final int[][] board) {
+		for(int i=0;i<board.length;i++) {
+			for(int j=0;j<board[i].length;j++) {
+				//섬찾기 알고리즘
+				if(board[i][j] == 1) {
+					//찾은 섬 지우기
+					d2(i,j,board);
+				}
+			}
+		}
+	}
+	
+	static void d2(int x,int y, int[][] board) {
+		q.offer(new Point(x, y));//현재 상태 저장
+		board[x][y] = 0; // 현위치는 지운다.
+		answer++; //섬발견
+		while(!q.isEmpty()) {
+			//현 위치
+			Point now = q.poll();
+			for(Direction next/*다음경로*/:Direction.values()) {
+				//다음 경로
+				int nx = now.x+next.x;
+				int ny = now.y+next.y;
+				//유효성 , 땅이 더 존재하냐
+				if(valid(nx,ny) && board[nx][ny] ==1) {
+					board[nx][ny] = 0; //잔여땅 지우기
+					q.offer(new Point(nx, ny));//현재 상태값 저장
+				}
+				
+			}
+			
+		}
+	}
+	
 
-	private static boolean valid(int[][] board, int nx, int ny) {
-		return nx>=0 && nx<n && ny>=0 && ny<n && board[nx][ny]==1;
+	private static boolean valid(int nx, int ny) {
+		return nx>=0 && nx<n && ny>=0 && ny<n;
 	}
 	
 	public static void main(String[] args){
-		find(input);
+		f2(input);
 		System.out.println(answer);
 	}
 }

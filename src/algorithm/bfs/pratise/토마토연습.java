@@ -3,7 +3,6 @@ package algorithm.bfs.pratise;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
 
 public class 토마토연습 {
 	static class Point{
@@ -17,55 +16,48 @@ public class 토마토연습 {
 	static int[] dy={0, 1, 0, -1};
 	static int[][] board, dis;
 	static int n, m;
-	static Queue<Point> Q=new LinkedList<>();
 	
-	public void BFS(){
-		while(!Q.isEmpty()){
-			Point tmp=Q.poll();
-			for(int i=0; i<4; i++){
-				int nx=tmp.x+dx[i];
-				int ny=tmp.y+dy[i];
-				if(nx>=0 && nx<n && ny>=0 && ny<m && board[nx][ny]==0){
-					board[nx][ny]=1;
-					Q.offer(new Point(nx, ny));
-					dis[nx][ny]=dis[tmp.x][tmp.y]+1;
-				}
-			}
-		}	
-	}
-	
-	void BFS2() {
-		while(!Q.isEmpty()){
-			Point p = Q.poll();
-			for(int i = 0 ;i <dx.length;i++) {
-				int nx = p.x + dx[i];
-				int ny = p.y + dy[i];
-				if(nx>=0 && nx<n && ny>=0 && ny<m &&board[nx][ny]== 0) {
+	static void B(Queue<Point> Q) {
+		while(!Q.isEmpty()) {
+			//현재 위치
+			Point now = Q.poll();
+			//다음 위치 탐색
+			for(int i=0;i<dx.length;i++) {
+				//다음 위치 후보
+				int nx = now.x + dx[i];
+				int ny = now.y + dy[i];
+				//다음위치 유효성
+				if(valid(nx,ny) && board[nx][ny] == 0) {
+					//방명록 작성
 					board[nx][ny] = 1;
-					dis[nx][ny] = dis[p.x][p.y]+1;
-					Q.add(new Point(nx, ny));
+					//값 계산 핵심, 현위치 값에 +1
+					dis[nx][ny] = dis[now.x][now.y] + 1;
+					Q.offer(new Point(nx, ny));
 				}
 			}
-			
-			
 		}
 	}
 	
 
+	private static boolean valid(int nx, int ny) {
+		return nx>=0 && nx<n && ny>=0 && ny<m;
+	}
+	
 	public static void main(String[] args){
-		토마토연습 T = new 토마토연습();
-		Scanner kb = new Scanner(System.in);
-		m=kb.nextInt();
-		n=kb.nextInt();
-		board=new int[n][m];
+		int[][] input = {
+				{0, 0, -1, 0, 0, 0},
+				{0, 0, 1 ,0 ,-1, 0},
+				{0, 0, -1, 0, 0, 0},
+				{0, 0, 0 ,0 ,-1, 1}
+		};
+		board= input.clone();
+		n= board.length;
+		m= board[0].length;
 		dis=new int[n][m];
-		for(int i=0; i<n; i++){
-			for(int j=0; j<m; j++){
-				board[i][j]=kb.nextInt();
-				if(board[i][j]==1) Q.offer(new Point(i, j));
-			}
-		}
-		T.BFS();
+		
+		Queue<Point> queue = init(new LinkedList<>());
+		
+		B(queue);
 		for(int[] arr : dis) {
 			System.out.println(Arrays.toString(arr));
 		}
@@ -86,6 +78,16 @@ public class 토마토연습 {
 		}
 		else System.out.println(-1);
 	}
+
+	private static Queue<Point> init(Queue<Point> Q) {
+		for(int i=0; i<n; i++){
+			for(int j=0; j<m; j++){
+				//시작점이 여러 개라 여기서 처리한다.
+				if(board[i][j]==1) Q.offer(new Point(i, j));
+			}
+		}
+		return Q;
+	}
 }
 /*
 6 4
@@ -94,4 +96,5 @@ public class 토마토연습 {
 0 0 -1 0 0 0
 0 0 0 0 -1 1
 
+4
 */
