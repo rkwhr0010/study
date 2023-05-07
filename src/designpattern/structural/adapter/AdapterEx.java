@@ -1,7 +1,5 @@
 package designpattern.structural.adapter;
 
-import designpattern.structural.adapter.AdapterEx.XmlExport;
-
 public class AdapterEx {
 	//원래 사용중인 인터페이스
 	static interface XmlExport{
@@ -31,11 +29,11 @@ public class AdapterEx {
 		}
 	}
 	
-	
 	//클라이언트
 	public static void main(String[] args) {
-//		XmlExport xmlExport = new XmlExportImpl();
-//		XmlExport jsonExport = new JSONAdapter(xmlExport);
+		XmlExport xmlExport = new XmlExportImpl();
+		XmlExport jsonExport = new JSONAdapter(new ExteriorJSONExport());
+		xmlExport.export();
+		jsonExport.export();
 	}
-	
 }
