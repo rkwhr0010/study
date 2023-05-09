@@ -35,10 +35,10 @@ public class 최소스패닝트리크루스칼연습 {
 		,{5 ,7 ,38}
 		,{7 ,8 ,35}
 		,{8 ,9 ,15}};
+	static ArrayList<Edge> arr=new ArrayList<>();
 	
 	public static void main(String[] args){
-		ArrayList<Edge> arr=new ArrayList<>();
-		
+		//마지막 정검 구하기
 		int n=(int)Arrays.stream(inputArr)
 			.flatMapToInt(data-> {
 				arr.add(new Edge(data[0], data[1], data[2]));
@@ -49,10 +49,28 @@ public class 최소스패닝트리크루스칼연습 {
 		
 		unf=new int[n+1];
 		
-		System.out.println(sol1(arr, n));
+		System.out.println(sol1(n));
 	}
-
-	private static void sol(ArrayList<Edge> arr, int n) {
+	
+	static int sol3(int n) {
+		int answer = 0;
+		//정점비용 초기화
+		for(int i=1;i<=n; i++) unf[i] = i;
+		//정렬
+		Collections.sort(arr);
+		for(Edge ob :arr) {
+			//현재 가장 최소비용 정점에 간선이 서로 다른 그룹이냐
+			if(find(ob.v1) != find(ob.v2)) {
+				//서로 다르니 그룹을 맺어주며, 값을 누산한다.
+				answer += ob.cost;
+				uni(ob.v1, ob.v2);
+			}
+		}
+		return answer;
+	}
+	
+	
+	private static void sol(int n) {
 		int answer=0;
 		for(int i=1; i<=n; i++) unf[i]=i;
 		//최소 비용이 나오는 이유, 정렬
@@ -67,7 +85,7 @@ public class 최소스패닝트리크루스칼연습 {
 		System.out.println(answer);
 	}
 	
-	static int sol1(ArrayList<Edge>arr, int n) {
+	static int sol1(int n) {
 		int ans = 0;
 		for(int i=1; i<=n; i++) unf[i]=i;
 		Collections.sort(arr);
