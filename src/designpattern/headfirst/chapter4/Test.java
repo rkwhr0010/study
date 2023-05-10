@@ -21,6 +21,9 @@ public class Test {
 		case 3:
 			클래스 = new 구상클래스3();
 			break;
+		case 4:
+			클래스 = new 추가클래스();
+			break;
 		}
 	}
 	
@@ -28,5 +31,6 @@ public class Test {
 	static class 구상클래스 extends 추상클래스{}
 	static class 구상클래스2 extends 추상클래스{}
 	static class 구상클래스3 extends 추상클래스{}
+	static class 추가클래스 extends 추상클래스{}
 	
 }

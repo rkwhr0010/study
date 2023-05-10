@@ -1,6 +1,0 @@
-WARNING - 13:26:06: Creating types 
-WARNING - 13:26:07: Initializing types
-WARNING - 13:26:10: Generic post-process : Creating usages and associations
-WARNING - 13:26:10: Generic post-process : Creating activities
-WARNING - 13:26:10: Saving uml file /resource/best_practice/best_practice.uml
-WARNING - 13:26:10: Uml file /resource/best_practice/best_practice.uml saved
