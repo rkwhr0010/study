@@ -1,35 +1,34 @@
 package designpattern.headfirst.chapter4;
 
-import designpattern.headfirst.chapter4.AbstractFactory.PizzaStore.PizzaType;
 
 public class AbstractFactory {
 	public static void main(String[] args) {
 		PizzaStore nyStore = new NYPizzaStore();
 		PizzaStore chicagoStore = new ChicagoPizzaStore();
  
-		Pizza pizza = nyStore.orderPizza(PizzaType.CHEESE);
-		System.out.println("Ethan ordered a " + pizza + "\n");
+		Pizza pizza = nyStore.orderPizza(PizzaStore.PizzaType.CHEESE);
+		System.out.println("Ethan 주문한  " + pizza + "\n");
  
-		pizza = chicagoStore.orderPizza(PizzaType.CHEESE);
-		System.out.println("Joel ordered a " + pizza + "\n");
+		pizza = chicagoStore.orderPizza(PizzaStore.PizzaType.CHEESE);
+		System.out.println("Joel 주문한  " + pizza + "\n");
 
-		pizza = nyStore.orderPizza(PizzaType.CLAM);
-		System.out.println("Ethan ordered a " + pizza + "\n");
+		pizza = nyStore.orderPizza(PizzaStore.PizzaType.CLAM);
+		System.out.println("Ethan 주문한  " + pizza + "\n");
  
-		pizza = chicagoStore.orderPizza(PizzaType.CLAM);
-		System.out.println("Joel ordered a " + pizza + "\n");
+		pizza = chicagoStore.orderPizza(PizzaStore.PizzaType.CLAM);
+		System.out.println("Joel 주문한  " + pizza + "\n");
 
-		pizza = nyStore.orderPizza(PizzaType.PEPPERONI);
-		System.out.println("Ethan ordered a " + pizza + "\n");
+		pizza = nyStore.orderPizza(PizzaStore.PizzaType.PEPPERONI);
+		System.out.println("Ethan 주문한  " + pizza + "\n");
  
-		pizza = chicagoStore.orderPizza(PizzaType.PEPPERONI);
-		System.out.println("Joel ordered a " + pizza + "\n");
+		pizza = chicagoStore.orderPizza(PizzaStore.PizzaType.PEPPERONI);
+		System.out.println("Joel 주문한  " + pizza + "\n");
 
-		pizza = nyStore.orderPizza(PizzaType.VEGGIE);
-		System.out.println("Ethan ordered a " + pizza + "\n");
+		pizza = nyStore.orderPizza(PizzaStore.PizzaType.VEGGIE);
+		System.out.println("Ethan 주문한  " + pizza + "\n");
  
-		pizza = chicagoStore.orderPizza(PizzaType.VEGGIE);
-		System.out.println("Joel ordered a " + pizza + "\n");
+		pizza = chicagoStore.orderPizza(PizzaStore.PizzaType.VEGGIE);
+		System.out.println("Joel 주문한  " + pizza + "\n");
 	}
 	
 	/*야채*/
@@ -142,7 +141,7 @@ public class AbstractFactory {
 		}
 	}
 
-	/* 핵심 ## 추상 팩토리 정의*/
+	/* 핵심  추상 팩토리 정의*/
 	static interface PizzaIngredientFactory {
 		public Dough createDough();
 		public Sauce createSauce();
@@ -316,6 +315,7 @@ public class AbstractFactory {
 	
 	
 	public abstract static class PizzaStore {
+		//타입 안정성을 위해 인자를 enum으로 받기
 		public enum PizzaType{
 			CHEESE, VEGGIE, CLAM, PEPPERONI
 		}
@@ -336,7 +336,7 @@ public class AbstractFactory {
 		protected Pizza createPizza(PizzaType item) {
 			Pizza pizza = null;
 			PizzaIngredientFactory ingredientFactory =
-			new ChicagoPizzaIngredientFactory();
+			new ChicagoPizzaIngredientFactory();//팩터리
 			
 			switch (item) {
 			case CHEESE:
@@ -367,7 +367,7 @@ public class AbstractFactory {
 		protected Pizza createPizza(PizzaType item) {
 			Pizza pizza = null;
 			PizzaIngredientFactory ingredientFactory =
-			new ChicagoPizzaIngredientFactory();
+			new ChicagoPizzaIngredientFactory();//팩터리
 			
 			switch (item) {
 			case CHEESE:
