@@ -44,31 +44,31 @@ public class 최소스패닝트리크루스칼연습 {
 	static ArrayList<Edge> arr=new ArrayList<>();
 	
 	public static void main(String[] args){
-		ThreadLocalRandom random = ThreadLocalRandom.current();
+//		ThreadLocalRandom random = ThreadLocalRandom.current();
 //		int[] array = IntStream.rangeClosed(0, 500).toArray();
 		
-		IntStream.rangeClosed(0, 500)
-			.forEach((index)->{
-				int v1 = random.nextInt(1, 501);
-				int v2 = random.nextInt(1, 501);
-				while(v1==v2) {
-					v2 = random.nextInt(1, 501);
-				}
-				int v = random.nextInt(1, 501);
-				arr.add(new Edge(v1, v2, v));
-			});
+//		IntStream.rangeClosed(0, 500)
+//			.forEach((index)->{
+//				int v1 = random.nextInt(1, 501);
+//				int v2 = random.nextInt(1, 501);
+//				while(v1==v2) {
+//					v2 = random.nextInt(1, 501);
+//				}
+//				int v = random.nextInt(1, 501);
+//				arr.add(new Edge(v1, v2, v));
+//			});
 		
 		//마지막 정검 구하기
-//		int n=(int)Arrays.stream(inputArr)
-//			.flatMapToInt(data-> {
-//				arr.add(new Edge(data[0], data[1], data[2]));
-//				return IntStream.of(data[0],data[1]);
-//			})
-//			.distinct()
-//			.count();
-		int n= arr.stream()
-			.flatMapToInt(a->IntStream.of(a.v1,a.v2))
-			.max().getAsInt();
+		int n=(int)Arrays.stream(inputArr)
+			.flatMapToInt(data-> {
+				arr.add(new Edge(data[0], data[1], data[2]));
+				return IntStream.of(data[0],data[1]);
+			})
+			.distinct()
+			.count();
+//		int n= arr.stream()
+//			.flatMapToInt(a->IntStream.of(a.v1,a.v2))
+//			.max().getAsInt();
 		
 		unf=new int[n+1];
 		
@@ -76,44 +76,39 @@ public class 최소스패닝트리크루스칼연습 {
 		System.out.println(Arrays.toString(unf));
 	}
 	
-	static int s(int v) {
-		int result = 0;
-		int cnt = 0;
-		//자신 그룹에 자신으로 초기화
-		for(int i=1;i<unf.length;i++) unf[i]=i;
-		//최소비용 나오는 이유
-		Collections.sort(arr);
-		for(Edge next : arr) {
-			if(cnt>v) break;
-			//서로 다르면 그룹 맺기
-			int f1 = f(next.v1) ;
-			int f2 = f(next.v2) ;
-			if(f1 != f2) {
-//			if(f(next.v1) != f(next.v2)) {
-				++cnt;
-				//누산
-				result += next.cost;
-				//그룹 맺기
-				u(f1, f2);
-			}
-		}
-		
+	//재귀적으로 그룹값을 찾는다.
+	static int f1(int v) {
+		//그룹 값이 내 값과 같으면, 아무거나 리턴해도된다.
+		if(unf[v]==v) return unf[v];
+		//내 그룹에 저장된 부모링크로 재귀적으로 부모의부모 끝까지 그룹값을 탐색한다.
+		else return unf[v] = f1(unf[v]);
+	}
+	//두 값이 그룹이 다르면, 같은 그룹으로 묶어주고, 그 결과를 리턴한다.
+	static boolean u1(final int a,final  int b) {
+		boolean result = false;
+		//찾은 그룹 값이 서로 다르면 그룹 맺어준다.
+		final int fa = f1(a);
+		final int fb = f1(b);
+		//a가 b와 같은 그룹임을 표시한다.
+		result = fa!=fb;
+		if(result) unf[fa] = fb;
 		return result;
 	}
-	//재귀적으로 같은 그룹인지 찾아준다.
-	static int f(int v) {
-		if(unf[v] == v) return unf[v];
-		else return unf[v] = f(unf[v]);
+	static int s(final int v) {
+		//누산 값
+		int result = 0;
+		for(int i=1;i<unf.length;i++) unf[i]=i;
+		//그리디를 위한 정렬
+		Collections.sort(arr);
+		//현 시점 가장 작은 값
+		for(final Edge now : arr) {
+			//두 간선간 같은 그룹이냐? 같은 그룹이면 누산
+			if(u1(now.v1, now.v2)) result += now.cost;
+		}
+		return result;
 	}
-	static void u(int a, int b) {
-		int fa = f(a);
-		int fb = f(b);
-		//서로 다르니 그룹맺기
-//		if(fa != fb) unf[fa] = fb;
-		unf[a] = b;
-	}
-	
 }
+
 /*
  * 모든 도시를 연결하면서 드는 최소비용을 출려한다.
 9 12
@@ -129,7 +124,6 @@ public class 최소스패닝트리크루스칼연습 {
 5 7 38
 7 8 35
 8 9 15
-
 
 196
 
