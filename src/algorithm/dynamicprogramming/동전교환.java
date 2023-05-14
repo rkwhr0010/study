@@ -16,37 +16,15 @@ public class 동전교환{
 		}
 		return dy[m];
 	}
-	
 	static int sol(int[] coin) {
 		Arrays.fill(dy, Integer.MAX_VALUE);
-		dy[0] = 0 ;
+		dy[0]=0;
 		for(int i=0;i<coin.length;i++) {
 			for(int j=coin[i];j<=m;j++) {
-				dy[j] = Math.min(dy[j], dy[j-coin[i]]+1);
+				dy[j] = Math.min(dy[j],dy[j-coin[i]]+1);
 			}
 		}
-		return dy[m];
-	}
-	
-	static int sol1(int[] coin) {
-		Arrays.fill(coin, Integer.MAX_VALUE);
-		dy[0] = 0;
-		for(int i=0;i<coin.length;i++) {
-			for(int j=coin[i];j<=m;j++) {
-				dy[j] = Math.min(dy[j], dy[j-coin[i]]+1);
-			}
-		}
-		return dy[m];
-	}
-	
-	static int so(int[] coin) {
-		Arrays.fill(coin, Integer.MAX_VALUE);
-		dy[0] = 0;
-		for(int i=0; i<coin.length;i++) {
-			for(int j=coin[i];j<=m;j++) {
-				dy[j] = Math.min(dy[j], dy[j-coin[i]]+1);
-			}
-		}
+		
 		return dy[m];
 	}
 	
