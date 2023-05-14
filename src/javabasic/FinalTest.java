@@ -2,7 +2,10 @@ package javabasic;
 
 public class FinalTest {
 	static class Box{
-		final int data = 100;
+		String data = "123123";
+		String getData() {
+			return data;
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -13,6 +16,10 @@ public class FinalTest {
 		final Box d1 = new Box();
 		Box d2 = new Box();
 		
+		String tmp = d2.data;
+		tmp = "asdasd";
+		
+		System.out.println(d2.data);
 		
 		System.out.println(data);
 		System.out.println(data2);

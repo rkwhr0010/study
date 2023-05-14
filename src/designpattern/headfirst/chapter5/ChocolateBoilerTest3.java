@@ -4,6 +4,7 @@ public class ChocolateBoilerTest3 {
 	static class ChocolateBoiler{
 		private boolean empty;
 		private boolean boiled;
+		//volatile, 객체 생성 시 CPU 캐시되는 것을 방지하기 위함
 		private static volatile ChocolateBoiler boiler;
 		
 		private ChocolateBoiler() {

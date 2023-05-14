@@ -4,7 +4,8 @@ public class ChocolateBoilerTest4 {
 	static class ChocolateBoiler{
 		private boolean empty;
 		private boolean boiled;
-		//시작시 바로JVM이 초기화
+		//시작시 바로JVM이 정적 초기화
+		//단점으로 지연로딩을 원한다면 불가능하다.
 		private static ChocolateBoiler boiler = new ChocolateBoiler();
 		
 		private ChocolateBoiler() {

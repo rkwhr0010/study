@@ -6,7 +6,6 @@ public class ChocolateBoilerTest2 {
 		private boolean boiled;
 		private static ChocolateBoiler boiler;
 		
-		
 		private ChocolateBoiler() {
 			empty = true;
 			boiled = false;
@@ -18,7 +17,6 @@ public class ChocolateBoilerTest2 {
 			}
 			return boiler;
 		}
-		
 		public void fill() {
 			if(isEmpty()) {
 				empty = false;
@@ -41,6 +39,5 @@ public class ChocolateBoilerTest2 {
 		public boolean isBoiled() {
 			return boiled;
 		}
-		
 	}
 }
