@@ -411,9 +411,8 @@ public class CommandTest2 {
 		GarageDoor garageDoor = new GarageDoor("Garage");
 		Stereo stereo = new Stereo("Living Room");
 		
-//		LightOnCommand livingRoomLightOn = 
-//				new LightOnCommand(livingRoomLight);
-		Command livingRoomLightOn = () -> livingRoomLight.on();
+		LightOnCommand livingRoomLightOn = 
+				new LightOnCommand(livingRoomLight);
 		LightOffCommand livingRoomLightOff = 
 				new LightOffCommand(livingRoomLight);
 		LightOnCommand kitchenLightOn = 
