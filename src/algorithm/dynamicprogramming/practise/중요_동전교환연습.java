@@ -1,12 +1,9 @@
 package algorithm.dynamicprogramming.practise;
 
+import static java.lang.Math.min;
+
 import java.util.Arrays;
-import static java.lang.Math.*;
-import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class 중요_동전교환연습{
@@ -92,25 +89,40 @@ public class 중요_동전교환연습{
 		}
 		return dy[m];
 	}
+	static int so(int[] coin) {
+		Arrays.fill(dy, Integer.MAX_VALUE);
+		for(int i=0;i<coin[0];i++) dy[i]=0;
+		for(int i=0;i<coin.length;i++) {
+			for(int j=coin[i];j<=m;j++) {
+				dy[j] = min(dy[j], dy[j-coin[i]]+1);
+			}
+		}
+		return dy[m];
+	}
+	
 	
 	private static String format(int index) {
 		String tmp = String.valueOf(dy[index]);
 		return tmp.substring(0,tmp.length()>=3 ? 3 : tmp.length());
 	}
 	
-	static int answer = Integer.MAX_VALUE;
-	static int[] coin;
-	static void DFS(int cnt, int sum) {
-		//내 동전 개수가 돈크가보다 크면 리턴, 내 합계가 현재까지 최소개수보다 크면 리턴
-		if(cnt>m || sum > answer) return;
-		else if(sum == m) answer = min(answer, cnt);
+	
+	static Integer[] kind = {1, 8,  20, 25,50};
+	static Integer money = 129;
+	static Integer answer = Integer.MAX_VALUE;
+	private static void DFS(int cnt, int sum) {
+		if(sum> money || cnt > answer ) ;
+		else if(sum == money) {
+			answer = Math.min(cnt, answer);
+		}
 		else {
-			for(int i=0;i<coin.length;i++) {
-				DFS(cnt+1, sum+coin[i]);
+			for (int i = 0; i < kind.length; i++) {
+				DFS(cnt+1, sum+kind[i]);
+				
 			}
 		}
+		
 	}
-	
 	
 	public static void main(String[] args){
 		int[] arr = IntStream.generate(()->ThreadLocalRandom.current().nextInt(1,11))
@@ -118,13 +130,15 @@ public class 중요_동전교환연습{
 			.limit(3)
 			.sorted() //필수
 			.toArray();
-		coin = arr.clone();
-		m=30;
+		arr = new int[]{1, 8,  20, 25,50};
+		m=129;
 		dy=new int[m+1];
 		n=arr.length;
-		System.out.println(Arrays.toString(arr));
-		System.out.println("money : "+m + "/"+sol4(arr));
-		System.out.println(Arrays.toString(dy));
+		DFS(0,0);
+//		System.out.println(Arrays.toString(arr));
+//		System.out.println("money : "+m + "/"+so(arr));
+//		System.out.println(Arrays.toString(dy));
+		System.out.println(answer);
 	}
 }
 /*
