@@ -15,7 +15,7 @@ public class 중요_최대부분증가수열연습 {
 		dp = dy.clone();
 		//4
 		System.out.println(sol3(arr));
-		System.out.println(so1(arr));
+		System.out.println(soll(arr));
 		
 	}
 	public int solution(int[] arr){
@@ -94,10 +94,30 @@ public class 중요_최대부분증가수열연습 {
 			//이제 이때까지 구한 부분증가 수열 중 가장 횟수 많은 값과 비교해 큰 걸로 교체
 			result = Math.max(result, max+1);
 		}
+		return result;
+	}
+	static int soll(int[] arr) {
+		//최대 수열 숫자 리턴
+		int result = 0;
+		dp[0] = 1;//첫 자리는 1로 초기화해준다.
+		//첫차리 초기화 했으니 1부터 시작
+		for(int i=1;i<arr.length;i++) {
+			//내 지점 이전 최대 수열 숫자 구하는 용도
+			int max = 0;
+			//내 이전 탐색한다.
+			for(int j=i-1;j>=0;j--) {
+				//나보다 이전 값이 크면 증가 수열이 안된다.
+				if(arr[i]<arr[j]) continue;
+				max = Math.max(max,dy[j]);//최대값 찾을 때마다 교체
+			}
+			//이지점에서 맥스는 가장 최대값일 것이다. 나까지 포함해야하니 +1
+			++max;
+			//이때까지 수열중 가장 큰 증가수열 숫자와 비교한다.
+			result = Math.max(result,max);
+		}
 		
 		
 		return result;
 	}
-	
 	
 }
