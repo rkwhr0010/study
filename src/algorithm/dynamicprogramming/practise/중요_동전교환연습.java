@@ -9,29 +9,7 @@ import java.util.stream.IntStream;
 public class 중요_동전교환연습{
 	static int n, m;
 	static int[] dy;
-	static int solution(int[] coin){
-		Arrays.fill(dy, Integer.MAX_VALUE);
-		IntStream.range(0, coin[0])
-			.forEach(index->dy[index]=0);
-		for(int i=0; i<n; i++){
-			for(int j=coin[i]; j<=m; j++){
-				dy[j]=Math.min(dy[j], dy[j-coin[i]]+1);
-			}
-		}
-		return dy[m];
-	}
-	static int sol(int[] coin) {
-		Arrays.fill(dy, Integer.MAX_VALUE);
-		IntStream.range(0, coin[0])
-			.forEach(index->dy[index]=0);
-		for(int i=0;i<coin.length;i++) {
-			for(int j=coin[i];j<=m;j++) {
-				dy[j] = Math.min(dy[j],dy[j-coin[i]]+1);
-			}
-		}
-		return dy[m];
-	}
-	
+
 	static int sol2(int[] coin) {
 		//배열을 전부 최대값으로 채운다. (가장 많이 소요되는 동전개수)
 		Arrays.fill(dy, Integer.MAX_VALUE);
@@ -74,21 +52,6 @@ public class 중요_동전교환연습{
 		}
 		return dy[m];
 	}
-	static int sol4(int[] coin) {
-		//일단 모든 dy 동전개수배열 맥스로 초기화
-		Arrays.fill(dy, Integer.MAX_VALUE);
-		//첫 동전크기전까지 dy 동전개수 0으로 초기화
-		IntStream.range(0, coin[0]).forEach(i->dy[i]=0);
-		//동전 종류만큼 순회
-		for(int i=0;i<coin.length;i++) {
-			//동전 종류의 값부터 동전 개수 배열 시작
-			for(int j=coin[i];j<dy.length;j++) {
-				//내 지금 동전 개수보다 이전까지 계산한 값 +1 이 작냐
-				dy[j] = min(dy[j], dy[j-coin[i]]+1);
-			}
-		}
-		return dy[m];
-	}
 	static int so(int[] coin) {
 		Arrays.fill(dy, Integer.MAX_VALUE);
 		for(int i=0;i<coin[0];i++) dy[i]=0;
@@ -97,6 +60,15 @@ public class 중요_동전교환연습{
 				dy[j] = min(dy[j], dy[j-coin[i]]+1);
 			}
 		}
+		return dy[m];
+	}
+	static int so123(final int[] coin) {
+		//최대 개수로 초기화
+		Arrays.fill(dy, Integer.MAX_VALUE);
+		//단, 첫 코인 전까지는 0을 유지한다.
+		IntStream.range(0, coin[0]).forEach((i)->dy[i]=0);
+		//메인 순회
+		
 		return dy[m];
 	}
 	
@@ -121,7 +93,15 @@ public class 중요_동전교환연습{
 				
 			}
 		}
-		
+	}
+	static void D2(int cnt, int sum) {
+		if(cnt>money ||sum>money) return;
+		else if(sum == money) answer = Math.min(answer, cnt);
+		else {
+			for(int i=0;i<kind.length;i++) {
+				D2(cnt+1,sum+kind[i]);
+			}
+		}
 	}
 	
 	public static void main(String[] args){
@@ -135,10 +115,10 @@ public class 중요_동전교환연습{
 		dy=new int[m+1];
 		n=arr.length;
 		DFS(0,0);
-//		System.out.println(Arrays.toString(arr));
-//		System.out.println("money : "+m + "/"+so(arr));
-//		System.out.println(Arrays.toString(dy));
-		System.out.println(answer);
+		System.out.println(Arrays.toString(arr));
+		System.out.println("money : "+m + "/"+so(arr));
+		System.out.println(Arrays.toString(dy));
+//		System.out.println(answer);
 	}
 }
 /*
