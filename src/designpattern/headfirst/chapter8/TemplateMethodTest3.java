@@ -13,13 +13,16 @@ public class TemplateMethodTest3 {
 		protected abstract void primitiveOperation2();
 		protected abstract void primitiveOperation1();
 	}
+	//abstract 메서드가 없더라도 abstract를 붙여 인스턴스화를 방지할 수 있다.
 	abstract static class CaffeineBeverage{
+		//핵심 템플릿 메서드 final
 		final void prepareRecipe() {
 			 boilWater();
 			 brew();
 			 purInCup();
 			 addCondiments();
 		}
+		//약간의 동작 차이만을 보이므로 재정의를 강제하도록 abstract 키워드를 붙인다.
 		protected abstract void addCondiments();
 		protected abstract void brew();
 		public void boilWater() {

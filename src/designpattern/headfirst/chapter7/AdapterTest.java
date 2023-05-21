@@ -17,8 +17,6 @@ public class AdapterTest {
 		}
 	}
 	
-	
-	
 	//새로 제공된 코드
 	static interface Turkey{
 		void gobble();

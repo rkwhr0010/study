@@ -18,7 +18,9 @@ public class 최소지식 {
 		A1 a1 = new A1();
 		a1.callA1();
 		a1.callA2();
+		a1.a2.callA2();
 		a1.callA3();
+		a1.a2.a3.callA3();
 	}
 	
 }

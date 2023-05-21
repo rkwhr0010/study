@@ -7,19 +7,15 @@ public class FacadeTest {
 		public PopcornPopper(String description) {
 			this.description = description;
 		}
-
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void pop() {
 			System.out.println(description + " popping popcorn!");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -33,23 +29,18 @@ public class FacadeTest {
 			this.description = description;
 			this.player = player;
 		}
-
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void wideScreenMode() {
 			System.out.println(description + " in widescreen mode (16x9 aspect ratio)");
 		}
-
 		public void tvMode() {
 			System.out.println(description + " in tv mode (4x3 aspect ratio)");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -69,17 +60,14 @@ public class FacadeTest {
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void play(String movie) {
 			this.movie = movie;
 			currentChapter = 0;
 			System.out.println(description + " playing \"" + movie + "\"");
 		}
-
 		public void play(int chapter) {
 			if (movie == null) {
 				System.out.println(description + " can't play chapter " + chapter + " no movie selected");
@@ -88,24 +76,19 @@ public class FacadeTest {
 				System.out.println(description + " playing chapter " + currentChapter + " of \"" + movie + "\"");
 			}
 		}
-
 		public void stop() {
 			currentChapter = 0;
 			System.out.println(description + " stopped \"" + movie + "\"");
 		}
-
 		public void pause() {
 			System.out.println(description + " paused \"" + movie + "\"");
 		}
-
 		public void setTwoChannelAudio() {
 			System.out.println(description + " set two channel audio");
 		}
-
 		public void setSurroundAudio() {
 			System.out.println(description + " set surround audio");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -121,26 +104,21 @@ public class FacadeTest {
 			this.description = description;
 			this.amplifier = amplifier;
 		}
-
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void eject() {
 			title = null;
 			System.out.println(description + " eject");
 		}
-
 		public void play(String title) {
 			this.title = title;
 			currentTrack = 0;
 			System.out.println(description + " playing \"" + title + "\"");
 		}
-
 		public void play(int track) {
 			if (title == null) {
 				System.out.println(description + " can't play track " + currentTrack + ", no cd inserted");
@@ -149,16 +127,13 @@ public class FacadeTest {
 				System.out.println(description + " playing track " + currentTrack);
 			}
 		}
-
 		public void stop() {
 			currentTrack = 0;
 			System.out.println(description + " stopped");
 		}
-
 		public void pause() {
 			System.out.println(description + " paused \"" + title + "\"");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -170,19 +145,15 @@ public class FacadeTest {
 		public TheaterLights(String description) {
 			this.description = description;
 		}
-
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void dim(int level) {
 			System.out.println(description + " dimming to " + level + "%");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -196,28 +167,22 @@ public class FacadeTest {
 		public Tuner(String description, Amplifier amplifier) {
 			this.description = description;
 		}
-
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void setFrequency(double frequency) {
 			System.out.println(description + " setting frequency to " + frequency);
 			this.frequency = frequency;
 		}
-
 		public void setAm() {
 			System.out.println(description + " setting AM mode");
 		}
-
 		public void setFm() {
 			System.out.println(description + " setting FM mode");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -229,15 +194,12 @@ public class FacadeTest {
 		public Screen(String description) {
 			this.description = description;
 		}
-
 		public void up() {
 			System.out.println(description + " going up");
 		}
-
 		public void down() {
 			System.out.println(description + " going down");
 		}
-
 		public String toString() {
 			return description;
 		}
@@ -251,42 +213,34 @@ public class FacadeTest {
 		public Amplifier(String description) {
 			this.description = description;
 		}
-
 		public void on() {
 			System.out.println(description + " on");
 		}
-
 		public void off() {
 			System.out.println(description + " off");
 		}
-
 		public void setStereoSound() {
 			System.out.println(description + " stereo mode on");
 		}
-
 		public void setSurroundSound() {
 			System.out.println(description + " surround sound on (5 speakers, 1 subwoofer)");
 		}
-
 		public void setVolume(int level) {
 			System.out.println(description + " setting volume to " + level);
 		}
-
 		public void setTuner(Tuner tuner) {
 			System.out.println(description + " setting tuner to " + tuner);
 			this.tuner = tuner;
 		}
-
 		public void setStreamingPlayer(StreamingPlayer player) {
 			System.out.println(description + " setting Streaming player to " + player);
 			this.player = player;
 		}
-
 		public String toString() {
 			return description;
 		}
 	}
-
+	//퍼사드
 	static class HomeTheaterFacade {
 		Amplifier amp;
 		Tuner tuner;
@@ -299,7 +253,6 @@ public class FacadeTest {
 
 		public HomeTheaterFacade(Amplifier amp, Tuner tuner, StreamingPlayer player, Projector projector, Screen screen,
 				TheaterLights lights, PopcornPopper popper) {
-
 			this.amp = amp;
 			this.tuner = tuner;
 			this.player = player;

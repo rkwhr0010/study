@@ -1,7 +1,7 @@
 package designpattern.headfirst.chapter8;
 
 public class TemplateMethodTest {
-	class Coffee{
+	static class Coffee{
 		void prepareRecipe() {
 			boilWater();
 			brewCoffeeGrinds();
@@ -22,7 +22,7 @@ public class TemplateMethodTest {
 			System.out.println("설탕과 우유를 추가하는 중");
 		}
 	}
-	class Tea {
+	static class Tea {
 		void prepareRecipe() {
 			boilWater();
 			steepTeaBag();
@@ -41,6 +41,13 @@ public class TemplateMethodTest {
 		public void purInCup() {
 			System.out.println("컵에 따르는 중");
 		}
+	}
+	public static void main(String[] args) {
+		Coffee coffee = new Coffee();
+		Tea tea = new Tea();
+		coffee.prepareRecipe();
+		tea.prepareRecipe();
+		
 	}
 }
 
