@@ -1,5 +1,7 @@
 package algorithm.dynamicprogramming.practise;
 
+import java.util.Arrays;
+
 public class 중요_최대점수구하기 {
 	static int[] dy;
 	static int timeLimit;
@@ -15,8 +17,8 @@ public class 중요_최대점수구하기 {
 		timeLimit= 20;//제한시간
 		dy=new int[timeLimit+1];
 		//문제를 순회한다.
-		sol1(input);
-		System.out.print(dy[timeLimit]);
+		sol2(input);
+		System.out.print(Arrays.stream(dy).max().getAsInt());
 	}
 	//dy 의 각 위치는 시간을 의미한다 i가 10이면 10분이 주어졌을때 가장 최상의 점수를 의미
 	private static void sol(int[][] input) {
@@ -37,6 +39,17 @@ public class 중요_최대점수구하기 {
 			//문제는 단 한개, 뒤에서부터 나의 소요시간까지 순회, 
 			for(int j=timeLimit;j>=time;j--) {
 				//dy[j] 주어진 시간이 j 일때 최대 점수, dy[j-time] 이전에 푼 문제+지금 점수
+				dy[j] = Math.max(dy[j], dy[j-time]+score);
+			}
+		}
+	}
+	static void sol2(int[][] input) {
+		//문제 순회
+		for(int i=0;i<input.length;i++) {
+			int score = input[i][0];
+			int time = input[i][1];
+			//유한한 입력이면 뒤에서부터
+			for(int j=dy.length-1;j>=time;j--) {
 				dy[j] = Math.max(dy[j], dy[j-time]+score);
 			}
 		}

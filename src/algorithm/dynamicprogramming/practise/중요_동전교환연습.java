@@ -107,14 +107,14 @@ public class 중요_동전교환연습{
 	public static void main(String[] args){
 		int[] arr = IntStream.generate(()->ThreadLocalRandom.current().nextInt(1,11))
 			.distinct()
-			.limit(3)
+			.limit(5)
 			.sorted() //필수
 			.toArray();
-		arr = new int[]{1, 8,  20, 25,50};
+//		arr = new int[]{1, 8,  20, 25,50};
 		m=129;
 		dy=new int[m+1];
 		n=arr.length;
-		DFS(0,0);
+//		DFS(0,0);
 		System.out.println(Arrays.toString(arr));
 		System.out.println("money : "+m + "/"+so(arr));
 		System.out.println(Arrays.toString(dy));
