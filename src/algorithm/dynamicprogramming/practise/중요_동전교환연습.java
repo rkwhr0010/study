@@ -116,9 +116,33 @@ public class 중요_동전교환연습{
 		n=arr.length;
 //		DFS(0,0);
 		System.out.println(Arrays.toString(arr));
-		System.out.println("money : "+m + "/"+so(arr));
+		System.out.println("money : "+m + "/"+sososo(arr));
 		System.out.println(Arrays.toString(dy));
 //		System.out.println(answer);
+	}
+	private static int soso(int[] coin) {
+		//그 돈을 만들 수 있는 최대 동전개수를 최대값으로 초기화
+		Arrays.fill(dy, Integer.MAX_VALUE);
+		//단, 첫 값 전까지는 0으로 초기화해야 한다.
+		IntStream.range(0, coin[0]).forEach(i->dy[i]=0);
+		//동전 순회
+		for(int c = 0;c <coin.length;c++) {
+			//dy 최대 동전개수 순회
+			for(int i=coin[c];i<dy.length;i++) {
+				dy[i] = Math.min(dy[i], dy[i-coin[c]]+1);
+			}
+		}
+		return dy[m];
+	}
+	static int sososo(int[] coin) {
+		Arrays.fill(dy, m+1);//주어진 돈 만큼 초기화해도되지만 그냥 +1함
+		IntStream.range(0, coin[0]).forEach(i->dy[i]=0);//첫 동전 전까진 0으로 초기화
+		for(int i = 0;i<coin.length;i++) {
+			for(int j=coin[i];j<dy.length ;j++) {
+				dy[j] = min(dy[j], dy[j-coin[i]]+1 );
+			}
+		}
+		return dy[m];
 	}
 }
 /*
