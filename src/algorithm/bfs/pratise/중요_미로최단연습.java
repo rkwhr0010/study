@@ -135,6 +135,28 @@ public class 중요_미로최단연습 {
 			}
 		}
 	}
+	//간선 정보
+	static void B4(int x, int y) {
+		//간선 정보를 저장할 큐
+		Queue<Route> q = new LinkedList<>();
+		q.offer(new Route(x, y));//첫 간선
+		board[x][y] = 1;// 방명록 작성
+		
+		while(!q.isEmpty()) {
+			Route cur = q.poll();
+			for(int i=0;i<dx.length;i++) {
+				int nx = cur.x + dx[i];
+				int ny = cur.y + dy[i];
+				//첫방문인지
+				if(fromClosedTo(nx, ny)&& board[nx][ny] == 0) {
+					board[nx][ny] = 1;
+					dis[nx][ny] = dis[cur.x][cur.y]+1;
+					q.offer(new Route(nx, ny));
+				}
+			}
+			
+		}
+	}
 	
 	private static boolean fromClosedTo(int nx, int ny) {
 		return nx>=1 && nx <=7 && ny>=1 && ny<=7;
