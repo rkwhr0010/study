@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeTest {
+	//구성요소
 	static abstract class MenuComponent{
 		public void add(MenuComponent menuComponent) {
 			throw new UnsupportedOperationException();
@@ -30,7 +31,7 @@ public class CompositeTest {
 			throw new UnsupportedOperationException();
 		}
 	}
-	
+	//잎
 	static class MenuItem extends MenuComponent{
 		String name;
 		String description;
@@ -70,7 +71,7 @@ public class CompositeTest {
 		}
 		
 	}
-	
+	//노드
 	static class Menu extends MenuComponent{
 		List<MenuComponent> menuComponents = new ArrayList<>();
 		String name;

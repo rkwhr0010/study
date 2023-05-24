@@ -1,18 +1,20 @@
 package designpattern.headfirst.chapter9;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Random;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class IteratorTest {
-	static class Test<E> implements Iterable<E>{
+	static Supplier<IntStream> supply(){
+		return ()-> new Random().ints(10, 1, 100);
+	}
+	
+	static class ClassArr<E> implements Iterable<E>{
 		E[] dataArr;
 		
-		public Test(E[] dataArr) {
+		public ClassArr(E[] dataArr) {
 			this.dataArr = (E[]) dataArr;
 		}
 
@@ -31,11 +33,15 @@ public class IteratorTest {
 		
 	}
 	
-	static class MapClass implements Iterable<Map.Entry<String, String>>{
-		Map<String,String> map = new HashMap<>();
+	static class MapClass implements Iterable<Map.Entry<Object, List<Integer>>>{
+		Map<Object, List<Integer>> map = new HashMap<>();
 
+		public MapClass() {
+			map= supply().get().boxed().collect(Collectors.groupingBy(n->n));
+		}
+		
 		@Override
-		public Iterator<Map.Entry<String, String>> iterator() {
+		public Iterator<Entry<Object, List<Integer>>> iterator() {
 			return map.entrySet().iterator();
 		}
 
@@ -43,7 +49,7 @@ public class IteratorTest {
 
 	
 	static class ArrClass implements Iterable<Integer>{
-		int[] intArr = new Random().ints(100, 1, 500).toArray();
+		int[] intArr = supply().get().toArray();
 
 		@Override
 		public Iterator<Integer> iterator() {
@@ -59,7 +65,7 @@ public class IteratorTest {
 		}
 	}
 	static class ListClass implements Iterable<Integer>{
-		List<Integer> intList = new Random().ints(100, 1, 500).boxed().toList();
+		List<Integer> intList = supply().get().boxed().toList();
 		@Override
 		public Iterator<Integer> iterator() {
 			return intList.iterator();
@@ -68,33 +74,27 @@ public class IteratorTest {
 	}
 	
 	public static void main(String[] args) {
-		ArrClass arrClass = new ArrClass();
-		for(Integer val : arrClass) {
+		String[] test = {"배열은","향상된","반복문","사용가능"};
+		//배열 향상 포문 가능
+		for(String data : test) {
+			System.out.print(data+" ");
+		}
+		System.out.println();
+		//어떠한 클래스도 Iterable만 알맞게 구현하면 전부 향상 포문 가능하다.
+		for(String data : new ClassArr<>(test)) {
+			System.out.print(data+" ");
+		}
+		System.out.println();
+		for(Integer val : new ArrClass()) {
 			System.out.print(val+" ");
 		}
-		
 		System.out.println();
 		for(Integer val :new ListClass()) {
 			System.out.print(val+" ");
 		}
 		System.out.println();
-		String[] test = {"gg","aaa","vbb","asd"};
-		Test<String> test2 = new Test<>(test);
-		
-		for(String data : test2) {
-			System.out.println(data);
-		}
-		for(String data : test) {
-			System.out.println(data);
-		}
-		ArrayList<Object> list = new ArrayList<>();
-		test2.forEach(data-> {
-			if(data.equals("gg")) list.add(data);
-		});
-		
 		for(Entry en : new MapClass()) {
+			System.out.print(en + " ");
 		}
-		
-		
 	}
 }
