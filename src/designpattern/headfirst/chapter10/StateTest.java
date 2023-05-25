@@ -83,9 +83,9 @@ public class StateTest {
 		}
 		public String toString() {
 			StringBuffer result = new StringBuffer();
-			result.append("\nMighty Gumball, Inc.");
-			result.append("\nJava-enabled Standing Gumball Model #2004\n");
-			result.append("Inventory: " + count + " gumball");
+			result.append("\n 주)겜블 머신");
+			result.append("\n자바로 개발된 겜블 머신 #2004\n");
+			result.append("항목: " + count + " 개");
 			if (count != 1) {
 				result.append("s");
 			}
