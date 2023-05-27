@@ -71,6 +71,4 @@ public class Exam002Adapter {
 		duckSimulator.simulate();
 		duckSimulator.simulate(new DuckCall());
 	}
-	
-	
 }

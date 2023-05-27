@@ -53,6 +53,4 @@ public class Exam001Basic {
 		duckSimulator.simulate();
 		duckSimulator.simulate(new DuckCall());
 	}
-	
-	
 }

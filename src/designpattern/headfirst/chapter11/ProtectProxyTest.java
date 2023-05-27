@@ -64,6 +64,7 @@ public class ProtectProxyTest {
 			this.person = person;
 		}
 		@Override
+		//proxy객체참조, method 객체가 호출한 메서드 정보, args 메서드 인자정보
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			try {
 				if(method.getName().startsWith("get")) {
@@ -105,10 +106,10 @@ public class ProtectProxyTest {
 	}
 	
 	static Person getOwnerProxy(Person person) {
-		return (Person)Proxy.newProxyInstance(
-				person.getClass().getClassLoader(),
-				person.getClass().getInterfaces(),
-				new OwnerInvocationHandler(person));
+		return (Person)Proxy.newProxyInstance(//정적 메서드
+				person.getClass().getClassLoader(),//클래스 로더
+				person.getClass().getInterfaces(),//프록시에서 구현할 모든 인터페이스
+				new OwnerInvocationHandler(person));//InvocationHandler 구현한 클래스
 	}
 	static Person getNonOwnerProxy(Person person) {
 		return (Person)Proxy.newProxyInstance(

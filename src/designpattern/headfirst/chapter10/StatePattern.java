@@ -15,11 +15,9 @@ public class StatePattern {
 	
 	static abstract class BaseState implements State{
 		GumballMachine gumballMachine;
-
 		public BaseState(GumballMachine gumballMachine) {
 			this.gumballMachine = gumballMachine;
 		}
-		
 	}
 	
 	static class NoQuarterState extends BaseState{
@@ -27,8 +25,8 @@ public class StatePattern {
 			super(gumballMachine);
 		}
 		public void insertQuarter() {
-			gumballMachine.setState(gumballMachine.getHasQuarterState());
 			System.out.println("동전을 넣으셨습니다.");
+			gumballMachine.setState(gumballMachine.getHasQuarterState());
 		}
 		public void ejectQuarter() {
 			System.out.println("동전을 넣어 주세요");
@@ -169,7 +167,6 @@ public class StatePattern {
 	        return soldState;
 	    }
 		
-		
 		public void insertQuarter() {
 			state.insertQuarter();
 		}
@@ -233,5 +230,4 @@ public class StatePattern {
 
 		System.out.println(gumballMachine);
 	}
-	
 }
