@@ -134,6 +134,4 @@ public class Exam004AbstractFactory {
 		AbstractDuckFactory duckFactory = new CountingDuckFactory();
 		duckSimulator.simulate(duckFactory);
 	}
-	
-	
 }

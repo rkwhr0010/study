@@ -94,6 +94,4 @@ public class Exam003Decorator {
 		DuckSimulator duckSimulator = new DuckSimulator();
 		duckSimulator.simulate();
 	}
-	
-	
 }

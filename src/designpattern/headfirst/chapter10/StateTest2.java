@@ -69,6 +69,7 @@ public class StateTest2 {
 
 		public void dispense() {
 			System.out.println("No gumball dispensed");
+			
 		}
 
 		public void refill() {
