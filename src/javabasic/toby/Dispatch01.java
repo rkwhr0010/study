@@ -29,9 +29,6 @@ public class Dispatch01 {
 		ser.run();
 		System.out.println();
 		
-		List<Service2> list = Arrays.asList(new MyService(), new MyService2());
-		list.forEach(Service2::run);
-		
 		/* Method Signature
 		 * name, parameter list, parameter type, (no return type)
 		 * 오버로딩에 조건 (중복 정의)
@@ -41,9 +38,12 @@ public class Dispatch01 {
 		 * 메서드 레퍼런스 조건 (일치)
 		 * 
 		 */
+		List<Service2> list = Arrays.asList(new MyService(), new MyService2());
+		list.forEach(Service2::run); //forEach()메서드(컨슈머)와 run()메서드 ,method type 일치
+		
 		
 	}
-	static class OverRideText{
+	static class OverLoadText{
 		void over() {}
 		//Parameter type
 		void over(String val) {}
@@ -66,6 +66,15 @@ public class Dispatch01 {
 			this.value = value;
 		}
 	}
+	static class OverRideTest{
+		void over(String val) {}
+	}
+	static class OverRideImpl extends OverRideTest{
+//		String over(String val) {
+//			return "";
+//		}
+	}
+	
 	
 	
 	
@@ -124,7 +133,6 @@ public class Dispatch01 {
 			System.out.println(this.getClass().getSimpleName());
 		}
 	}
-	
 	
 	
 }
