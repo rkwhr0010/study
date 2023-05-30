@@ -1,5 +1,10 @@
 package javabasic.toby;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javabasic.toby.Dispatch01.Service2;
+
 public class Dispatch01 {
 	/**
 	 * 의존관계
@@ -24,7 +29,64 @@ public class Dispatch01 {
 	 * 	런타임시에 다른 오브젝트에 대한 레퍼런스를 획득
 	 * 	각 클래스가 캡슐화되고 자신의 역할에 충실하게 도와줌
 	 */
+	
+	
+	/*
+	 * 스테틱 디스패치
+	 */
+	static class Service{
+		void run() {
+			System.out.println("static dispatch");
+		}
+		void run(Integer call) {
+			System.out.println("static dispatch "+call);
+		}
+		void run(String call) {
+			System.out.println("static dispatch "+call);
+		}
+	}
+	/*
+	 * 다이나믹 디스패칭
+	 */
+	abstract static class Service2{
+		abstract void run();
+	}
+	static class MyService extends Service2{
+		void run() {
+			System.out.println(this.getClass().getSimpleName());
+		}
+	}
+	static class MyService2 extends Service2{
+		void run() {
+			System.out.println(this.getClass().getSimpleName());
+		}
+	}
+	
+	
 	public static void main(String[] args) {
+		//런타임이 아닌 컴파일 시점에 이미 무엇을 호출할지 결정됐다.(바이트 코드에 정보 있음) == 스테틱 디스패치
+		new Service().run();
+		new Service().run(1);
+		new Service().run("static");
+		System.out.println();
+		//다이나믹 디스패칭
+		Service2 ser = new MyService();
+		
+		/*다 제거 되어있고, 딱 이부분만 있다고 가정*/
+		/* 타입이 추상화된 타입이고, 가보면 abstract메서드로 구현부가 없음 
+		 * 컴파일 시점에서는 뭘 호출하는지 알 수 없다. 
+		 * 런타임 시점에서 ser 어떤 오브젝트가 할당되어있는지 확인하고 실행한다. (다이다믹 디스패칭)
+		 * 메서드를 호출하는 부분에 보이진 않지만 receiver parameter가 존재한다. 
+		 * receiver parameter에는 오브젝트 마다 존재하는 this가 할당되어 있다 .
+		 * 이 정보로 어떤 클래스가 호출했는지 런타임 시점에 알 수 있다. */
+		ser.run();
+		/*다 제거 되어있고, 딱 이부분만 있다고 가정*/
+		ser = new MyService2();
+		ser.run();
+		System.out.println();
+		
+		List<Service2> list = Arrays.asList(new MyService(), new MyService2());
+		list.forEach(Service2::run);
 		
 	}
 }
