@@ -11,6 +11,7 @@ public class StateTest3 {
 	}
 	static abstract class BaseState implements State{
 		private final GumballMachine gumballMachine;
+		
 		public BaseState(GumballMachine gumballMachine) {
 			this.gumballMachine = gumballMachine;
 		}
@@ -40,6 +41,8 @@ public class StateTest3 {
 			super(gumballMachine);
 		}
 		public void insertQuarter() {
+			System.out.println("동전을 넣으셨습니다.");
+		    super.gumballMachine.setState(super.gumballMachine.getNoQuarterState());
 		}
 		public void ejectQuarter() {
 		}
@@ -76,7 +79,7 @@ public class StateTest3 {
 	}
 //	
 	static class GumballMachine implements State{
-		private BaseState state;
+		private State state;
 		private int count = 0;
 		
 		private final BaseState soldOutState = new SoldOutState(this);
@@ -88,7 +91,7 @@ public class StateTest3 {
 			this.count = numberGumballs;
 			state = numberGumballs > 0 ? noQuarterState : soldOutState;
 		}
-		
+	
 		public void insertQuarter() {
 			state.insertQuarter();
 		}
@@ -100,6 +103,28 @@ public class StateTest3 {
 		}
 		public void dispense() {
 			state.dispense();
+		}
+		public State getState() {
+			return state;
+		}
+		public void setState(State state) {
+			this.state = state;
+		}
+
+		public BaseState getSoldOutState() {
+			return soldOutState;
+		}
+
+		public BaseState getNoQuarterState() {
+			return noQuarterState;
+		}
+
+		public BaseState getHasQuarterState() {
+			return hasQuarterState;
+		}
+
+		public BaseState getSoldState() {
+			return soldState;
 		}
 		
 	}
