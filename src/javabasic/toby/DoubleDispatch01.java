@@ -32,6 +32,7 @@ public class DoubleDispatch01 {
 		
 		for(Post p : posts) {
 			for(SNS s : sns) {
+				//이 p는 다이나믹 디스패치가 이루어진다. 컴파일 시점에 알 수 없고, 런타임 시점에 receiver parameter의 타입을 보고 알 수 있다.
 				p.postOn(s);
 			}
 		}
