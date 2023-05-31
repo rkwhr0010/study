@@ -10,5 +10,8 @@ public class BigDecimalTest {
 		
 		System.out.println( 10000 - (10000/31)*31 );
 		
+		System.out.println(BigDecimal.valueOf(1231231231L).toString());
+		
+		
 	}
 }

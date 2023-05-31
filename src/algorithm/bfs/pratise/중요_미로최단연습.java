@@ -135,26 +135,21 @@ public class 중요_미로최단연습 {
 			}
 		}
 	}
-	//간선 정보
 	static void B4(int x, int y) {
-		//간선 정보를 저장할 큐
 		Queue<Route> q = new LinkedList<>();
-		q.offer(new Route(x, y));//첫 간선
-		board[x][y] = 1;// 방명록 작성
-		
+		q.offer(new Route(x, y));
+		board[x][y] = 1;
 		while(!q.isEmpty()) {
-			Route cur = q.poll();
+			Route c = q.poll();
 			for(int i=0;i<dx.length;i++) {
-				int nx = cur.x + dx[i];
-				int ny = cur.y + dy[i];
-				//첫방문인지
-				if(fromClosedTo(nx, ny)&& board[nx][ny] == 0) {
-					board[nx][ny] = 1;
-					dis[nx][ny] = dis[cur.x][cur.y]+1;
+				int nx = c.x+dx[i];
+				int ny = c.y+dy[i];
+				if(fromClosedTo(nx, ny) && board[nx][ny]==0) {
+					board[nx][ny]=1;
+					dis[nx][ny] = dis[c.x][c.y] +1;
 					q.offer(new Route(nx, ny));
 				}
 			}
-			
 		}
 	}
 	
@@ -164,7 +159,7 @@ public class 중요_미로최단연습 {
 	
 	public static void main(String[] args) {
 //		BFS2(1, 1);
-		B3(1, 1);
+		B4(1, 1);
 		if(dis[7][7]==0) System.out.println(-1);
 		else System.out.println(dis[7][7]);
 	}
