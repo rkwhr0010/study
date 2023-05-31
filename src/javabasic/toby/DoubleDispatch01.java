@@ -7,14 +7,26 @@ public class DoubleDispatch01 {
 	static interface Post{
 		void postOn(SNS sns);
 	}
+	//POST에서 SNS 별로 다른 로직이 필요하다!
 	static class Text implements Post{
 		public void postOn(SNS sns) {
-			System.out.println("Text - >  "+sns.getClass().getSimpleName());
+			//instanceof 로 체크헀다.
+			if(sns instanceof Facebook) {
+				System.out.println("Text - >  Facebook");
+			}
+			if(sns instanceof Twitter) {
+				System.out.println("Text - >  Twitter");
+			}
 		}
 	}
 	static class Picture implements Post{
 		public void postOn(SNS sns) {
-			System.out.println("Picture - >  "+sns.getClass().getSimpleName());
+			if(sns instanceof Facebook) {
+				System.out.println("Picture - >  Facebook");
+			}
+			if(sns instanceof Twitter) {
+				System.out.println("Picture - >  Twitter");
+			}
 		}
 	}
 	
@@ -32,11 +44,8 @@ public class DoubleDispatch01 {
 		
 		for(Post p : posts) {
 			for(SNS s : sns) {
-				//이 p는 다이나믹 디스패치가 이루어진다. 컴파일 시점에 알 수 없고, 런타임 시점에 receiver parameter의 타입을 보고 알 수 있다.
 				p.postOn(s);
 			}
 		}
-		
-		
 	}
 }
