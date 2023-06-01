@@ -1,8 +1,11 @@
 package algorithm.bfs.pratise;
 
-import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+
+import algorithm.bfs.pratise.중요_미로최단연습.Route;
 /*
 N*N의 섬나라 아일랜드의 지도가 격자판의 정보로 주어집니다. 각 섬은 1로 표시되어 상하좌
 우와 대각선으로 연결되어 있으며, 0은 바다입니다. 섬나라 아일랜드에 몇 개의 섬이 있는지
@@ -15,6 +18,10 @@ public class 중요_섬나라연습 {
 			this.x=x;
 			this.y=y;
 		}
+		@Override
+			public String toString() {
+				return "["+x+","+y+"]";
+			}
 	}
 	//8방향
 	static enum Direction {
@@ -149,20 +156,54 @@ public class 중요_섬나라연습 {
 					board[nx][ny] = 0; //잔여땅 지우기
 					q.offer(new Point(nx, ny));//현재 상태값 저장
 				}
-				
 			}
-			
 		}
 	}
-	
+	static void f3(int[][] board) {
+		for(int i=0;i<board.length;i++) {
+			for(int j=0;j<board[i].length;j++) {
+				//땅이 존재하면 1
+				if(board[i][j] == 1) {
+					//찾은 섬 지우기
+					d3(i,j,board);
+				}
+			}
+		}
+	}
+	static void d3(int x,int y,int[][] board) {
+		//지금 위치 섬 제거
+		board[x][y] = 0;
+		++answer; //제거한 섬 카운트 증가
+		
+		//섬 주변을 동시에 퍼져나가면서 탐색할 정보를 저장할 컬렉션
+		LinkedList<Point> q = new LinkedList<>();
+		q.add(new Point(x, y));
+		while(!q.isEmpty()) {
+			//내가 선 위치
+			Point c = q.poll();
+			for(Direction n : Direction.values()) {
+				//다음 위치
+				int nx = c.x + n.x;
+				int ny = c.y + n.y;
+				//다음 위치가 유효범위내면서 땅이 존재하냐
+				if(valid(nx, ny)&& board[nx][ny]==1) {
+					list.add(new Point(nx, ny)); //부가 로직 단순히 제거된 땅 좌표저장용
+					board[nx][ny]=0;//땅 제거
+					q.offer(new Point(nx, ny));//다음 위치를 저장
+				}
+			}
+		}
+	}
+	static List<Point> list =new ArrayList<>();
 
 	private static boolean valid(int nx, int ny) {
 		return nx>=0 && nx<n && ny>=0 && ny<n;
 	}
 	
 	public static void main(String[] args){
-		f2(input);
+		f3(input);
 		System.out.println(answer);
+		System.out.println(list);
 	}
 }
 /*
