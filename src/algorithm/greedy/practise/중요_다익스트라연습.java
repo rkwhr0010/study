@@ -51,6 +51,31 @@ public class 중요_다익스트라연습 {
 			}
 		}
 	}
+	static void soso(int v) {
+		//최소 비용 
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		//거리
+		dis[v] = 0;
+		//누적 값 저장
+		q.offer(new Edge(v, 0));
+		while(!q.isEmpty()) {
+			Edge cur = q.poll();
+			
+			//현재 위치에서 다음으로 갈게 있냐
+			for(Edge next : graph.get(cur.vex)) {
+				//다음 경로에 저장된 비용이 , 현재 누산비 + 현재에서 다음경로로가는 비용 보다 크면 작은 값으로 교환
+//				if(dis[next.vex]> dis[cur.vex]+next.cost ) {}
+				Integer nextPathValue = dis[cur.vex]+next.cost;
+				
+				if(Integer.compare(dis[next.vex], nextPathValue)>0 ) {
+					dis[next.vex] = Math.min(dis[next.vex], nextPathValue );
+					q.offer(new Edge(next.vex, nextPathValue));
+				}
+				
+			}
+		}
+	}
+	
 	
 	static void sol(int v) {
 		//우선순위 큐
@@ -105,7 +130,7 @@ public class 중요_다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		so(1);
+		soso(1);
 		
 		
 		System.out.println("== 정점 별 최소 비용 ==");
