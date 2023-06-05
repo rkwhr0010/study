@@ -2,6 +2,7 @@ package algorithm.greedy.practise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.stream.Stream;
@@ -51,53 +52,83 @@ public class 중요_다익스트라연습 {
 			}
 		}
 	}
-	static void soso(int v) {
-		//최소 비용 
-		PriorityQueue<Edge> q = new PriorityQueue<>();
-		//거리
-		dis[v] = 0;
-		//누적 값 저장
-		q.offer(new Edge(v, 0));
+	
+	//출발 위치를 입력 받음
+	static void ex1(final int start) {
+		//1. 시작 노드 제외 전체 맥스값 초기화
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		dis[start] = 0;
+		//2. 가장 작은 비용 탐색을 위한 큐
+		final PriorityQueue<Edge> q = new PriorityQueue<>();
+		q.offer(new Edge(start, 0));
 		while(!q.isEmpty()) {
-			Edge cur = q.poll();
+			//3. 최소 비용 노드 탐색
+			final Edge lowCostEdge = q.poll();
+			for(Edge nextEdge : graph.get(lowCostEdge.vex)) {
+				//4. 다음으로 가는 비용 계산
+				final Integer calculatedValue = lowCostEdge.cost + nextEdge.cost;
+				//5. 계산된 비용이 기존의 최소 비용보다 작으면 최소 비용을 갱신
+				if(dis[nextEdge.vex]>calculatedValue) {
+					dis[nextEdge.vex] = calculatedValue;
+					q.offer(new Edge(nextEdge.vex, calculatedValue));
+				}
+			}
+		}//3~5 반복
+	}
+	static void ex2(final int start) {
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		dis[start] = 0;
+		final Queue<Edge> pq = new PriorityQueue<>();
+		pq.offer(new Edge(start, 0));
+		
+		while(!pq.isEmpty()) {
+			final Edge lowCostEdge = pq.poll();
 			
-			//현재 위치에서 다음으로 갈게 있냐
-			for(Edge next : graph.get(cur.vex)) {
-				//다음 경로에 저장된 비용이 , 현재 누산비 + 현재에서 다음경로로가는 비용 보다 크면 작은 값으로 교환
-//				if(dis[next.vex]> dis[cur.vex]+next.cost ) {}
-				Integer nextPathValue = dis[cur.vex]+next.cost;
-				
-				if(Integer.compare(dis[next.vex], nextPathValue)>0 ) {
-					dis[next.vex] = Math.min(dis[next.vex], nextPathValue );
-					q.offer(new Edge(next.vex, nextPathValue));
+			for(final Edge nextEdge : graph.get(lowCostEdge.vex)) {
+				final Integer sumCost = Integer.sum(lowCostEdge.cost, nextEdge.cost);
+				if(dis[nextEdge.vex] > sumCost) {
+					dis[nextEdge.vex] = sumCost;
+					pq.add(new Edge(nextEdge.vex, sumCost));
 				}
-				
 			}
 		}
 	}
 	
-	
-	static void sol(int v) {
-		//우선순위 큐
+	static void ex3(int start) {
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		dis[start] = 0;
 		Queue<Edge> q = new PriorityQueue<>();
-		dis[v] = 0;
-		q.offer(new Edge(v, 0));
+		q.offer(new Edge(start, 0));
 		while(!q.isEmpty()) {
-			//현재 상태값을 가진 정점.
-			Edge cur = q.poll();
-			//혹시 지금까지 비용이 이미 저장된 비용보다 큰가?
-			if(cur.cost>dis[cur.vex]) continue;
-			//현재에서 다음 경로들
-			for(Edge next : graph.get(cur.vex)) {
-				//누산된 비용이 현재까지비용 + 다음경로비용보다 크면 교체한다.
-				if(dis[next.vex] > cur.cost+next.cost) {
-					dis[next.vex] = cur.cost+next.cost;
-					q.offer(new Edge(next.vex, dis[next.vex]));
+			Edge lowCostEdge = q.poll();
+			for(final Edge nextEdge : graph.get(lowCostEdge.vex)) {
+				final int sumCost = Integer.sum(lowCostEdge.cost,nextEdge.cost);
+				if(dis[nextEdge.vex]> sumCost) {
+					dis[nextEdge.vex] = sumCost;
+					q.offer(new Edge(nextEdge.vex, sumCost));
 				}
 			}
 		}
 	}
 	
+	static void ex4(int start) {
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		dis[start] = 0;
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		q.offer(new Edge(start, 0));
+		
+		while(!q.isEmpty()) {
+			final Edge lowEdge = q.poll();
+			for(final Edge nextEdge : graph.get(lowEdge.vex)) {
+				final int sumCost = lowEdge.cost + nextEdge.cost;
+				if(dis[nextEdge.vex]>sumCost) {
+					dis[nextEdge.vex] = sumCost;
+					q.offer(new Edge(nextEdge.vex, sumCost));
+				}
+			}
+		}
+		
+	}
 	
 	
 	public static void main(String[] args){
@@ -115,11 +146,9 @@ public class 중요_다익스트라연습 {
 		
 		graph = new ArrayList<ArrayList<Edge>>();
 		graph.add(new ArrayList<>()); // 0 번 미사용
-		System.out.println("==정점 만큼 골라내기==");
 		Arrays.stream(arr)
 			.flatMap(data -> Stream.of(data[0],data[1]))
 			.distinct()
-			.peek(data -> System.out.print(data+", "))
 			.forEach( data -> graph.add(new ArrayList<>()));
 		//거리비용 저장 배열
 		dis = new int[graph.size()];
@@ -130,7 +159,7 @@ public class 중요_다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		soso(1);
+		ex4(1);
 		
 		
 		System.out.println("== 정점 별 최소 비용 ==");
