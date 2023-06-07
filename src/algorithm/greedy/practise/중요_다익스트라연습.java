@@ -127,7 +127,31 @@ public class 중요_다익스트라연습 {
 				}
 			}
 		}
+	}
+	
+	static void ex5(int start) {
+		//모든 배열을 최대값(가능하면 무한대)로 초기화
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		//단, 시작 값은 0으로 초기화
+		dis[start] = 0;
 		
+		//다익스트라 알고리즘 탐색을 위한 비교 기준(최소값)
+		Comparator<Edge> comparator = (a,b)-> Integer.compare(a.cost, b.cost);
+		//상태값 저장을 위한 우선순위 큐
+		PriorityQueue<Edge> q = new PriorityQueue<>(comparator);
+		//탐색 시작 값
+		q.offer(new Edge(start, 0));
+		
+		while(!q.isEmpty()) {
+			Edge now = q.poll();//현시점 가장 최소비용
+			for(Edge next : graph.get(now.vex)) {//현 위치에 연결된 다른 경로들
+				Integer sumCost = now.cost + next.cost;//현재까지 계산된 최소비용 + 다음 경로 비용
+				if(dis[next.vex] > sumCost) {//다음 경로에 저장된 최소비용이 현재까지 계산 비용보다 크면 교체
+					dis[next.vex] = sumCost;
+					q.offer(new Edge(next.vex, sumCost));//가장 최소 비용인 경우에만 다익스트라 탐색 대상이 된다.
+				}
+			}
+		}
 	}
 	
 	
@@ -159,7 +183,7 @@ public class 중요_다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		ex4(1);
+		ex5(1);
 		
 		
 		System.out.println("== 정점 별 최소 비용 ==");
