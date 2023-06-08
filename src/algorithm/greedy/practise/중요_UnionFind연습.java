@@ -107,8 +107,13 @@ public class 중요_UnionFind연습 {
 		return find2(x) == find2(y);
 	}
 	
-	
-	
+	static int find3(int n) {
+		if(parents[n] == n) return n;//내가 내 그룹에 속해있음
+		else return parents[n] = find3(parents[n]);//다르면 다른 n에 속해있는 것으로 끝까지 탐색 필요
+	}
+	static void union3(int a, int b) {
+		if(find3(a) != find3(b)) parents[a] = b;
+	}
 	
 	
 	

@@ -7,6 +7,22 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.stream.Stream;
 /**
+다익스트라 알고리즘은 그래프에서 한 노드에서 다른 노드로 가는 최단 경로를 찾는 알고리즘입니다. 
+이 알고리즘은 1956년 네덜란드의 컴퓨터 과학자 에츠허르 데이크스트라가 고안했습니다.
+
+다익스트라 알고리즘은 다음과 같은 단계로 동작합니다.
+
+1. 출발 노드를 선택합니다.
+2. 출발 노드를 제외한 모든 노드의 최소 비용을 무한대로 초기화합니다.
+3. 방문하지 않은 노드 중에서 최소 비용이 가장 작은 노드를 선택합니다.
+4. 선택한 노드를 거쳐서 다른 노드로 가는 비용을 계산합니다.
+5. 계산된 비용이 기존의 최소 비용보다 작으면 최소 비용을 갱신합니다.
+6. 3~5번을 반복합니다.
+
+다익스트라 알고리즘은 최악의 경우 O(E log V)의 시간 복잡도를 갖습니다. 여기서 E는 그래프의 간선 수, V는 그래프의 노드 수입니다.
+
+다익스트라 알고리즘은 그래프에서 최단 경로를 찾는 데 널리 사용되는 알고리즘입니다. 예를 들어, 도로 교통망에서 출발지에서 목적지까지 가는 최단 경로를 찾는 데 사용할 수 있습니다.
+
 가중치 방향그래프에서 1번 정점에서 모든 정점으로의 최소 거리비용을 출력하는 프로
 그램을 작성하세요. 
  */
@@ -153,6 +169,23 @@ public class 중요_다익스트라연습 {
 			}
 		}
 	}
+	static void ex6 (int start) {
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		dis[start] = 0;
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		q.offer(new Edge(start, 0));
+		
+		while(!q.isEmpty()) {
+			Edge now = q.poll();
+			for(Edge next : graph.get(now.vex)) {
+				int sum = now.cost+next.cost;
+				if(dis[next.vex]>sum) {
+					dis[next.vex] = sum;
+					q.offer(new Edge(next.vex, sum));
+				}
+			}
+		}
+	}
 	
 	
 	public static void main(String[] args){
@@ -183,7 +216,7 @@ public class 중요_다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		ex5(1);
+		ex6(1);
 		
 		
 		System.out.println("== 정점 별 최소 비용 ==");
