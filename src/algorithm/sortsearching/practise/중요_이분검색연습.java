@@ -18,7 +18,7 @@ import algorithm.sortsearching.RandomUtils;
 이분검색은 자료의 크기가 n일 때, 최악의 경우에도 O(log n)의 시간 복잡도를 가지기 때문에, 
 자료의 크기가 큰 경우에도 효율적으로 탐색할 수 있습니다.
  */
-public class 이분검색연습 {
+public class 중요_이분검색연습 {
 	public static void main(String[] args) {
 		int[] arr = RandomUtils.이분검색();
 		int target = arr[10];
@@ -26,7 +26,7 @@ public class 이분검색연습 {
 		System.out.println(Arrays.toString(arr));
 		System.out.println(target);
 		System.out.println(binarySearch2(arr, target));
-		System.out.println(bi(arr, target));
+		System.out.println(bi2(arr, target));
 		
 	}
 	
@@ -56,6 +56,28 @@ public class 이분검색연습 {
 		}
 		return -1;
 	}
+	
+	static int bi2(int[] arr, int target) {
+		int noSearch = -1;
+		//반드시 정렬된 상태
+		Arrays.sort(arr);
+		//최소, 최대 인덱스 정의
+		int lt = 0;
+		int rt = arr.length-1;
+		
+		//좌측 인덱스가 더 크면 종료
+		while(!(lt>rt)) {
+			//탐색할 위치
+			int mid = (lt+rt) /2;
+			//찾음
+			if(arr[mid] == target) return mid;
+			//못찾음
+			if(arr[mid]>lt) lt = mid +1;
+			else rt = mid -1;
+		}
+		return noSearch;
+	}
+	
 	
 	static int binarySearch(int[] arr, int target) {
 		Arrays.sort(arr);
