@@ -40,7 +40,7 @@ public class LinkedListEx01 {
 			if(head == null) return null;//편의상 예외 회피
 
 			Node<T> prev = head;
-			
+			//요소가 단 하나인 경우
 			if(prev.next == null){
 				head = null;
 				tail = null;
@@ -48,14 +48,23 @@ public class LinkedListEx01 {
 				return head;
 			}
 			
+			//tail 직전까지 탐색
 			while(prev.next != tail) {
-				//tail 직전까지 탐색
 				prev = prev.next;
 			}
-			tail = prev; //직전 노드를 꼬리로
-			prev.next = null; //tmp에 연결된 다음 값 제거
+			tail = prev;      //직전 노드를 꼬리로
+			tail.next = null; //tail에 연결된 다음 값 제거
 			length--;
 			return prev;
+		}
+		
+		Node<T> shift(){
+			if(head == null) return null;
+			Node<T> tmp = head;
+			head = tmp.next;
+			length--;
+			if(length == 0) tail = null;
+			return tmp;
 		}
 		
 		
@@ -77,20 +86,15 @@ public class LinkedListEx01 {
 		list.push("셋");
 		list.push("넷");
 		list.push("다섯");
-		System.out.println(list.toString());
-		list.pop();
-		System.out.println(list.toString());
-		list.pop();
-		System.out.println(list.toString());
-		list.pop();
-		System.out.println(list.toString());
-		list.pop();
-		System.out.println(list.toString());
-		list.pop();
-		System.out.println(list.toString());
-		list.push("하나");
-		list.push("둘");
-		System.out.println(list.toString());
+		System.out.println(list);
+		list.shift();
+		list.shift();
+		list.shift();
+		list.shift();
+		System.out.println(list);
+		list.shift();
+		list.shift();
+		System.out.println(list);
 		
 		
 	}
