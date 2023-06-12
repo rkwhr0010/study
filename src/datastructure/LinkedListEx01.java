@@ -18,25 +18,30 @@ public class LinkedListEx01 {
 	static class SingleLinkedList<T>{
 		Node<T> head;
 		Node<T> tail;
+		int length;
 		
-		void push(T data) {
+		SingleLinkedList<T> push(T data) {
+			final Node<T> newNode = new Node<>(data);
 			//첫 저장
 			if(Objects.isNull(head)) {
-				head = new Node<T>(data);
-				tail = head;
+				this.head = newNode;
+				this.tail = newNode; // == this.head;
 			}
 			//이후 저장
 			else {
-				tail.next = new Node<T>(data);
-				tail = tail.next;
+				this.tail.next = newNode;
+				this.tail = newNode;
 			}
+			length++;
+			return this;
 		}
 		@Override
 		public String toString() {
-			return toString(head);
+			if(this.head == null) return "";
+			return "["+ toString(head)+"] length :"+ this.length;
 		}
 		private String toString(Node<T> node) {
-			if(node.next != null) return node.toString()+"=>"+toString(node.next);
+			if(node.next != null) return node.toString()+", "+toString(node.next);
 			else return node.toString();
 		}
 	}
