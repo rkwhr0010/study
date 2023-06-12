@@ -35,9 +35,33 @@ public class LinkedListEx01 {
 			length++;
 			return this;
 		}
+		
+		Node<T> pop(){
+			if(head == null) return null;//편의상 예외 회피
+
+			Node<T> prev = head;
+			
+			if(prev.next == null){
+				head = null;
+				tail = null;
+				length--;
+				return head;
+			}
+			
+			while(prev.next != tail) {
+				//tail 직전까지 탐색
+				prev = prev.next;
+			}
+			tail = prev; //직전 노드를 꼬리로
+			prev.next = null; //tmp에 연결된 다음 값 제거
+			length--;
+			return prev;
+		}
+		
+		
 		@Override
 		public String toString() {
-			if(this.head == null) return "";
+			if(this.head == null) return "없습니다.";
 			return "["+ toString(head)+"] length :"+ this.length;
 		}
 		private String toString(Node<T> node) {
@@ -53,7 +77,19 @@ public class LinkedListEx01 {
 		list.push("셋");
 		list.push("넷");
 		list.push("다섯");
-		
+		System.out.println(list.toString());
+		list.pop();
+		System.out.println(list.toString());
+		list.pop();
+		System.out.println(list.toString());
+		list.pop();
+		System.out.println(list.toString());
+		list.pop();
+		System.out.println(list.toString());
+		list.pop();
+		System.out.println(list.toString());
+		list.push("하나");
+		list.push("둘");
 		System.out.println(list.toString());
 		
 		
