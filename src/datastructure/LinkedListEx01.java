@@ -1,17 +1,18 @@
 package datastructure;
 
 import java.util.Objects;
+import java.util.stream.StreamSupport;
 
 public class LinkedListEx01 {
 	static class Node<T>{
 		T data;
-		Node next;
+		Node<T> next;
 		public Node(T data) {
 			this.data = data;
 		}
 		@Override
 		public String toString() {
-			return this.data.toString();
+			return "[data:"+this.data.toString()+"]";
 		}
 	}
 	
@@ -67,6 +68,20 @@ public class LinkedListEx01 {
 			return tmp;
 		}
 		
+		SingleLinkedList<T> unShift(T data) {
+			Node<T> newNode = new Node<T>(data);
+			//첫 삽입 시 tail은 head와 같은 값을 넣는다.
+			if(head == null) 
+				tail = newNode;
+			//첫 삽입 시 head는 null일 것 하지만 상관없음
+			newNode.next = head;
+			//위, 아래 순서는 중요 아래 코드가 먼저오면 안된다.
+			head = newNode;
+			length++;
+			return this;
+		}
+		
+		
 		
 		@Override
 		public String toString() {
@@ -81,20 +96,24 @@ public class LinkedListEx01 {
 	
 	public static void main(String[] args) {
 		SingleLinkedList<String> list = new SingleLinkedList<>();
-		list.push("하나");
-		list.push("둘");
-		list.push("셋");
-		list.push("넷");
-		list.push("다섯");
+		
+//		for(int i = 0;i<1000;i++) {
+//			list.push(""+i);
+//		}
+//		System.out.println(list);
+//		for(int i = 0;i<1000;i++) {
+//			list.pop();
+//		}
+//		System.out.println(list);
+		for(int i = 0;i<5;i++) {
+			list.unShift(i+"");
+		}
 		System.out.println(list);
-		list.shift();
-		list.shift();
-		list.shift();
-		list.shift();
+		for(int i = 0;i<5;i++) {
+			list.shift();
+		}
 		System.out.println(list);
-		list.shift();
-		list.shift();
-		System.out.println(list);
+		
 		
 		
 	}
