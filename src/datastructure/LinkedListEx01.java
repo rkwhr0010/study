@@ -99,6 +99,24 @@ public class LinkedListEx01 {
 			return true;
 		}
 		
+		boolean insert(int index, T data){
+			//인덱스가 길이보다 크면 튕긴다. 따라서 첫 입력은 반드시 0만 허가된다.
+			if(index>=0&&index > length) return false;
+			//맨 처음 값 처리 및 인덱스 0인 경우 처리
+			if(head == null||index == 0) {
+				unShift(data);
+				return true;
+			}
+			//여기 도달했다는 것은 무조건 인덱스 0은 채워져 있다
+			//따라서 index-1이 무리가 없다.
+			Node<T> prev = get(index-1);
+			Node<T> newNode = new Node<>(data);
+			newNode.next = prev.next;
+			prev.next = newNode;
+			length++;
+			return true;
+		}
+		
 		
 		@Override
 		public String toString() {
@@ -130,12 +148,16 @@ public class LinkedListEx01 {
 //			list.shift();
 //		}
 		System.out.println(list);
-		list.push("하나");
-		list.push("하나");
-		list.push("하나");
-		list.push("하나");
-		list.push("하나");
-		list.set(2, "셋셋셋");
+//		list.push("하나");
+//		list.push("둘");
+//		list.push("셋");
+//		list.push("넷");
+//		list.push("다섯");
+//		list.insert(2, "셋셋셋");
+		list.insert(0, "영");
+		list.insert(1, "일");
+		list.insert(2, "이");
+		list.insert(4, "이");
 		System.out.println(list);
 		
 		
