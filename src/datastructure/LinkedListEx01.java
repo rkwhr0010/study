@@ -1,7 +1,6 @@
 package datastructure;
 
 import java.util.Objects;
-import java.util.stream.StreamSupport;
 
 public class LinkedListEx01 {
 	static class Node<T>{
@@ -21,6 +20,7 @@ public class LinkedListEx01 {
 		Node<T> tail;
 		int length;
 		
+		//맨뒤에 추가
 		SingleLinkedList<T> push(T data) {
 			final Node<T> newNode = new Node<>(data);
 			//첫 저장
@@ -36,7 +36,7 @@ public class LinkedListEx01 {
 			length++;
 			return this;
 		}
-		
+		//맨뒤 제거/리턴
 		Node<T> pop(){
 			if(head == null) return null;//편의상 예외 회피
 
@@ -58,7 +58,7 @@ public class LinkedListEx01 {
 			length--;
 			return prev;
 		}
-		
+		//맨앞 제거/리턴
 		Node<T> shift(){
 			if(head == null) return null;
 			Node<T> tmp = head;
@@ -67,7 +67,7 @@ public class LinkedListEx01 {
 			if(length == 0) tail = null;
 			return tmp;
 		}
-		
+		//첫자리에 삽입
 		SingleLinkedList<T> unShift(T data) {
 			Node<T> newNode = new Node<T>(data);
 			//첫 삽입 시 tail은 head와 같은 값을 넣는다.
@@ -80,7 +80,7 @@ public class LinkedListEx01 {
 			length++;
 			return this;
 		}
-		
+		//데이터 찾기
 		Node<T> get(int index){
 			//유효범위
 			if( !(0<= index && index<length) ) return null;
@@ -91,6 +91,13 @@ public class LinkedListEx01 {
 			return target;
 		}
 		
+		//데이터 수정
+		Boolean set(int index, T data) {
+			Node<T> findNode = get(index);
+			if(findNode == null) return false;
+			findNode.data = data;
+			return true;
+		}
 		
 		
 		@Override
@@ -107,9 +114,9 @@ public class LinkedListEx01 {
 	public static void main(String[] args) {
 		SingleLinkedList<String> list = new SingleLinkedList<>();
 		
-		for(int i = 0;i<5;i++) {
-			list.push(String.valueOf(1+i));
-		}
+//		for(int i = 0;i<5;i++) {
+//			list.push(String.valueOf(1+i));
+//		}
 //		System.out.println(list);
 //		for(int i = 0;i<1000;i++) {
 //			list.pop();
@@ -123,7 +130,13 @@ public class LinkedListEx01 {
 //			list.shift();
 //		}
 		System.out.println(list);
-		System.out.println(list.get(-1));
+		list.push("하나");
+		list.push("하나");
+		list.push("하나");
+		list.push("하나");
+		list.push("하나");
+		list.set(2, "셋셋셋");
+		System.out.println(list);
 		
 		
 		
