@@ -81,6 +81,16 @@ public class LinkedListEx01 {
 			return this;
 		}
 		
+		Node<T> get(int index){
+			//유효범위
+			if( !(0<= index && index<length) ) return null;
+			Node<T> target = head;
+			for(int i=0;i<index;i++) {
+				target = target.next;
+			}
+			return target;
+		}
+		
 		
 		
 		@Override
@@ -97,22 +107,23 @@ public class LinkedListEx01 {
 	public static void main(String[] args) {
 		SingleLinkedList<String> list = new SingleLinkedList<>();
 		
-//		for(int i = 0;i<1000;i++) {
-//			list.push(""+i);
-//		}
+		for(int i = 0;i<5;i++) {
+			list.push(String.valueOf(1+i));
+		}
 //		System.out.println(list);
 //		for(int i = 0;i<1000;i++) {
 //			list.pop();
 //		}
 //		System.out.println(list);
-		for(int i = 0;i<5;i++) {
-			list.unShift(i+"");
-		}
+//		for(int i = 0;i<5;i++) {
+//			list.unShift(i+"");
+//		}
+//		System.out.println(list);
+//		for(int i = 0;i<5;i++) {
+//			list.shift();
+//		}
 		System.out.println(list);
-		for(int i = 0;i<5;i++) {
-			list.shift();
-		}
-		System.out.println(list);
+		System.out.println(list.get(-1));
 		
 		
 		
