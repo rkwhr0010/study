@@ -117,6 +117,20 @@ public class LinkedListEx01 {
 			return true;
 		}
 		
+		Node<T> remove(int index){
+			if(index<0||index>=length) return null;
+			if(index == 0) return shift();//첫자리
+			if(index == length-1) return pop(); //끝자리
+			
+			Node<T> prev = get(index-1);
+			Node<T> removeNode = prev.next;
+			
+			prev.next = prev.next.next; 
+//			prev.next = removeNode.next;위와 같음
+			
+			length--;
+			return removeNode;
+		}
 		
 		@Override
 		public String toString() {
@@ -147,19 +161,22 @@ public class LinkedListEx01 {
 //		for(int i = 0;i<5;i++) {
 //			list.shift();
 //		}
+		list.push("하나");
+		list.push("둘");
+		list.push("셋");
+		list.push("넷");
+		list.push("다섯");
 		System.out.println(list);
-//		list.push("하나");
-//		list.push("둘");
-//		list.push("셋");
-//		list.push("넷");
-//		list.push("다섯");
-//		list.insert(2, "셋셋셋");
-		list.insert(0, "영");
-		list.insert(1, "일");
-		list.insert(2, "이");
-		list.insert(4, "이");
+		list.remove(2);
 		System.out.println(list);
-		
+		list.remove(4);
+		System.out.println(list);
+		list.remove(0);
+		System.out.println(list);
+		list.remove(0);
+		list.remove(0);
+		list.remove(0);
+		System.out.println(list);
 		
 		
 	}
