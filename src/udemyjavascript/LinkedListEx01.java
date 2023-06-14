@@ -132,6 +132,35 @@ public class LinkedListEx01 {
 			return removeNode;
 		}
 		
+		void reverse() {
+			Node<T> buffer = null;
+			if(length == 1) return;
+			buffer = head;
+			head = tail;
+			tail = buffer;
+			if(length == 2) return;
+			
+			Node<T> prevHead = tail;
+			
+			//현재 역순상태임
+			Node<T> cur = prevHead.next;
+			Node<T> next = cur.next;
+			if(length == 3) {
+				cur.next = tail;
+				head.next = cur;
+				return;
+			}
+			
+			while(next != head) {
+				next = cur.next;
+			}
+			
+			
+			
+			
+		}
+		
+		
 		@Override
 		public String toString() {
 			if(this.head == null) return "없습니다.";
