@@ -11,6 +11,18 @@ public class 두배열합치기 {
 		int[] arr1 = ThreadLocalRandom.current().ints(20, 1, 100).sorted().toArray();
 		int[] arr2 = ThreadLocalRandom.current().ints(20, 1, 100).sorted().toArray();
 		
+		int[] newArr = mergeArr(arr1, arr2);
+		
+		int[] answer = IntStream.concat(Arrays.stream(arr1), Arrays.stream(arr2))
+			.sorted()
+			.toArray();
+		
+		System.out.println(Arrays.toString(newArr));
+		System.out.println(Arrays.toString(answer));
+		
+	}
+
+	private static int[] mergeArr(int[] arr1, int[] arr2) {
 		int size = arr1.length+arr2.length;
 		int[] newArr = new int[size];
 		
@@ -30,16 +42,7 @@ public class 두배열합치기 {
 		
 		while(p1<arr1.length) 	newArr[i++]=arr1[p1++];
 		while(p2<arr2.length) 	newArr[i++]=arr1[p2++];
-		
-		int[] answer = IntStream.concat(Arrays.stream(arr1), Arrays.stream(arr2))
-			.sorted()
-			.toArray();
-		
-		System.out.println(Arrays.toString(newArr));
-		System.out.println(Arrays.toString(answer));
-		
-		
-		
+		return newArr;
 	}
 	
 	

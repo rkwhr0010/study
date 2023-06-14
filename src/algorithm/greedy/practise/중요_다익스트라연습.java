@@ -45,6 +45,34 @@ public class 중요_다익스트라연습 {
 	static ArrayList<ArrayList<Edge>> graph;
 	static int[] dis;
 	
+	static void co(int v) {
+		//모든 경로 값을 최대로 초기화
+		Arrays.fill(dis, Integer.MAX_VALUE);
+		dis[v] = 0; //시작 경로만 0으로 
+		//탐색을 진행하는 노드들 중 최소 비용부터 처리하기 위한 우선순위 큐
+		PriorityQueue<Edge> q = new PriorityQueue<>();
+		q.offer(new Edge(v, 0)); //시작값
+		while(!q.isEmpty()) {
+			//탐색을 진행하는 노드들 중 최소 비용 노드
+			Edge c = q.poll();
+			//현재까지 누산 비용이, 저장된 비용보다 크면 필요없다.
+			if(c.cost>dis[c.vex]) continue;
+			//지금 노드와 연결된 모든 다음 노드 정보
+			for(Edge n : graph.get(c.vex)) {
+				final int sumCost = c.cost+n.cost;
+				//이미 저장된 경로비용이 더 큰가?
+				if(sumCost<dis[n.vex]) {
+					dis[n.vex] = sumCost;//작은 값으로 갱신
+					q.offer(new Edge(n.vex, sumCost));
+				}
+				
+			}
+			
+		}
+		
+		
+	}
+	
 	static void so(int v) {
 		//다익스트라를 위한 우선순위 큐, 탐색 속도 N log N
 		Queue<Edge> q = new PriorityQueue<>();
@@ -216,7 +244,7 @@ public class 중요_다익스트라연습 {
 			.peek(data->System.out.println(data[0]+"->" +data[1]+" 가중치:"+data[2]))
 			.forEach(data ->graph.get(data[0]).add(new Edge(data[1], data[2])));
 		
-		ex6(1);
+		co(1);
 		
 		
 		System.out.println("== 정점 별 최소 비용 ==");

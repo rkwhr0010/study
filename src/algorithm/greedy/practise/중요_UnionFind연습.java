@@ -115,6 +115,13 @@ public class 중요_UnionFind연습 {
 		if(find3(a) != find3(b)) parents[a] = b;
 	}
 	
+	static int find4(int n) {
+		if(parents[n] == n) return n;
+		else return parents[n] = find4(parents[n]);
+	}
+	
+	
+	
 	
 	
 }
