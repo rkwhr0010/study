@@ -1,4 +1,4 @@
-package datastructure;
+package udemyjavascript;
 
 import java.util.Objects;
 

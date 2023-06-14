@@ -1,4 +1,4 @@
-package datastructure;
+package udemyjavascript;
 /*
 리스트 기반 리스트 특징
 1. 구조체와 포인터를 함께 사용

@@ -1,4 +1,4 @@
-package datastructure;
+package udemyjavascript;
 
 public class SearchEx01 {
 	

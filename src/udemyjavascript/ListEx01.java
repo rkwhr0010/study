@@ -1,4 +1,4 @@
-package datastructure;
+package udemyjavascript;
 /*
 배열 기반 리스트 특징
 1. 특정 위치에 즉시 접근이 가능하다.
