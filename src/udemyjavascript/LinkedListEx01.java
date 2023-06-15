@@ -132,32 +132,25 @@ public class LinkedListEx01 {
 			return removeNode;
 		}
 		
-		void reverse() {
-			Node<T> buffer = null;
-			if(length == 1) return;
-			buffer = head;
+		
+		SingleLinkedList<T> reverse() {
+			//머리, 꼬리 변경
+			Node<T> node = head;
 			head = tail;
-			tail = buffer;
-			if(length == 2) return;
+			tail = node;
 			
-			Node<T> prevHead = tail;
+			//스왑용 로컬 변수
+			Node<T> prev = null;
+			Node<T> next = null;
 			
-			//현재 역순상태임
-			Node<T> cur = prevHead.next;
-			Node<T> next = cur.next;
-			if(length == 3) {
-				cur.next = tail;
-				head.next = cur;
-				return;
+			for(int i=0;i<length;i++) {
+				next = node.next; //한 칸 전진
+				node.next = prev; //이전 방향 바라봄
+				prev = node; //현재 노드가 이전이됨
+				node = next; //다음 노드가 현재 노드가 됨
+				
 			}
-			
-			while(next != head) {
-				next = cur.next;
-			}
-			
-			
-			
-			
+			return this;
 		}
 		
 		
@@ -196,17 +189,8 @@ public class LinkedListEx01 {
 		list.push("넷");
 		list.push("다섯");
 		System.out.println(list);
-		list.remove(2);
+		list.reverse();
 		System.out.println(list);
-		list.remove(4);
-		System.out.println(list);
-		list.remove(0);
-		System.out.println(list);
-		list.remove(0);
-		list.remove(0);
-		list.remove(0);
-		System.out.println(list);
-		
 		
 	}
 }
