@@ -86,73 +86,22 @@ public class SortEx01 {
 		}
 	}
 	static class InsertSort implements SortStategy<Integer>{
+		//논리적으로 순회 마다 작은 서브배열을 만든다고 가정한다.
+		//따라서 첫 순회 [0]은 이미 정렬됐다고 가정한다.
+		//그 다음 [0][1]이 되야 정렬 비교할게 생긴다.
+		//1부터 시작
 		public Integer[] sort(Integer[] arr) {
 			Integer[] clone = arr.clone();
-			//앞 요소는 정렬되어 있다고 취급
-			//횟 수용 반복문
-			System.out.println();
 			for(int i=1;i<clone.length;i++) {
-				System.out.println(Arrays.toString(clone));
-				int tmp = clone[i]; // 정렬 대상
-				int j=i-1; //의미없는 초기화
-				//실제 정렬용 반복문
-				for(;j>=0;j--) {
-					//tmp 값이 더 클때까지 기존배열 값을 쉬프트한다.
-					if(clone[j]>tmp) clone[j+1]=clone[j];
-					else break;
-				}
-				clone[j+1] = tmp;
+				Integer newValue = clone[i];//데이터 임시보관
+				Integer j = i-1;
+				for(;j>=0 && newValue<clone[j];j--)
+					//신규 값이 들어갈 자리 만들기
+					clone[j+1] = clone[j];
+				//신규값보다 더 작은 위치 [j]에 그 앞자리 +1 이 신규값자리
+				clone[j+1] = newValue;
 			}
 			return clone;
 		}
-/*
-		for(int i=1; i<n; i++){
-			int tmp=arr[i], j;
-			for(j=i-1; j>=0; j--){
-				if(arr[j]>tmp) arr[j+1]=arr[j];
-				else break;
-			}
-			arr[j+1]=tmp;
-		}
-		return arr;
- * */
-		public Integer[] sort2(Integer[] arr) {
-			Integer[] result = new Integer[1];
-			result[0] = arr[0];//명시적으로 하나 요소일 땐 이미 정렬된 것
-			
-			//1부터 시작
-			for(int i=1;i<arr.length;i++) {
-				result = sortHelper(result, arr[i]);
-			}
-			return result;
-		}
-		
-		//구조상 이미 정렬된 배열만 들어온다.
-		private Integer[] sortHelper(Integer[] arr, Integer newMember) {
-			Integer[] newArr = new Integer[arr.length+1];
-			int insertIndex = -1;
-			for(int i = 0;i<arr.length;i++) {
-				//신규값이 더 커지는 지점 탐색
-				if(arr[i]<newMember) {
-					insertIndex = i;
-					break;
-				}
-			}
-			//못찾으면 가장 작은 것
-			insertIndex = insertIndex == -1 ? 0 : insertIndex;
-			
-			for(int i = 0;i<insertIndex;i++) 
-				newArr[i] = arr[i];
-			
-			newArr[insertIndex] = newMember;
-			
-			for(int i = insertIndex+1;i<newArr.length;i++) {
-				newArr[i] = arr[i-1];
-			}
-			return newArr;
-		}
-		
 	}
-	
-	
 }
