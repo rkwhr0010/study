@@ -14,17 +14,13 @@ public class SortEx02 {
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		
+		list.add(new MergeSort());
+		
 		for(SortStategy<Integer> sort : list) {
 			System.out.println(Arrays.toString(sort.sort(array)));
 		}
 		
-		Integer[] array2 = current.ints(1, 100).distinct().limit(10).boxed().sorted().toArray(Integer[]::new);
-		Integer[] array3 = current.ints(1, 100).distinct().limit(10).boxed().sorted().toArray(Integer[]::new);
-		System.out.println(Arrays.toString(array2));
-		System.out.println(Arrays.toString(array3));
 		
-		MergeSort mergeSort = new MergeSort();
-		System.out.println(Arrays.toString(mergeSort.merge(array2, array3)));
 		
 		
 	}
@@ -42,12 +38,18 @@ public class SortEx02 {
 	
 	static class MergeSort implements SortStategy<Integer>{
 		public Integer[] sort(Integer[] arr) {
-			Integer[] clone = arr.clone();
+			//두 개의 배열로 나눈다.
+			int mid = arr.length/2;
+			Integer[] ltArr = Arrays.copyOfRange(arr, 0, mid);
+			Integer[] rtArr = Arrays.copyOfRange(arr,mid,arr.length);
 			
-			
-			
-			return clone;
+			//각 배열은 길이가 1~0일 때까지 계속 재귀호출한다.
+			if(ltArr.length>1) ltArr = sort(ltArr);
+			if(rtArr.length>1) rtArr = sort(rtArr);
+			return merge(ltArr,rtArr);
 		}
+		
+		
 		//두 배열은 정렬되어있다고 가정
 		private Integer[] merge(Integer[] arr1, Integer[] arr2) {
 			Integer[] newArr = new Integer[arr1.length+arr2.length];
