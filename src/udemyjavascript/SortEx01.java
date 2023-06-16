@@ -87,6 +87,36 @@ public class SortEx01 {
 	}
 	static class InsertSort implements SortStategy<Integer>{
 		public Integer[] sort(Integer[] arr) {
+			Integer[] clone = arr.clone();
+			//앞 요소는 정렬되어 있다고 취급
+			//횟 수용 반복문
+			System.out.println();
+			for(int i=1;i<clone.length;i++) {
+				System.out.println(Arrays.toString(clone));
+				int tmp = clone[i]; // 정렬 대상
+				int j=i-1; //의미없는 초기화
+				//실제 정렬용 반복문
+				for(;j>=0;j--) {
+					//tmp 값이 더 클때까지 기존배열 값을 쉬프트한다.
+					if(clone[j]>tmp) clone[j+1]=clone[j];
+					else break;
+				}
+				clone[j+1] = tmp;
+			}
+			return clone;
+		}
+/*
+		for(int i=1; i<n; i++){
+			int tmp=arr[i], j;
+			for(j=i-1; j>=0; j--){
+				if(arr[j]>tmp) arr[j+1]=arr[j];
+				else break;
+			}
+			arr[j+1]=tmp;
+		}
+		return arr;
+ * */
+		public Integer[] sort2(Integer[] arr) {
 			Integer[] result = new Integer[1];
 			result[0] = arr[0];//명시적으로 하나 요소일 땐 이미 정렬된 것
 			
