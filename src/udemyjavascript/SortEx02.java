@@ -38,15 +38,13 @@ public class SortEx02 {
 	
 	static class MergeSort implements SortStategy<Integer>{
 		public Integer[] sort(Integer[] arr) {
+			//더 이상 나눌 수 없는 배열은 리턴
+			if(arr.length<=1) return arr;
 			//두 개의 배열로 나눈다.
 			int mid = arr.length/2;
 			Integer[] ltArr = Arrays.copyOfRange(arr, 0, mid);
 			Integer[] rtArr = Arrays.copyOfRange(arr,mid,arr.length);
-			
-			//각 배열은 길이가 1~0일 때까지 계속 재귀호출한다.
-			if(ltArr.length>1) ltArr = sort(ltArr);
-			if(rtArr.length>1) rtArr = sort(rtArr);
-			return merge(ltArr,rtArr);
+			return merge(sort(ltArr),sort(rtArr));
 		}
 		
 		
