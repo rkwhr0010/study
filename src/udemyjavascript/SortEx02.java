@@ -6,21 +6,22 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 
+import udemyjavascript.SortEx02.QuickSort;
+
 public class SortEx02 {
 	public static void main(String[] args) {
 		ThreadLocalRandom current = ThreadLocalRandom.current();
-		Integer[] array = current.ints(-20,20).distinct().limit(15).boxed().toArray(Integer[]::new);
+		Integer[] array = current.ints(0,50).distinct().limit(8).boxed().toArray(Integer[]::new);
 		System.out.println(Arrays.toString(array));
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		
 		list.add(new MergeSort());
+		list.add(new QuickSort());
 		
 		for(SortStategy<Integer> sort : list) {
-			System.out.println(Arrays.toString(sort.sort(array)));
+			System.out.println(Arrays.toString(sort.sort(array))+"\n");
 		}
-		
-		
 		
 		
 	}
@@ -53,8 +54,10 @@ public class SortEx02 {
 			Integer[] newArr = new Integer[arr1.length+arr2.length];
 			int i=0,j=0,index=0;
 			while(i<arr1.length && j<arr2.length) {
-				if(arr1[i]>arr2[j]) newArr[index++] = arr2[j++];
-				else newArr[index++] = arr1[i++];
+				if(arr1[i]>arr2[j]) 
+					newArr[index++] = arr2[j++];
+				else  
+					newArr[index++] = arr1[i++];
 			}
 			while(i<arr1.length)
 				newArr[index++] = arr1[i++];
@@ -63,6 +66,32 @@ public class SortEx02 {
 			return newArr;
 		}
 	}
-	
+	static class QuickSort implements SortStategy<Integer>{
+		public Integer[] sort(Integer[] arr) {
+			return sort(arr.clone(),0,arr.length-1);
+		}
+		
+		public Integer[] sort(Integer[] arr,Integer lt, Integer rt) {
+			if(lt<rt) {
+				Integer pivotIndex = pivot(arr, lt, rt);
+				sort(arr,lt,pivotIndex-1);
+				sort(arr,pivotIndex+1,rt);
+			}
+			return arr;
+		}
+		
+		
+		private Integer pivot(Integer[] arr, Integer start, Integer end) {
+			Integer pivot = arr[start];//좌측부터 시작
+			int swapIdx =start;
+			for(int i=start+1;i<arr.length;i++) 
+				if(pivot>arr[i] ) 
+					swap(arr, ++ swapIdx, i);
+			swap(arr,swapIdx,start);
+			System.out.println("lt = "+start+", rt = "+end+"\n"+Arrays.toString(arr));
+			
+			return swapIdx;
+		}
+	}
 	
 }
