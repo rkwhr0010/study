@@ -33,7 +33,8 @@ public class SuperTypeToken01 {
 		}
 		<T> T get(Class<T> clazz) {
 			return clazz.cast(map.get(clazz));
-//			아래와 같이 사용해도 된다. 하지만, 직접 캐스팅하는 것은 좋은 습관이 아니다.
+//			이 상황에서는 아래와 같이 사용해도 된다.(논리적으로 타입이 일치하기 때문)
+//			하지만, 직접 캐스팅하는 것은 좋은 습관이 아니다.
 //			return (T) map.get(clazz);
 		}
 	}
