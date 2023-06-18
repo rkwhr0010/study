@@ -1,11 +1,29 @@
 package javabasic.toby;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class IoCEx01 {
 	public static void main(String[] args) {
 		new Client1().main();
 		new Client2().main();
 	}
 
+	static class IoC {
+		static Map<String, Service> map = new HashMap<>();
+		
+		//xml, java, annotation 같은 설정파일이라고 가정
+		static {
+			//클라이언트 코드 변경 없이 다른 컴포넌트를 주입할 수 있다.
+//			map.put("service", new Service1Impl());
+			map.put("service", new Service2Impl());
+		}
+		
+		static Service getBean(String name){
+			return map.get(name);
+		}
+		
+	}
 	
 	//클라이언트라고 가정
 	static class Client1{
@@ -36,11 +54,8 @@ public class IoCEx01 {
 	
 	static class Client2{
 		void main() {
-			Service service1Impl = new Service1Impl();
-			Service service2Impl = new Service2Impl();
-			execute(service1Impl); 
-			//인터페이스에 맞춰 설계하면 클라이언트는 기존 코드를 변경할 필요 없다.(코드재사용)
-			execute(service2Impl);
+			Service service = IoC.getBean("service");
+			execute(service); 
 		}
 		void execute(Service service) {
 			service.doSomething("서로 다름");
