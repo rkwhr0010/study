@@ -1,5 +1,8 @@
 package javabasic.toby;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SuperTypeToken01 {
 	public static void main(String[] args) throws Exception {
 //		System.out.println(TypeToken01.create().getClass());
@@ -20,6 +23,22 @@ public class SuperTypeToken01 {
 		//용어 설명 Generic<String> == > <"String"> 타입변수 or 타입파라미터
 		// "Generic<String>" 이 자체(지네릭이 적용된 클래스)는 파라미터화된 타입(매개변수화된 타입) 
 	}
+	
+	//타입 세이프한 맵
+	static class TypeSafeMap{
+		Map<Class<?>, Object> map = new HashMap<>();
+		
+		<T> void put(Class<T> clazz, T value) {
+			map.put(clazz, value);
+		}
+		<T> T get(Class<T> clazz) {
+			return clazz.cast(map.get(clazz));
+//			아래와 같이 사용해도 된다. 하지만, 직접 캐스팅하는 것은 좋은 습관이 아니다.
+//			return (T) map.get(clazz);
+		}
+	}
+	
+	
 	
 	static class TypeToken01{
 		//변경없이 한 종류가 아닌 다양한 클래스를 만들고 싶다.
