@@ -1,6 +1,8 @@
 package javabasic.toby;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SuperTypeToken01 {
@@ -22,10 +24,26 @@ public class SuperTypeToken01 {
 		
 		//용어 설명 Generic<String> == > <"String"> 타입변수 or 타입파라미터
 		// "Generic<String>" 이 자체(지네릭이 적용된 클래스)는 파라미터화된 타입(매개변수화된 타입) 
+		
+		
+		TypeSafeMap map = new TypeSafeMap();
+		map.put(String.class, "스트링");
+//		map.put(Integer.class, "스트링");//컴파일러가 경고해줌
+		map.put(Integer.class, 1);
+		
+		map.put(List.class, Arrays.asList(1,2,3));
+		//타입 토큰의 한계, 지네릭 정보까지 포함한 타입 토큰은 사용이 불가능
+		//type erasure에 의해 런타임에 지네릭 정보가 제거되고, 캐스팅만 남기때문 따라서 다 Object
+		//JDK 1.5 이전 호환성을 위한 선택
+//		map.put(List<Integer>.class, Arrays.asList(1,2,3));
+		map.put(List.class, Arrays.asList("1","3","5"));
+		
+		
 	}
 	
 	//타입 세이프한 맵
 	static class TypeSafeMap{
+		//타입 토큰
 		Map<Class<?>, Object> map = new HashMap<>();
 		
 		<T> void put(Class<T> clazz, T value) {
