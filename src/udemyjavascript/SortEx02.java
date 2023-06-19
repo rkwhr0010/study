@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
-
-import udemyjavascript.SortEx02.QuickSort;
 
 public class SortEx02 {
 	public static void main(String[] args) {
@@ -22,6 +19,7 @@ public class SortEx02 {
 		for(SortStategy<Integer> sort : list) {
 			System.out.println(Arrays.toString(sort.sort(array))+"\n");
 		}
+		System.out.println(Arrays.toString(new QuickSort().pivot2(array.clone(),0,array.length-1))+"\n");
 		
 		
 	}
@@ -80,18 +78,33 @@ public class SortEx02 {
 			return arr;
 		}
 		
-		
 		private Integer pivot(Integer[] arr, Integer start, Integer end) {
 			Integer pivot = arr[start];//좌측부터 시작
 			int swapIdx =start;
 			for(int i=start+1;i<arr.length;i++) 
-				if(pivot>arr[i] ) 
-					swap(arr, ++ swapIdx, i);
+				if(pivot>arr[i] ) swap(arr, ++ swapIdx, i);
 			swap(arr,swapIdx,start);
-			System.out.println("lt = "+start+", rt = "+end+"\n"+Arrays.toString(arr));
-			
 			return swapIdx;
 		}
+		
+		private Integer[] pivot2(Integer[] arr, Integer left, Integer right) {
+			int pL = left;
+			int pR = right;
+			int pivot = arr[(pL+pR)/2];
+			do {
+				while(arr[pL]<pivot) pL++;
+				while(arr[pR]>pivot) pR--;
+				if(pL<=pR) swap(arr, pL++, pR--); 
+			} while(pL<=pR);
+			if(left <pR) pivot2(arr,left,pR);
+			if(pL<right) pivot2(arr,pL,right);
+			
+			return arr;
+		}
+		
+		
+		
+		
 	}
 	
 }
