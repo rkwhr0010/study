@@ -44,7 +44,6 @@ public class FuncEx01 {
 	
 	public static void main(String[] args) {
 		List<User> users = getUsers();
-		
 		System.out.println("filter = "+
 				filter(users,user->user.age>30)+"\n"
 				+users);
@@ -63,6 +62,13 @@ public class FuncEx01 {
 				reduce(Arrays.asList(1), (a,b)->a+b, Integer.valueOf(0)));
 		System.out.println("reduce = "+
 				reduce(Arrays.asList(1), (a,b)->a+b));
+		
+		
+		List<String> result = Stream.stream(users)
+			.filter(user->user.age > 30)
+			.map(user->user.name)
+			.toList();
+		System.out.println(result);
 		
 		
 	}
@@ -105,6 +111,7 @@ public class FuncEx01 {
 	 */
 	static <T> T reduce(List<T> list, BinaryOperator<T> reducer ,T memo) {
 		//간소화된 유효성 검사, 본질을 흐리지 않는 선에서 간략화
+		if(memo == null ) return reduce(list.subList(1, list.size()), reducer, list.get(0));
 		if(list.size() < 2) return list.get(0);
 		HashMap<Class<?>, T> map = new HashMap<>();
 		map.put(memo.getClass(), memo);
@@ -120,5 +127,46 @@ public class FuncEx01 {
 		if(list.size() < 2) return list.get(0);
 		return reduce(list.subList(1, list.size()), reducer, list.get(0));
 	}
+	
+	
+	/*
+	 * pipe, go 구현을 시도하려 했지만, 근본적으로 자바는 함수가 개념이 없어
+	 * 호출부를 단일로 추상화할 수 없다. apply, test ... 
+	 * 따라서 하나의 클래스로 묶었다.
+	 */
+	static class Stream<T> {
+		List<T> list;
+		
+		static <T> Stream<T> stream(List<T> list){
+			Stream<T> stream = new Stream<T>();
+			stream.list = list;
+			return stream;
+		}
+		Stream<T> filter(Predicate<T> predi) {
+			//함수형 프로그래밍은 원본 데이터를 수정하지 않는다. 새로운 데이터를 리턴하여
+			//부수효과를 극단적으로 배제한다.
+			ArrayList<T> newList = new ArrayList<>();
+			forEach(data->{
+				if(predi.test(data))
+					newList.add(data);
+			});
+			return stream(newList);
+		}
+		<R> Stream<R> map(Function<T, R> mapper){
+			ArrayList<R> newList = new ArrayList<>();
+			forEach(data->newList.add(mapper.apply(data)));
+			return stream(newList);
+		}
+		
+		void forEach(Consumer<T> iter){
+			for(T data : list) iter.accept(data);
+		}
+		
+		List<T> toList(){
+			return this.list;
+		}
+		
+	}
+	
 	
 }
