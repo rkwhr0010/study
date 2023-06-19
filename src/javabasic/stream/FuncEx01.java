@@ -44,15 +44,20 @@ public class FuncEx01 {
 		List<User> users = getUsers();
 		
 		System.out.println(
-				filter(users,user->user.age>30)
+				filter(users,user->user.age>30)+"\n"
+				+users
 				);
 		
 		
 	}
 	
 	static <T> List<T> filter(List<T> list, Predicate<T> predi) {
+		//함수형 프로그래밍은 원본 데이터를 수정하지 않는다. 새로운 데이터를 리턴하여
+		//부수효과를 극단적으로 배제한다.
 		ArrayList<T> newList = new ArrayList<>();
 		for(T data : list) {
+			//자바는 근본적으로 함수단독으로 존재할 수 없다.
+			//따라서 추상 메서드가 단 하나인 인터페이스를 사용해 메서드 형식으로 호출할 수 밖에 없다.
 			if(predi.test(data))
 				newList.add(data);
 		}
