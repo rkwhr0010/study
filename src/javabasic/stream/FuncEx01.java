@@ -52,7 +52,10 @@ public class FuncEx01 {
 				);
 		
 	}
-	
+	/*
+	 * filter는 처리 결과가 입력 결과와 타입은 같다.
+	 * 길이는 같거나, 작을 수 밖에 없다.
+	 */
 	static <T> List<T> filter(List<T> list, Predicate<T> predi) {
 		//함수형 프로그래밍은 원본 데이터를 수정하지 않는다. 새로운 데이터를 리턴하여
 		//부수효과를 극단적으로 배제한다.
@@ -65,7 +68,10 @@ public class FuncEx01 {
 		}
 		return newList;
 	}
-	
+	/*
+	 * map은 처리 결과가 입력 결과와 타입은 같거나 다르다.
+	 * 길이는 항상 같다.
+	 */
 	static <T,R> List<R> map(List<T> list, Function<T, R> mapper){
 		ArrayList<R> newList = new ArrayList<>();
 		for(T data : list) 
