@@ -3,9 +3,8 @@ package javabasic.stream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Predicate;
-
-import javabasic.stream.FuncEx01.User;
 
 public class FuncEx01 {
 	static class User{
@@ -43,11 +42,14 @@ public class FuncEx01 {
 	public static void main(String[] args) {
 		List<User> users = getUsers();
 		
-		System.out.println(
+		System.out.println("filter = "+
 				filter(users,user->user.age>30)+"\n"
 				+users
 				);
 		
+		System.out.println("map = "+
+				map(users, user->user.id)
+				);
 		
 	}
 	
@@ -61,6 +63,13 @@ public class FuncEx01 {
 			if(predi.test(data))
 				newList.add(data);
 		}
+		return newList;
+	}
+	
+	static <T,R> List<R> map(List<T> list, Function<T, R> mapper){
+		ArrayList<R> newList = new ArrayList<>();
+		for(T data : list) 
+			newList.add(mapper.apply(data));
 		return newList;
 	}
 }
