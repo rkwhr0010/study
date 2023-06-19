@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
+import javabasic.stream.FuncEx01.User;
+
 public class FuncEx01 {
 	static class User{
 		final Long id;
@@ -16,6 +18,12 @@ public class FuncEx01 {
 			this.name = name;
 			this.age = age;
 		}
+
+		@Override
+		public String toString() {
+			return "[id=" + id + ", name=" + name + ", age=" + age + "]\n";
+		}
+		
 	}
 	
 	static List<User> getUsers(){
@@ -33,10 +41,21 @@ public class FuncEx01 {
 	
 	
 	public static void main(String[] args) {
+		List<User> users = getUsers();
 		
+		System.out.println(
+				filter(users,user->user.age>30)
+				);
 		
 		
 	}
 	
-
+	static <T> List<T> filter(List<T> list, Predicate<T> predi) {
+		ArrayList<T> newList = new ArrayList<>();
+		for(T data : list) {
+			if(predi.test(data))
+				newList.add(data);
+		}
+		return newList;
+	}
 }
