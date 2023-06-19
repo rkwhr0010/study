@@ -50,7 +50,6 @@ public class FuncEx01 {
 		
 		System.out.println("map = "+
 				map(users, user->user.id));
-		
 		each(Arrays.asList(1,2,3,4,5),System.out::print);
 		System.out.println();
 		
@@ -63,23 +62,28 @@ public class FuncEx01 {
 		System.out.println("reduce = "+
 				reduce(Arrays.asList(1), (a,b)->a+b));
 		
-		
 		List<String> result = Stream.stream(users)
 			.filter(user->user.age > 30)
 			.map(user->user.name)
 			.toList();
 		System.out.println(result);
-		
 		//메서드 체이닝 방식과 차이 비교
 		System.out.println("default = "+
-					reduce(map(filter(users,user->user.age>30) , user->user.age), (a,b)->a+b)
-				);
-		
+					reduce(
+							map(
+								filter(users,user->user.age>30) 
+								, user->user.age)
+							, (a,b)->a+b));
+		/*
+		 * 기존은 안쪽에서부터 밖으로 나온다. 중첩구조가 심해질 수록 가독성이 안좋아진다.
+		 * 스트림을 통한 메서드 체이닝 방식은 순차적으로 적용된다.
+		 */
 		System.out.println("stream = " +
 				Stream.stream(users)
 					.filter(user->user.age > 30)
 					.map(user->user.age)
-					.reduce((a,b)->a+b,null)
+					.reduce(Integer::sum)
+//					.reduce((a,b)->a+b)
 				);
 		
 	}
@@ -149,7 +153,7 @@ public class FuncEx01 {
 		List<T> list;
 		
 		static <T> Stream<T> stream(List<T> list){
-			Stream<T> stream = new Stream<T>();
+			Stream<T> stream = new Stream<>();
 			stream.list = list;
 			return stream;
 		}
