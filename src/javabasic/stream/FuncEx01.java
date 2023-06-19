@@ -70,6 +70,17 @@ public class FuncEx01 {
 			.toList();
 		System.out.println(result);
 		
+		//메서드 체이닝 방식과 차이 비교
+		System.out.println("default = "+
+					reduce(map(filter(users,user->user.age>30) , user->user.age), (a,b)->a+b)
+				);
+		
+		System.out.println("stream = " +
+				Stream.stream(users)
+					.filter(user->user.age > 30)
+					.map(user->user.age)
+					.reduce((a,b)->a+b,null)
+				);
 		
 	}
 	/*
@@ -160,6 +171,25 @@ public class FuncEx01 {
 		
 		void forEach(Consumer<T> iter){
 			for(T data : list) iter.accept(data);
+		}
+		
+		T reduce(BinaryOperator<T> reducer ,T memo) {
+			//간소화된 유효성 검사, 본질을 흐리지 않는 선에서 간략화
+			if(memo == null) return reduce(reducer);
+			if(this.list.size() < 2) return this.list.get(0);
+			HashMap<Class<?>, T> map = new HashMap<>();
+			map.put(memo.getClass(), memo);
+			each(this.list, data->map.compute(memo.getClass(), (k,v)->{
+				T result = reducer.apply(v, data);
+				return result;
+			}));
+			return map.get(memo.getClass());
+		}
+		T reduce(BinaryOperator<T> reducer) {
+			T tmpValue = this.list.get(0);
+			if(this.list.size() < 2) return tmpValue;
+			this.list = this.list.subList(1, list.size());
+			return reduce(reducer, tmpValue);
 		}
 		
 		List<T> toList(){
