@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -86,7 +87,16 @@ public class FuncEx01 {
 //					.reduce((a,b)->a+b)
 				);
 		
+		/*find, findIndex 실습*/
+		System.out.println(find(users, user->user.age<32));
+		System.out.println(find(users, user->user.age>55));
+		System.out.println(findIndex(users, user->user.age<32));
+		System.out.println(findIndex(users, user->user.age>55));
+		
+		
+		
 	}
+	
 	/*
 	 * filter는 처리 결과가 입력 결과와 타입은 같다.
 	 * 길이는 같거나, 작을 수 밖에 없다.
@@ -142,6 +152,21 @@ public class FuncEx01 {
 		if(list.size() < 2) return list.get(0);
 		return reduce(list.subList(1, list.size()), reducer, list.get(0));
 	}
+	
+	static <T> Optional<T> find(List<T> list, Predicate<T> predi) {
+		for(int i=0;i<list.size();i++) {
+			T value = list.get(i);
+			if(predi.test(value)) return Optional.of(value);
+		}
+		return Optional.empty();//편의상 null리턴
+	}
+	static <T> Integer findIndex(List<T> list, Predicate<T> predi) {
+		for(int i=0;i<list.size();i++) {
+			if(predi.test(list.get(i))) return i;
+		}
+		return -1;//편의상 null리턴
+	}
+	
 	
 	
 	/*
