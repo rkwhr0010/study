@@ -3,6 +3,7 @@ package javabasic.stream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -51,6 +52,9 @@ public class FuncEx01 {
 				map(users, user->user.id)
 				);
 		
+		each(Arrays.asList(1,2,3,4,5),System.out::print);
+		System.out.println();
+		
 	}
 	/*
 	 * filter는 처리 결과가 입력 결과와 타입은 같다.
@@ -78,4 +82,13 @@ public class FuncEx01 {
 			newList.add(mapper.apply(data));
 		return newList;
 	}
+	/*
+	 * 반복문을 중복을 대체할 함수
+	 */
+	static <T> List<T> each(List<T> list, Consumer<T> iter){
+		for(T data : list) 
+			iter.accept(data);
+		return list;
+	}
+	
 }
