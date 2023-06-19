@@ -99,26 +99,21 @@ public class FuncEx01 {
 		return list;
 	}
 	
-	@SuppressWarnings("unchecked")
 	/*
 	 * 자바는 스트림 안에서 외부 변수를 참조하면 그 변수는 final 속성이 된다. 
 	 * 따라서 갱신하면서 누산을 하지 못해, 간접적으로 값을 수정해야 한다.
 	 */
 	static <T> T reduce(List<T> list,BiFunction<T, T, T> reducer ,T memo) {
-		//방법1
-		T[] result = (T[])Array.newInstance(memo.getClass(), 1);
-		result[0] = memo;
+		//방법1 Type safety: Unchecked cast from Object 
+//		T[] result = (T[])Array.newInstance(memo.getClass(), 1);
 		//방법2
-		HashMap<Class<T>, T> map = new HashMap<>();
-		Class<T> typeToken = (Class<T>) memo.getClass();
-		map.put(typeToken, memo);
+		HashMap<Class<?>, T> map = new HashMap<>();
+		map.put(memo.getClass(), memo);
 		
 		each(list, data->{
-			result[0] = reducer.apply(result[0], data);
-			map.compute(typeToken, (k,v)->reducer.apply(v, data));
+			map.compute(memo.getClass(), (k,v)->reducer.apply(v, data));
 		});
-//		return result[0];
-		return map.get(typeToken);
+		return map.get(memo.getClass());
 	}
 	
 }
