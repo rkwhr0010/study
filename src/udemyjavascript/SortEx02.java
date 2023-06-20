@@ -19,9 +19,10 @@ public class SortEx02 {
 		list.add(new MergeSort());
 		list.add(new QuickSort());
 		
-		for(SortStategy<Integer> sort : list) {
-			System.out.println(Arrays.toString(sort.sort(array))+"\n");
-		}
+		for(SortStategy<Integer> sort : list) 
+			System.out.println(sort.getClass().getSimpleName()+"  "+ 
+					Arrays.toString(sort.sort(array)));
+		
 		
 		
 	}
@@ -67,6 +68,43 @@ public class SortEx02 {
 		}
 	}
 	static class QuickSort implements SortStategy<Integer>{
+	    public Integer[] sort(Integer[] arr) {
+	    	return sort(arr.clone(), 0, arr.length-1);
+	    }
+
+	    Integer[] sort(Integer[] arr, int left, int right) {
+	    	//입력값 훼손하지 않기 위한 로컬변수
+	    	int lt = left; 
+	    	int rt = right;
+	    	int pivot = arr[(left+right)/2];
+	    	
+	    	//do-while 종료가 한 회차 완료 
+	    	do {
+		    	//lt는 피봇보다 작아야지! 통과
+		    	while(arr[lt]<pivot) lt++;
+		    	//rt는 피봇보다 커야지! 통과
+		    	while(arr[rt]>pivot) rt--;
+		    	//정상 조건일 때만 스왑
+		    	if(lt<=rt) swap(arr, lt++, rt--);//정렬 후 볼일 끝난 위치는 갱신한다 --, ++
+	    	}while(lt<=rt);//lt가 rt보다 더 커질때까지 반복(크로스 된다)
+	    	/*
+	    	while(lt<=rt) {
+	    		while(arr[lt]<pivot) lt++;
+	    		while(arr[rt]>pivot) rt--;
+	    		if(lt<=rt) swap(arr, lt++, rt--);
+	    	}
+	    	System.out.println(Arrays.toString(arr));
+	    	*/
+	    	
+	    	//재귀 종료조건, left 기준 rt가 점점 다가올 것, 그래서 rt가 클 때까지 재귀
+	    	if(left<rt) sort(arr, left, rt);
+	    	//재귀 종료조건, right 기준 lt가 점점 다가올 것, 그래서 lt가 작을 때까지 재귀
+	    	else if(right>lt) sort(arr, lt, right);
+	    	
+	    	return arr;
+	    }
+	    
+		/* 항상 좌측이 pivot일 때
 		public Integer[] sort(Integer[] arr) {
 			return sort(arr.clone(),0,arr.length-1);
 		}
@@ -80,7 +118,6 @@ public class SortEx02 {
 			return arr;
 		}
 		
-		
 		private Integer pivot(Integer[] arr, Integer start, Integer end) {
 			Integer pivot = arr[start];//좌측부터 시작
 			int swapIdx =start;
@@ -91,7 +128,7 @@ public class SortEx02 {
 			System.out.println("lt = "+start+", rt = "+end+"\n"+Arrays.toString(arr));
 			
 			return swapIdx;
-		}
+		}*/
 	}
 	
 }
