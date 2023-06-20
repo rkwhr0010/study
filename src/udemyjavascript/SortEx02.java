@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.Function;
-
-import udemyjavascript.SortEx02.QuickSort;
 
 public class SortEx02 {
 	public static void main(String[] args) {
@@ -19,10 +16,9 @@ public class SortEx02 {
 		list.add(new MergeSort());
 		list.add(new QuickSort());
 		
-		for(SortStategy<Integer> sort : list) 
-			System.out.println(sort.getClass().getSimpleName()+"  "+ 
-					Arrays.toString(sort.sort(array)));
-		
+		for(SortStategy<Integer> sort : list) {
+			System.out.println(Arrays.toString(sort.sort(array))+"\n");
+		}
 		
 		
 	}
@@ -122,11 +118,8 @@ public class SortEx02 {
 			Integer pivot = arr[start];//좌측부터 시작
 			int swapIdx =start;
 			for(int i=start+1;i<arr.length;i++) 
-				if(pivot>arr[i] ) 
-					swap(arr, ++ swapIdx, i);
+				if(pivot>arr[i] ) swap(arr, ++ swapIdx, i);
 			swap(arr,swapIdx,start);
-			System.out.println("lt = "+start+", rt = "+end+"\n"+Arrays.toString(arr));
-			
 			return swapIdx;
 		}*/
 	}
