@@ -45,6 +45,7 @@ public class FuncEx01 {
 	
 	public static void main(String[] args) {
 		List<User> users = getUsers();
+		/*
 		System.out.println("filter = "+
 				filter(users,user->user.age>30)+"\n"
 				+users);
@@ -75,10 +76,10 @@ public class FuncEx01 {
 								filter(users,user->user.age>30) 
 								, user->user.age)
 							, (a,b)->a+b));
-		/*
-		 * 기존은 안쪽에서부터 밖으로 나온다. 중첩구조가 심해질 수록 가독성이 안좋아진다.
-		 * 스트림을 통한 메서드 체이닝 방식은 순차적으로 적용된다.
-		 */
+		
+		//기존은 안쪽에서부터 밖으로 나온다. 중첩구조가 심해질 수록 가독성이 안좋아진다.
+		//스트림을 통한 메서드 체이닝 방식은 순차적으로 적용된다.
+		
 		System.out.println("stream = " +
 				Stream.stream(users)
 					.filter(user->user.age > 30)
@@ -86,12 +87,16 @@ public class FuncEx01 {
 					.reduce(Integer::sum)
 //					.reduce((a,b)->a+b)
 				);
-		
-		/*find, findIndex 실습*/
+		*/
+		//find, findIndex 실습
 		System.out.println(find(users, user->user.age<32));
 		System.out.println(find(users, user->user.age>55));
 		System.out.println(findIndex(users, user->user.age<32));
 		System.out.println(findIndex(users, user->user.age>55));
+		System.out.println(Stream.stream(users).find(user->user.age<32));
+		System.out.println(Stream.stream(users).find(user->user.age>55));
+		System.out.println(Stream.stream(users).findIndex( user->user.age<32));
+		System.out.println(Stream.stream(users).findIndex( user->user.age>55));
 		
 		
 		
@@ -152,7 +157,9 @@ public class FuncEx01 {
 		if(list.size() < 2) return list.get(0);
 		return reduce(list.subList(1, list.size()), reducer, list.get(0));
 	}
-	
+	/*
+	 * null 값을 간접적으로 다루기 위한 래퍼클래스 사용
+	 */
 	static <T> Optional<T> find(List<T> list, Predicate<T> predi) {
 		for(int i=0;i<list.size();i++) {
 			T value = list.get(i);
@@ -219,6 +226,20 @@ public class FuncEx01 {
 			if(this.list.size() < 2) return tmpValue;
 			this.list = this.list.subList(1, list.size());
 			return reduce(reducer, tmpValue);
+		}
+		
+		Optional<T> find(Predicate<T> predi) {
+			for(int i=0;i<this.list.size();i++) {
+				T value = this.list.get(i);
+				if(predi.test(value)) return Optional.of(value);
+			}
+			return Optional.empty();//편의상 null리턴
+		}
+		Integer findIndex(Predicate<T> predi) {
+			for(int i=0;i<this.list.size();i++) {
+				if(predi.test(this.list.get(i))) return i;
+			}
+			return -1;//편의상 null리턴
 		}
 		
 		List<T> toList(){
