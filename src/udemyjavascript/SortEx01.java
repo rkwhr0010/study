@@ -9,7 +9,7 @@ import java.util.function.Function;
 public class SortEx01 {
 	public static void main(String[] args) {
 		ThreadLocalRandom current = ThreadLocalRandom.current();
-		Integer[] array = current.ints(-20,20).distinct().limit(15).boxed().toArray(Integer[]::new);
+		Integer[] array = current.ints(0,30).distinct().limit(15).boxed().toArray(Integer[]::new);
 		System.out.println(Arrays.toString(array));
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
@@ -17,9 +17,9 @@ public class SortEx01 {
 		list.add(new SelectionSort());
 		list.add(new InsertSort());
 		
-		for(SortStategy<Integer> sort : list) {
-			System.out.println(Arrays.toString(sort.sort(array)));
-		}
+		for(SortStategy<Integer> sort : list) 
+			System.out.println(sort.getClass().getSimpleName()+"  "+
+					Arrays.toString(sort.sort(array)));
 		
 		
 	}
@@ -87,34 +87,20 @@ public class SortEx01 {
 	}
 	static class InsertSort implements SortStategy<Integer>{
 		//논리적으로 순회 마다 작은 서브배열을 만든다고 가정한다.
-		//따라서 첫 순회 [0]은 이미 정렬됐다고 가정한다.
-		//그 다음 [0][1]이 되야 정렬 비교할게 생긴다.
 		//1부터 시작
-		public Integer[] sort1(Integer[] arr) {
-			Integer[] clone = arr.clone();
-			
-			//배열이 단 한개는 이미 정렬된 것이다. (논리적 배열)
-			for(int i= 1;i<arr.length;i++) {
-				int j = i-1;
-				int newVal = -1;
-				//뒤에서 앞으로 순회한다.
-				for(;j>=0;j--) {
-					
-				}
-			}
-			return null;
-			
-		}
 		public Integer[] sort(Integer[] arr) {
 			Integer[] clone = arr.clone();
-			for(int i=1;i<clone.length;i++) {
-				Integer newValue = clone[i];//데이터 임시보관
+			//배열이 단 한개는 이미 정렬된 것이다. (논리적 배열)
+			for(int i = 1;i<clone.length;i++) {
+				//배열 shift 하는 동안 값 손실 때문이 임시 저장
+				Integer newMember = clone[i];
 				Integer j = i-1;
-				for(;j>=0 && newValue<clone[j];j--)
-					//신규 값이 들어갈 자리 만들기
+				//새로운 멤버 clone[i]
+				for(;j>=0 && newMember < clone[j];j--) {
 					clone[j+1] = clone[j];
-				//신규값보다 더 작은 위치 [j]에 그 앞자리 +1 이 신규값자리
-				clone[j+1] = newValue;
+				}
+				//들어갈 자리 j-- 보정 값 +1
+				clone[j+1] = newMember;
 			}
 			return clone;
 		}
