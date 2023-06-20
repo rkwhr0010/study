@@ -111,6 +111,11 @@ public class FuncEx01 {
 		System.out.println(Stream.stream(users).pluck("age",Integer.class));
 		//타입불일치
 		System.out.println(Stream.stream(users).pluck("age",String.class));
+		
+		System.out.println("reject 테스트");
+		System.out.println(reject(users,u->u.age>30));
+		System.out.println(Stream.stream(users).reject(u->u.age>30).toList());
+		
 	}
 	
 	/*
@@ -127,6 +132,12 @@ public class FuncEx01 {
 		});
 		
 		return newList;
+	}
+	/*
+	 * filter 정반대, 주어진 조건에 해당하지 않은 값만 걸러낸다.
+	 */
+	static <T> List<T> reject(List<T> list, Predicate<T> predi){
+		return filter(list, predi.negate());
 	}
 	/*
 	 * map은 처리 결과가 입력 결과와 타입은 같거나 다르다.
@@ -230,6 +241,9 @@ public class FuncEx01 {
 					newList.add(data);
 			});
 			return stream(newList);
+		}
+		Stream<T> reject(Predicate<T> predi){
+			return filter(predi.negate());
 		}
 		<R> Stream<R> map(Function<T, R> mapper){
 			ArrayList<R> newList = new ArrayList<>();
