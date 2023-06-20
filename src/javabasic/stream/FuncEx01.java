@@ -98,7 +98,15 @@ public class FuncEx01 {
 		System.out.println(Stream.stream(users).findIndex( user->user.age<32));
 		System.out.println(Stream.stream(users).findIndex( user->user.age>55));
 		
-		
+		System.out.println("every , find 테스트");
+		System.out.println(some(users, u->u.age>30));
+		System.out.println(some(users, u->u.age>50));
+		System.out.println(every(users, u->u.age>30));
+		System.out.println(every(users, u->u.age>10));
+		System.out.println(Stream.stream(users).some(u->u.age>30));
+		System.out.println(Stream.stream(users).some(u->u.age>50));
+		System.out.println(Stream.stream(users).every(u->u.age>30));
+		System.out.println(Stream.stream(users).every(u->u.age>10));
 		
 	}
 	
@@ -171,9 +179,15 @@ public class FuncEx01 {
 		for(int i=0;i<list.size();i++) {
 			if(predi.test(list.get(i))) return i;
 		}
-		return -1;//편의상 null리턴
+		return -1;
 	}
 	
+	static <T> Boolean some(List<T> list, Predicate<T> predi) {
+		return findIndex(list, predi) != -1;
+	}
+	static <T> Boolean every(List<T> list, Predicate<T> predi) {
+		return findIndex(list, predi.negate()) == -1;
+	}
 	
 	
 	/*
@@ -240,6 +254,13 @@ public class FuncEx01 {
 				if(predi.test(this.list.get(i))) return i;
 			}
 			return -1;//편의상 null리턴
+		}
+		
+		Boolean some(Predicate<T> predi) {
+			return findIndex(predi) != -1;
+		}
+		Boolean every(Predicate<T> predi) {
+			return findIndex(predi.negate()) == -1;
 		}
 		
 		List<T> toList(){
