@@ -1,14 +1,10 @@
 package javabasic.stream;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.lang.reflect.Field;
+import java.util.*;
+import java.util.function.*;
+
+import javabasic.stream.FuncEx01.Stream;
 
 public class FuncEx01 {
 	static class User{
@@ -108,6 +104,13 @@ public class FuncEx01 {
 		System.out.println(Stream.stream(users).every(u->u.age>30));
 		System.out.println(Stream.stream(users).every(u->u.age>10));
 		
+		System.out.println("pluck 테스트");
+		System.out.println(pluck(users, "age",Integer.class));
+		//타입불일치
+		System.out.println(pluck(users, "age",String.class));
+		System.out.println(Stream.stream(users).pluck("age",Integer.class));
+		//타입불일치
+		System.out.println(Stream.stream(users).pluck("age",String.class));
 	}
 	
 	/*
@@ -187,9 +190,24 @@ public class FuncEx01 {
 	}
 	static <T> Boolean every(List<T> list, Predicate<T> predi) {
 		return findIndex(list, predi.negate()) == -1;
+//		return findIndex(list, val->!predi.test(val)) == -1;
 	}
-	
-	
+	static <T> Boolean contains(List<T> list, T data){
+		return findIndex(list, val-> Objects.equals(val, data) ) != -1 ;
+	}
+	static <T,R> List<R> pluck(List<T> list, String key,Class<R> typeToken){
+		List<R> result = map(list, val-> pluckHelper(val, key, typeToken));
+		return some(result, Objects::isNull).booleanValue() ? Collections.emptyList() :result;
+	}
+	//런타임 시 타입이 확정되는 경우 어쩔 수 없이 Object를 리턴해야 한다.
+	static <T,R> R pluckHelper(T val,String key,Class<R> typeToken) {
+		try {
+			Field field = val.getClass().getDeclaredField(key);
+			return typeToken.cast(field.get(val));
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	/*
 	 * pipe, go 구현을 시도하려 했지만, 근본적으로 자바는 함수가 개념이 없어
 	 * 호출부를 단일로 추상화할 수 없다. apply, test ... 
@@ -262,7 +280,19 @@ public class FuncEx01 {
 		Boolean every(Predicate<T> predi) {
 			return findIndex(predi.negate()) == -1;
 		}
-		
+		<R> List<R> pluck(String key,Class<R> typeToken){
+			Stream<R> result = map(val-> pluckHelper(val, key, typeToken));
+			return result.some(Objects::isNull).booleanValue() ? Collections.emptyList() :result.toList();
+		}
+		//런타임 시 타입이 확정되는 경우 어쩔 수 없이 Object를 리턴해야 한다.
+		<R> R pluckHelper(T val,String key,Class<R> typeToken) {
+			try {
+				Field field = val.getClass().getDeclaredField(key);
+				return typeToken.cast(field.get(val));
+			} catch (Exception e) {
+				return null;
+			}
+		}
 		List<T> toList(){
 			return this.list;
 		}
