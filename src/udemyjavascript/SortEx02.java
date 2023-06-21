@@ -9,14 +9,16 @@ public class SortEx02 {
 	public static void main(String[] args) {
 		ThreadLocalRandom current = ThreadLocalRandom.current();
 		Integer[] array = current.ints(0,30).distinct().limit(10).boxed().toArray(Integer[]::new);
-		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"\n");
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
-		list.add(new MergeSort());
-		list.add(new QuickSort());
+		list.add(new MergeSortLogicalArr());
+		list.add(new MergeSortPhysicalArr());
+		list.add(new QuickSortLeft());
+		list.add(new QuickSortMid());
 		
+		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"%n");
 		for(SortStategy<Integer> sort : list) 
-			System.out.println(sort.getClass().getSimpleName()+"  "+
+			System.out.printf("%-20s  %s%n",sort.getClass().getSimpleName(),
 					Arrays.toString(sort.sort(array)));
 		
 		
@@ -32,8 +34,48 @@ public class SortEx02 {
 		}
 		
 	}
+	/*
+	 * 물리적 배열로 나누지 않고 논리적 배열로 나눠 처리한다.
+	 */
+	static class MergeSortLogicalArr implements SortStategy<Integer>{
+		Integer[] tmpArr;
+		Integer[] arr;
+		
+		public Integer[] sort(Integer[] arr) {
+			tmpArr = new Integer[arr.length]; //배열 정렬 시 사용할 임시 배열
+			this.arr = arr.clone();
+			return sort(0, arr.length-1); //정렬을 index기준으로 다룰 것
+		}
+		private Integer[] sort(int left, int right) {
+			int mid = (left+right)/2;
+			//종료 조건, left 가 mid와 같다면 논리적 배열 길이는 1이다.
+			if(left!= mid) sort(left,mid);
+			//종료 조건, right 가 mid+1와 같다면 논리적 배열 길이는 1이다.
+			if(right!= mid+1) sort(mid+1,right);
+			return merge(left,mid,right);
+		}
+		
+		private Integer[] merge(final int left,final int mid, final int right) {
+			int lt = left;
+			int ltEnd = mid;
+			int rt = mid+1 ;
+			int rtEnd = right;
+			
+			//일단 임시배열에 두 논리적 배열 값을 채움, 정렬 배열에 값을 덮어씌울 때 값 손실 때문
+			System.arraycopy(arr, lt, tmpArr, lt, rtEnd-lt+1);
+			int i = lt;
+			while(lt<=ltEnd &&rt<= rtEnd) 
+				arr[i++] = tmpArr[lt]>tmpArr[rt] ? tmpArr[rt++] : tmpArr[lt++];
+			while(lt<=ltEnd)
+				arr[i++] = tmpArr[lt++];
+			while(rt<= rtEnd)
+				arr[i++] = tmpArr[rt++];
+			
+			return arr;
+		}
+	}
 	
-	static class MergeSort implements SortStategy<Integer>{
+	static class MergeSortPhysicalArr implements SortStategy<Integer>{
 		public Integer[] sort(Integer[] arr) {
 			/* 
 			 * 종료 조건
@@ -68,7 +110,31 @@ public class SortEx02 {
 		
 	}
 	
-	static class QuickSort implements SortStategy<Integer>{
+	static class QuickSortLeft implements SortStategy<Integer>{
+		public Integer[] sort(Integer[] arr) {
+			return sort(arr.clone(),0,arr.length-1);
+		}
+		
+		public Integer[] sort(Integer[] arr,Integer lt, Integer rt) {
+			if(lt<rt) {
+				Integer pivotIndex = pivot(arr, lt, rt);
+				sort(arr,lt,pivotIndex-1);
+				sort(arr,pivotIndex+1,rt);
+			}
+			return arr;
+		}
+		
+		private Integer pivot(Integer[] arr, Integer start, Integer end) {
+			Integer pivot = arr[start];//좌측부터 시작
+			int swapIdx =start;
+			for(int i=start+1;i<arr.length;i++) 
+				if(pivot>arr[i] ) swap(arr, ++ swapIdx, i);
+			swap(arr,swapIdx,start);
+			return swapIdx;
+		}
+	}
+	
+	static class QuickSortMid implements SortStategy<Integer>{
 	    public Integer[] sort(Integer[] arr) {
 	    	return sort(arr.clone(), 0, arr.length-1);
 	    }
@@ -96,29 +162,6 @@ public class SortEx02 {
 	    	
 	    	return arr;
 	    }
-	    
-		/* 항상 좌측이 pivot일 때
-		public Integer[] sort(Integer[] arr) {
-			return sort(arr.clone(),0,arr.length-1);
-		}
-		
-		public Integer[] sort(Integer[] arr,Integer lt, Integer rt) {
-			if(lt<rt) {
-				Integer pivotIndex = pivot(arr, lt, rt);
-				sort(arr,lt,pivotIndex-1);
-				sort(arr,pivotIndex+1,rt);
-			}
-			return arr;
-		}
-		
-		private Integer pivot(Integer[] arr, Integer start, Integer end) {
-			Integer pivot = arr[start];//좌측부터 시작
-			int swapIdx =start;
-			for(int i=start+1;i<arr.length;i++) 
-				if(pivot>arr[i] ) swap(arr, ++ swapIdx, i);
-			swap(arr,swapIdx,start);
-			return swapIdx;
-		}*/
 	}
 	
 }
