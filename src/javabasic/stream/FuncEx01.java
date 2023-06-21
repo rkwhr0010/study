@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.*;
 import java.util.function.*;
 
-import javabasic.stream.FuncEx01.Stream;
 
 public class FuncEx01 {
 	static class User{
@@ -37,7 +36,6 @@ public class FuncEx01 {
 				new User(80L, "MP", 23)
 				);
 	}
-	
 	
 	public static void main(String[] args) {
 		List<User> users = getUsers();
@@ -84,6 +82,7 @@ public class FuncEx01 {
 //					.reduce((a,b)->a+b)
 				);
 		*/
+		/*
 		//find, findIndex 실습
 		System.out.println(find(users, user->user.age<32));
 		System.out.println(find(users, user->user.age>55));
@@ -115,7 +114,22 @@ public class FuncEx01 {
 		System.out.println("reject 테스트");
 		System.out.println(reject(users,u->u.age>30));
 		System.out.println(Stream.stream(users).reject(u->u.age>30).toList());
+		*/
 		
+		System.out.println("min, max, minBy, maxBy 테스트");
+		System.out.println("나이 "+min(users, (u1,u2)->Integer.compare(u1.age,u2.age)));
+		System.out.println("나이 "+max(users, (u1,u2)->Integer.compare(u1.age,u2.age)));
+		System.out.println("이름 "+min(users, (u1,u2)-> u1.name.compareTo(u2.name) ));
+		System.out.println("이름 "+max(users, (u1,u2)-> u1.name.compareTo(u2.name) ));
+		System.out.println("나이 "+minBy(users, Integer::compare, u->u.age));
+		System.out.println("나이 "+maxBy(users, Integer::compare, u->u.age));
+		System.out.println(
+				Stream.stream(users)
+					.map(u->u.age)
+					.max(Integer::compare));
+		System.out.println(
+				Stream.stream(users)
+				.minBy(Long::compare,u->u.id));
 	}
 	
 	/*
@@ -201,7 +215,6 @@ public class FuncEx01 {
 	}
 	static <T> Boolean every(List<T> list, Predicate<T> predi) {
 		return findIndex(list, predi.negate()) == -1;
-//		return findIndex(list, val->!predi.test(val)) == -1;
 	}
 	static <T> Boolean contains(List<T> list, T data){
 		return findIndex(list, val-> Objects.equals(val, data) ) != -1 ;
@@ -219,6 +232,24 @@ public class FuncEx01 {
 			return null;
 		}
 	}
+	/*
+	 * reduce 특화 함수
+	 */
+	static <T> T min(List<T> list, Comparator<T> comparator) {
+		return reduce(list, BinaryOperator.minBy(comparator));
+	}
+	static <T> T max(List<T> list, Comparator<T> comparator) {
+		return reduce(list, BinaryOperator.maxBy(comparator));
+	}
+	//주어진 조건으로 검사한 결과로 최대 최소 값을 판단한다.
+	static <T,R> T minBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
+		return reduce(list, (a,b)-> comparator.compare(mapper.apply(a), mapper.apply(b)) > 0 ? b:a);
+	}
+	static <T,R> T maxBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
+		return minBy(list,comparator.reversed(),mapper);
+	}
+	
+	
 	/*
 	 * pipe, go 구현을 시도하려 했지만, 근본적으로 자바는 함수가 개념이 없어
 	 * 호출부를 단일로 추상화할 수 없다. apply, test ... 
@@ -255,21 +286,18 @@ public class FuncEx01 {
 			for(T data : list) iter.accept(data);
 		}
 		
-		T reduce(BinaryOperator<T> reducer ,T memo) {
+		Optional<T> reduce(BinaryOperator<T> reducer ,T memo) {
 			//간소화된 유효성 검사, 본질을 흐리지 않는 선에서 간략화
 			if(memo == null) return reduce(reducer);
-			if(this.list.size() < 2) return this.list.get(0);
+			if(this.list.size() < 2) return Optional.of(this.list.get(0));
 			HashMap<Class<?>, T> map = new HashMap<>();
 			map.put(memo.getClass(), memo);
-			each(this.list, data->map.compute(memo.getClass(), (k,v)->{
-				T result = reducer.apply(v, data);
-				return result;
-			}));
-			return map.get(memo.getClass());
+			each(this.list, data->map.compute(memo.getClass(), (k,v)-> reducer.apply(v, data)));
+			return Optional.of(map.get(memo.getClass()));
 		}
-		T reduce(BinaryOperator<T> reducer) {
+		Optional<T> reduce(BinaryOperator<T> reducer) {
 			T tmpValue = this.list.get(0);
-			if(this.list.size() < 2) return tmpValue;
+			if(this.list.size() < 2) return Optional.of(tmpValue);
 			this.list = this.list.subList(1, list.size());
 			return reduce(reducer, tmpValue);
 		}
@@ -307,6 +335,25 @@ public class FuncEx01 {
 				return null;
 			}
 		}
+		
+		/*
+		 * reduce 특화 함수
+		 */
+		Optional<T> min(Comparator<? super T> comparator) {
+			return reduce(BinaryOperator.<T>minBy(comparator));
+		}
+		Optional<T> max(Comparator<? super T> comparator) {
+			return reduce(BinaryOperator.<T>maxBy(comparator));
+		}
+		//주어진 조건으로 검사한 결과로 최대 최소 값을 판단한다.
+		<R> Optional<T> minBy(Comparator<? super R> comparator ,Function<T, R> mapper) {
+			return reduce( (a,b)-> comparator.compare(mapper.apply(a), mapper.apply(b)) > 0 ? b:a);
+		}
+		<R> Optional<T> maxBy(Comparator<? super R> comparator ,Function<T, R> mapper) {
+			return minBy(comparator.reversed(),mapper);
+		}
+		
+		
 		List<T> toList(){
 			return this.list;
 		}
