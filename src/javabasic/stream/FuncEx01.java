@@ -131,10 +131,15 @@ public class FuncEx01 {
 				Stream.stream(users)
 				.minBy(Long::compare,u->u.id));
 		
-		Map<Integer, List<User>> groupBy = groupBy(users, u->u.age-u.age%10);
-		System.out.println(groupBy);
+//		Map<Integer, List<User>> groupBy = groupBy(users, u->u.age-u.age%10);
+//		System.out.println(groupBy);
+		
+		System.out.println(groupBy(Arrays.asList(11,12,23,25,33,45) , n->n-n%10));
+		
 		
 	}
+	
+	
 	
 	/*
 	 * filter는 처리 결과가 입력 결과와 타입은 같다.
@@ -267,15 +272,20 @@ public class FuncEx01 {
 			});
 			return group;
 		};
+		
+		
 		return reduce(list, bi, new HashMap<R, List<T>>());
 	}
 	//groupBy 용 reduce 오버로딩
-	static <T,R> Map<R,List<T>> reduce(List<T> list, 
-			BiFunction<Map<R,List<T>> ,T,Map<R,List<T>> > reducer, Map<R,List<T>> memo) {
+	static <T,R> R reduce(List<T> list, BiFunction<R ,T, R> reducer, R memo) {
 		each(list, val-> reducer.apply(memo, val));
 		return memo;
 	}
-	
+//	static <T,R> Map<R,List<T>> reduce(List<T> list, 
+//			BiFunction<Map<R,List<T>> ,T,Map<R,List<T>> > reducer, Map<R,List<T>> memo) {
+//		each(list, val-> reducer.apply(memo, val));
+//		return memo;
+//	}
 
 	
 	
