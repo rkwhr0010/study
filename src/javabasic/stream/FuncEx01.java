@@ -254,23 +254,29 @@ public class FuncEx01 {
 	}
 	
 
-	
+	/*
+	 * 그룹 방법 2, 리스트의 요소를 하나로 축약한 다는 점에서 groupBy는 reduce의 특화 메서드여야 한다.
+	 * 작성은 까다롭고 가시성이 안좋지만, 어차피 사용자입장에선 방법1과 똑같은 방식으로 호출한다.
+	 */
 	static <T,R> Map<R,List<T>> groupBy(List<T> list, Function<T,R> mapper){
-		//그룹 방법 1, 직접 구현
-		Map<R, List<T>> groupMap = new HashMap<>();
-		each(list, val -> 
-			groupMap.compute(mapper.apply(val), 
-				(k,v)->{
-					if(v==null) v = new ArrayList<>();
-					v.add(val);
-					return v;
-				})
-		);
-		return groupMap;
+		BiFunction<Map<R,List<T>> , T, Map<R,List<T>> > bi = (group, val) -> {
+			group.compute(mapper.apply(val), (k,v)->{
+				if(v == null) v = new ArrayList<>();
+				v.add(val);
+				return v;
+			});
+			return group;
+		};
+		return reduce(list, bi, new HashMap<R, List<T>>());
+	}
+	//groupBy 용 reduce 오버로딩
+	static <T,R> Map<R,List<T>> reduce(List<T> list, 
+			BiFunction<Map<R,List<T>> ,T,Map<R,List<T>> > reducer, Map<R,List<T>> memo) {
+		each(list, val-> reducer.apply(memo, val));
+		return memo;
 	}
 	
 
-	
 	
 	
 	
