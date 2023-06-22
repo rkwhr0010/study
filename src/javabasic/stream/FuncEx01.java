@@ -130,6 +130,10 @@ public class FuncEx01 {
 		System.out.println(
 				Stream.stream(users)
 				.minBy(Long::compare,u->u.id));
+		
+		Map<Integer, List<User>> groupBy = groupBy(users, u->u.age-u.age%10);
+		System.out.println(groupBy);
+		
 	}
 	
 	/*
@@ -248,6 +252,29 @@ public class FuncEx01 {
 	static <T,R> T maxBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
 		return minBy(list,comparator.reversed(),mapper);
 	}
+	
+
+	
+	static <T,R> Map<R,List<T>> groupBy(List<T> list, Function<T,R> mapper){
+		//그룹 방법 1, 직접 구현
+		Map<R, List<T>> groupMap = new HashMap<>();
+		each(list, val -> 
+			groupMap.compute(mapper.apply(val), 
+				(k,v)->{
+					if(v==null) v = new ArrayList<>();
+					v.add(val);
+					return v;
+				})
+		);
+		return groupMap;
+	}
+	
+
+	
+	
+	
+	
+	
 	
 	
 	/*
