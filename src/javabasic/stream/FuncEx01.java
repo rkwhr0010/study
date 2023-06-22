@@ -131,10 +131,9 @@ public class FuncEx01 {
 				Stream.stream(users)
 				.minBy(Long::compare,u->u.id));
 		
-//		Map<Integer, List<User>> groupBy = groupBy(users, u->u.age-u.age%10);
-//		System.out.println(groupBy);
+		System.out.println(groupBy(users, u->u.age-u.age%10));
+		System.out.println(countBy(users, u->u.age-u.age%10));
 		
-		System.out.println(groupBy(Arrays.asList(11,12,23,25,33,45) , n->n-n%10));
 		
 		
 	}
@@ -272,22 +271,21 @@ public class FuncEx01 {
 			});
 			return group;
 		};
-		
-		
 		return reduce(list, bi, new HashMap<R, List<T>>());
 	}
-	//groupBy 용 reduce 오버로딩
+	//groupBy,countBy 용 reduce 오버로딩
 	static <T,R> R reduce(List<T> list, BiFunction<R ,T, R> reducer, R memo) {
 		each(list, val-> reducer.apply(memo, val));
 		return memo;
 	}
-//	static <T,R> Map<R,List<T>> reduce(List<T> list, 
-//			BiFunction<Map<R,List<T>> ,T,Map<R,List<T>> > reducer, Map<R,List<T>> memo) {
-//		each(list, val-> reducer.apply(memo, val));
-//		return memo;
-//	}
 
-	
+	static <T,R> Map<R,Long> countBy(List<T> list, Function<T,R> mapper){
+		BiFunction<Map<R,Long> , T, Map<R,Long> > bi = (group, val) -> {
+			group.compute(mapper.apply(val), (k,v)->v==null?1: ++v);
+			return group;
+		};
+		return reduce(list, bi, new HashMap<R, Long>());
+	}
 	
 	
 	
