@@ -134,6 +134,8 @@ public class FuncEx01 {
 		
 		System.out.println(groupBy(users, u->u.age-u.age%10));
 		System.out.println(countBy(users, u->u.age-u.age%10));
+		System.out.println(Stream.stream(users).groupBy(u->u.age-u.age%10));
+		System.out.println(Stream.stream(users).countBy(u->u.age-u.age%10));
 		
 		
 		
@@ -396,6 +398,39 @@ public class FuncEx01 {
 		<R> Optional<T> maxBy(Comparator<? super R> comparator ,Function<T, R> mapper) {
 			return minBy(comparator.reversed(),mapper);
 		}
+		
+		/*
+		 * 그룹 방법 2, 리스트의 요소를 하나로 축약한 다는 점에서 groupBy는 reduce의 특화 메서드여야 한다.
+		 * 작성은 까다롭고 가시성이 안좋지만, 어차피 사용자입장에선 방법1과 똑같은 방식으로 호출한다.
+		 */
+		<R> Map<R,List<T>> groupBy(Function<T,R> mapper){
+			BiFunction<Map<R,List<T>> , T, Map<R,List<T>> > bi = (group, val) -> {
+				group.compute(mapper.apply(val), (k,v)->{
+					if(v == null) v = new ArrayList<>();
+					v.add(val);
+					return v;
+				});
+				return group;
+			};
+			return reduce(bi, new HashMap<R, List<T>>());
+		}
+		//groupBy,countBy 용 reduce 오버로딩
+		<R> R reduce(BiFunction<R ,T, R> reducer, R memo) {
+			each(list, val-> reducer.apply(memo, val));
+			return memo;
+		}
+		/*
+		 * 기본 groupBy로직을 재사용했다. 
+		 * 만약 groupBy로직이 변경되면 똑같이 적용받는다.
+		 */
+		<R> Map<R,Long> countBy(Function<T,R> mapper){
+			Map<R, Long> countBy = new HashMap<>();
+			for(Entry<R, List<T>> entry:groupBy(mapper).entrySet()) 
+				countBy.put(entry.getKey(), Long.valueOf(entry.getValue().size()));
+			return countBy;
+		}
+		
+		
 		
 		
 		List<T> toList(){
