@@ -2,6 +2,7 @@ package javabasic.stream;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.Map.Entry;
 import java.util.function.*;
 
 
@@ -278,13 +279,15 @@ public class FuncEx01 {
 		each(list, val-> reducer.apply(memo, val));
 		return memo;
 	}
-
+	/*
+	 * 기본 groupBy로직을 재사용했다. 
+	 * 만약 groupBy로직이 변경되면 똑같이 적용받는다.
+	 */
 	static <T,R> Map<R,Long> countBy(List<T> list, Function<T,R> mapper){
-		BiFunction<Map<R,Long> , T, Map<R,Long> > bi = (group, val) -> {
-			group.compute(mapper.apply(val), (k,v)->v==null?1: ++v);
-			return group;
-		};
-		return reduce(list, bi, new HashMap<R, Long>());
+		Map<R, Long> countBy = new HashMap<>();
+		for(Entry<R, List<T>> entry:groupBy(list,mapper).entrySet()) 
+			countBy.put(entry.getKey(), Long.valueOf(entry.getValue().size()));
+		return countBy;
 	}
 	
 	
