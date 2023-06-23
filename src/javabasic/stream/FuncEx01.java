@@ -5,11 +5,13 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class FuncEx01 {
 	public static void main(String[] args) {
-		List<User> users = getUsers();
+		List<User> users = DB.users();
 		
 		
 		System.out.println("filter = "+
@@ -106,32 +108,16 @@ public class FuncEx01 {
 		System.out.println(Stream.stream(users).groupBy(u->u.age-u.age%10));
 		System.out.println(Stream.stream(users).countBy(u->u.age-u.age%10));
 		
-		
-		
 	}
 
 	
-	static List<User> getUsers(){
-		return Arrays.asList( 
-				new User(10L, "ID", 36),
-				new User(20L, "BJ", 32),
-				new User(30L, "JM", 32),
-				new User(40L, "PJ", 27),
-				new User(50L, "HA", 25),
-				new User(60L, "JE", 26),
-				new User(70L, "JI", 31),
-				new User(80L, "MP", 23)
-				);
-	}
-	
 	
 	static class StreamUtils{
+		private StreamUtils() {}
 		/*
 		 * filter는 처리 결과가 입력 결과와 타입은 같다.
 		 * 길이는 같거나, 작을 수 밖에 없다.
 		 */
-		private StreamUtils() {}
-		
 		static <T> List<T> filter(List<T> list, Predicate<T> predi) {
 			//함수형 프로그래밍은 원본 데이터를 수정하지 않는다. 새로운 데이터를 리턴하여
 			//부수효과를 극단적으로 배제한다.
@@ -140,7 +126,6 @@ public class FuncEx01 {
 				if(predi.test(data))
 					newList.add(data);
 			});
-			
 			return newList;
 		}
 		/*
@@ -190,8 +175,53 @@ public class FuncEx01 {
 			return reduce(list.subList(1, list.size()), reducer, list.get(0));
 		}
 		/*
-		 * null 값을 간접적으로 다루기 위한 래퍼클래스 사용
+		 * reduce 특화 함수
 		 */
+		static <T> T min(List<T> list, Comparator<T> comparator) {
+			return reduce(list, BinaryOperator.minBy(comparator));
+		}
+		static <T> T max(List<T> list, Comparator<T> comparator) {
+			return reduce(list, BinaryOperator.maxBy(comparator));
+		}
+		//주어진 조건으로 검사한 결과로 최대 최소 값을 판단한다.
+		static <T,R> T minBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
+			return reduce(list, (a,b)-> comparator.compare(mapper.apply(a), mapper.apply(b)) > 0 ? b:a);
+		}
+		static <T,R> T maxBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
+			return minBy(list,comparator.reversed(),mapper);
+		}
+		
+		/*
+		 * 그룹 방법 2, 리스트의 요소를 하나로 축약한 다는 점에서 groupBy는 reduce의 특화 메서드여야 한다.
+		 * 작성은 까다롭고 가시성이 안좋지만, 어차피 사용자입장에선 방법1과 똑같은 방식으로 호출한다.
+		 */
+		static <T,R> Map<R,List<T>> groupBy(List<T> list, Function<T,R> mapper){
+			BiFunction<Map<R,List<T>> , T, Map<R,List<T>> > bi = (group, val) -> {
+				group.compute(mapper.apply(val), (k,v)->{
+					if(v == null) v = new ArrayList<>();
+					v.add(val);
+					return v;
+				});
+				return group;
+			};
+			return reduce(list, bi, new HashMap<R, List<T>>());
+		}
+		//groupBy,countBy 용 reduce 오버로딩
+		static <T,R> R reduce(List<T> list, BiFunction<R ,T, R> reducer, R memo) {
+			each(list, val-> reducer.apply(memo, val));
+			return memo;
+		}
+		/*
+		 * 기본 groupBy로직을 재사용했다. 
+		 * 만약 groupBy로직이 변경되면 똑같이 적용받는다.
+		 */
+		static <T,R> Map<R,Long> countBy(List<T> list, Function<T,R> mapper){
+			Map<R, Long> countBy = new HashMap<>();
+			for(Entry<R, List<T>> entry:groupBy(list,mapper).entrySet()) 
+				countBy.put(entry.getKey(), Long.valueOf(entry.getValue().size()));
+			return countBy;
+		}
+		
 		static <T> Optional<T> find(List<T> list, Predicate<T> predi) {
 			for(int i=0;i<list.size();i++) {
 				T value = list.get(i);
@@ -228,59 +258,8 @@ public class FuncEx01 {
 				return null;
 			}
 		}
-		/*
-		 * reduce 특화 함수
-		 */
-		static <T> T min(List<T> list, Comparator<T> comparator) {
-			return reduce(list, BinaryOperator.minBy(comparator));
-		}
-		static <T> T max(List<T> list, Comparator<T> comparator) {
-			return reduce(list, BinaryOperator.maxBy(comparator));
-		}
-		//주어진 조건으로 검사한 결과로 최대 최소 값을 판단한다.
-		static <T,R> T minBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
-			return reduce(list, (a,b)-> comparator.compare(mapper.apply(a), mapper.apply(b)) > 0 ? b:a);
-		}
-		static <T,R> T maxBy(List<T> list,Comparator<R> comparator ,Function<T, R> mapper) {
-			return minBy(list,comparator.reversed(),mapper);
-		}
 		
-
-		/*
-		 * 그룹 방법 2, 리스트의 요소를 하나로 축약한 다는 점에서 groupBy는 reduce의 특화 메서드여야 한다.
-		 * 작성은 까다롭고 가시성이 안좋지만, 어차피 사용자입장에선 방법1과 똑같은 방식으로 호출한다.
-		 */
-		static <T,R> Map<R,List<T>> groupBy(List<T> list, Function<T,R> mapper){
-			BiFunction<Map<R,List<T>> , T, Map<R,List<T>> > bi = (group, val) -> {
-				group.compute(mapper.apply(val), (k,v)->{
-					if(v == null) v = new ArrayList<>();
-					v.add(val);
-					return v;
-				});
-				return group;
-			};
-			return reduce(list, bi, new HashMap<R, List<T>>());
-		}
-		//groupBy,countBy 용 reduce 오버로딩
-		static <T,R> R reduce(List<T> list, BiFunction<R ,T, R> reducer, R memo) {
-			each(list, val-> reducer.apply(memo, val));
-			return memo;
-		}
-		/*
-		 * 기본 groupBy로직을 재사용했다. 
-		 * 만약 groupBy로직이 변경되면 똑같이 적용받는다.
-		 */
-		static <T,R> Map<R,Long> countBy(List<T> list, Function<T,R> mapper){
-			Map<R, Long> countBy = new HashMap<>();
-			for(Entry<R, List<T>> entry:groupBy(list,mapper).entrySet()) 
-				countBy.put(entry.getKey(), Long.valueOf(entry.getValue().size()));
-			return countBy;
-		}
 	}
-	
-	
-	
-	
 	
 	
 	
@@ -290,12 +269,14 @@ public class FuncEx01 {
 	 * 따라서 하나의 클래스로 묶었다.
 	 */
 	static class Stream<T> {
-		List<T> list;
+		final List<T> list;
+		
+		private Stream(List<T> list) {
+			this.list = list;
+		}
 		
 		static <T> Stream<T> stream(List<T> list){
-			Stream<T> stream = new Stream<>();
-			stream.list = list;
-			return stream;
+			return new Stream<>(list);
 		}
 		Stream<T> filter(Predicate<T> predi) {
 			//함수형 프로그래밍은 원본 데이터를 수정하지 않는다. 새로운 데이터를 리턴하여
@@ -321,55 +302,26 @@ public class FuncEx01 {
 		}
 		
 		Optional<T> reduce(BinaryOperator<T> reducer ,T memo) {
-			//간소화된 유효성 검사, 본질을 흐리지 않는 선에서 간략화
 			if(memo == null) return reduce(reducer);
 			if(this.list.size() < 2) return Optional.of(this.list.get(0));
-			HashMap<Class<?>, T> map = new HashMap<>();
-			map.put(memo.getClass(), memo);
-			forEach(data->map.compute(memo.getClass(), (k,v)-> reducer.apply(v, data)));
-			return Optional.of(map.get(memo.getClass()));
+			//람다에서 참조하는 변수는 final 특성을 부여받는다. 따라서 간접적으로 값을 갱신하기 위해 Map을 활용
+			HashMap<String, T> reduceStore = new HashMap<>();
+			String accumulation = "누산용임시키";
+			reduceStore.put(accumulation, memo);
+			forEach(data->reduceStore.compute(accumulation, (k,v)-> reducer.apply(v, data)));
+			return Optional.of(reduceStore.get(accumulation));
 		}
 		Optional<T> reduce(BinaryOperator<T> reducer) {
 			T tmpValue = this.list.get(0);
 			if(this.list.size() < 2) return Optional.of(tmpValue);
-			this.list = this.list.subList(1, list.size());
-			return reduce(reducer, tmpValue);
+			List<T> subList = this.list.subList(1, list.size());
+			return Stream.stream(subList).reduce(reducer, tmpValue);
 		}
-		
-		Optional<T> find(Predicate<T> predi) {
-			for(int i=0;i<this.list.size();i++) {
-				T value = this.list.get(i);
-				if(predi.test(value)) return Optional.of(value);
-			}
-			return Optional.empty();//편의상 null리턴
+		//groupBy,countBy 용 reduce 오버로딩
+		<R> R reduce(BiFunction<R ,T, R> reducer, R memo) {
+			forEach(val-> reducer.apply(memo, val));
+			return memo;
 		}
-		Integer findIndex(Predicate<T> predi) {
-			for(int i=0;i<this.list.size();i++) {
-				if(predi.test(this.list.get(i))) return i;
-			}
-			return -1;//편의상 null리턴
-		}
-		
-		Boolean some(Predicate<T> predi) {
-			return findIndex(predi) != -1;
-		}
-		Boolean every(Predicate<T> predi) {
-			return findIndex(predi.negate()) == -1;
-		}
-		<R> List<R> pluck(String key,Class<R> typeToken){
-			Stream<R> result = map(val-> pluckHelper(val, key, typeToken));
-			return result.some(Objects::isNull).booleanValue() ? Collections.emptyList() :result.toList();
-		}
-		//런타임 시 타입이 확정되는 경우 어쩔 수 없이 Object를 리턴해야 한다.
-		<R> R pluckHelper(T val,String key,Class<R> typeToken) {
-			try {
-				Field field = val.getClass().getDeclaredField(key);
-				return typeToken.cast(field.get(val));
-			} catch (Exception e) {
-				return null;
-			}
-		}
-		
 		/*
 		 * reduce 특화 함수
 		 */
@@ -388,8 +340,7 @@ public class FuncEx01 {
 		}
 		
 		/*
-		 * 그룹 방법 2, 리스트의 요소를 하나로 축약한 다는 점에서 groupBy는 reduce의 특화 메서드여야 한다.
-		 * 작성은 까다롭고 가시성이 안좋지만, 어차피 사용자입장에선 방법1과 똑같은 방식으로 호출한다.
+		 * 주어진 조건에 따라 그룹화
 		 */
 		<R> Map<R,List<T>> groupBy(Function<T,R> mapper){
 			BiFunction<Map<R,List<T>> , T, Map<R,List<T>> > bi = (group, val) -> {
@@ -402,11 +353,7 @@ public class FuncEx01 {
 			};
 			return reduce(bi, new HashMap<R, List<T>>());
 		}
-		//groupBy,countBy 용 reduce 오버로딩
-		<R> R reduce(BiFunction<R ,T, R> reducer, R memo) {
-			forEach(val-> reducer.apply(memo, val));
-			return memo;
-		}
+
 		/*
 		 * 기본 groupBy로직을 재사용했다. 
 		 * 만약 groupBy로직이 변경되면 똑같이 적용받는다.
@@ -417,36 +364,64 @@ public class FuncEx01 {
 				countBy.put(entry.getKey(), Long.valueOf(entry.getValue().size()));
 			return countBy;
 		}
-		
-		List<T> toList(){
-			return this.list;
+		Optional<T> find(Predicate<T> predi) {
+			for(int i=0;i<this.list.size();i++) {
+				T value = this.list.get(i);
+				if(predi.test(value)) return Optional.of(value);
+			}
+			return Optional.empty();//편의상 null리턴
 		}
-		
+		Integer findIndex(Predicate<T> predi) {
+			for(int i=0;i<this.list.size();i++) 
+				if(predi.test(this.list.get(i))) return i;
+			return -1;
+		}
+		Boolean some(Predicate<T> predi) {
+			return findIndex(predi) != -1;
+		}
+		Boolean every(Predicate<T> predi) {
+			return findIndex(predi.negate()) == -1;
+		}
+		<R> List<R> pluck(String key,Class<R> typeToken){
+			Stream<R> result = map(val-> pluckHelper(val, key, typeToken));
+			return result.some(Objects::isNull).booleanValue() ? 
+					Collections.emptyList() :result.toList();
+		}
+		//런타임 시 타입이 확정되는 경우 어쩔 수 없이 Object를 리턴해야 한다.
+		<R> R pluckHelper(T val,String key,Class<R> typeToken) {
+			try {
+				Field field = val.getClass().getDeclaredField(key);
+				return typeToken.cast(field.get(val));
+			} catch (Exception e) {
+				return null;
+			}
+		}
+		List<T> toList(){
+			//방어적 복사
+			return new ArrayList<>(this.list);
+		}
 	}
 	
 	static class User{
-		final Long id;
+		private static long serial;
+		final long id;
 		final String name;
-		final Integer age;
-		
-		public User(Long id, String name, Integer age) {
-			this.id = id;
+		final int age;
+		final String gender;
+		final int money;
+		final String email; 
+		public User(String name, int age, String gender, int money, String email) {
+			id = ++serial;
 			this.name = name;
 			this.age = age;
+			this.gender = gender;
+			this.money = money;
+			this.email = email;
 		}
-
-		@Override
 		public String toString() {
-			return "[id=" + id + ", name=" + name + ", age=" + age + "]\n";
+			return "[id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", money=" + money
+					+ ", email=" + email + "]\n";
 		}
-	}
-	static class User2{
-//		static final Long id;
-//		final String name;
-//		final Integer age;
-//		final Boolean gender;
-//		final Integer money;
-		
 	}
 	
 	static class DB{
@@ -472,18 +447,47 @@ public class FuncEx01 {
 				 "추진석", "황민숙", "남원석", "심시준", "이선우", "조정우", "유태일", "추경윤", "권규환", "임은주", 
 				 "표연웅", "류창기", "풍병수", "서인숙", "남궁명욱", "박시현", "전창현", "남궁주원", "이우태", "사공혜윤"
 		};
-		static void users() {
-			ThreadLocalRandom current = ThreadLocalRandom.current();
-			current.nextInt(97, 122+1);
-			
+		static String[] mailDB = {
+				"@naver.com", "@nate.com" , "@daum.net" , "@kakao.com" , "@gmail.com" , "@outlook.com",
+				"@hotmail.com" , "@yahoo.com"
+		};
+		static String[] gender = {
+			"남자", "여자"	
+		};
+		
+		static ThreadLocalRandom ran = ThreadLocalRandom.current();
+		static List<User> users() {
+			return IntStream.range(0, 20)
+					.mapToObj(n-> getUser())
+					.collect(Collectors.toList());
+		}
+		static User getUser() {
+			return new User(getUsername(), getAge(), getGender(), getMoney(), getEmail());
 		}
 		
-//		static getWord() {
-//			return current.nextInt(97, 122+1)
-//		}
+		static String getUsername() {
+			return nameDB[ran.nextInt(nameDB.length)];
+		}
 		
+		static String getEmail() {
+			StringBuilder sb = new StringBuilder();
+			for(int i=0,len=ran.nextInt(5, 15);i<len;i++) 
+				sb.append(getWord());
+			sb.append(mailDB[ran.nextInt(mailDB.length)]);
+			return sb.toString();
+		}
 		
+		static char getWord() {
+			return (char)ran.nextInt(97, 122+1);
+		}
+		static String getGender() {
+			return gender[ran.nextInt(gender.length)];
+		}
+		static int getAge() {
+			return ran.nextInt(10, 80);
+		}
+		static int getMoney() {
+			return ran.nextInt(10_000, 1_000_000);
+		}
 	}
-	
-	
 }
