@@ -1,116 +1,173 @@
 package javabasic.stream;
 
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.summarizingLong;
+import static java.util.stream.Collectors.toList;
+
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.LongSummaryStatistics;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.TreeMap;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.function.*;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 
 public class FuncEx01 {
+	private static final int USER_SIZE = 100;
+	
+	static <T> void println(T data) {
+		System.out.println(data);
+	}
+	
+	
 	public static void main(String[] args) {
 		List<User> users = DB.users();
 		
 		
-		System.out.println("filter = "+
-				StreamUtils.filter(users,user->user.age>30)+"\n"
-				+users);
-		
-		System.out.println("map = "+
-				StreamUtils.map(users, user->user.id));
-		StreamUtils.each(Arrays.asList(1,2,3,4,5),System.out::print);
-		System.out.println();
-		
-		System.out.println("reduce = "+
-				StreamUtils.reduce(Arrays.asList(1,2,3,4,5), (a,b)->a+b, Integer.valueOf(0)));
-		System.out.println("reduce = "+
-				StreamUtils.reduce(Arrays.asList(1,2,3,4,5), (a,b)->a+b));
-		System.out.println("reduce = "+
-				StreamUtils.reduce(Arrays.asList(1), (a,b)->a+b, Integer.valueOf(0)));
-		System.out.println("reduce = "+
-				StreamUtils.reduce(Arrays.asList(1), (a,b)->a+b));
-		
-		List<String> result = Stream.stream(users)
-			.filter(user->user.age > 30)
-			.map(user->user.name)
+		/*
+		 * 실습, 만든 Stream과 실제 java Stream 비교
+		 * 단, 자바 Stream.toList()의 경우 JDK 16부터 추가된 것이라 collect()메서드를 사용했다.
+		 */
+		//나이가 30대, 남자, 돈이 250_000원 이상 있는 사람
+		List<User> list = Stream.stream(users)
+			.filter(u->u.age-u.age%10 == 30)
+			.filter(u->"남자".equals(u.gender))
+			.filter(u->u.money>=250_000)
 			.toList();
-		System.out.println(result);
-		//메서드 체이닝 방식과 차이 비교
-		System.out.println("default = "+
-				StreamUtils.reduce(
-							StreamUtils.map(
-									StreamUtils.filter(users,user->user.age>30) 
-								, user->user.age)
-							, (a,b)->a+b));
+		List<User> list2 = users.stream()
+			.filter(u->u.age-u.age%10 == 30)
+			.filter(u->"남자".equals(u.gender))
+			.filter(u->u.money>=250_000)
+			.collect(toList());  
+		println("비교 결과 = " + list.containsAll(list2)+"\n"+list);
+		println("\n");
 		
-		//기존은 안쪽에서부터 밖으로 나온다. 중첩구조가 심해질 수록 가독성이 안좋아진다.
-		//스트림을 통한 메서드 체이닝 방식은 순차적으로 적용된다.
 		
-		System.out.println("stream = " +
-				Stream.stream(users)
-					.filter(user->user.age > 30)
-					.map(user->user.age)
-					.reduce(Integer::sum)
-//					.reduce((a,b)->a+b)
-				);
-				
-		//find, findIndex 실습
-		System.out.println(StreamUtils.find(users, user->user.age<32));
-		System.out.println(StreamUtils.find(users, user->user.age>55));
-		System.out.println(StreamUtils.findIndex(users, user->user.age<32));
-		System.out.println(StreamUtils.findIndex(users, user->user.age>55));
-		System.out.println(Stream.stream(users).find(user->user.age<32));
-		System.out.println(Stream.stream(users).find(user->user.age>55));
-		System.out.println(Stream.stream(users).findIndex( user->user.age<32));
-		System.out.println(Stream.stream(users).findIndex( user->user.age>55));
+		//나이가 30대, 남자, 돈이 250_000원 이상 있는 사람의 돈의 합
+		Optional<Integer> reduce = Stream.stream(users)
+			.filter(u->u.age-u.age%10 == 30)
+			.filter(u->"남자".equals(u.gender))
+			.map(u->u.money)
+			.filter(m->m>=250_000)
+			.reduce(Integer::sum);
+		Optional<Integer> reduce2 = users.stream()
+			.filter(u->u.age-u.age%10 == 30)
+			.filter(u->"남자".equals(u.gender))
+			.map(u->u.money)
+			.filter(m->m>=250_000)
+			.reduce(Integer::sum);
+		println(reduce+"  "+reduce2);
+		println("비교 결과 = " + reduce.equals(reduce2));
+		println("\n");
 		
-		System.out.println("every , find 테스트");
-		System.out.println(StreamUtils.some(users, u->u.age>30));
-		System.out.println(StreamUtils.some(users, u->u.age>50));
-		System.out.println(StreamUtils.every(users, u->u.age>30));
-		System.out.println(StreamUtils.every(users, u->u.age>10));
-		System.out.println(Stream.stream(users).some(u->u.age>30));
-		System.out.println(Stream.stream(users).some(u->u.age>50));
-		System.out.println(Stream.stream(users).every(u->u.age>30));
-		System.out.println(Stream.stream(users).every(u->u.age>10));
 		
-		System.out.println("pluck 테스트");
-		System.out.println(StreamUtils.pluck(users, "age",Integer.class));
-		//타입불일치
-		System.out.println(StreamUtils.pluck(users, "age",String.class));
-		System.out.println(Stream.stream(users).pluck("age",Integer.class));
-		//타입불일치
-		System.out.println(Stream.stream(users).pluck("age",String.class));
+		//20대 여자 중에 kakao 이메일을 쓰는 사람
+		int[] cnt1 = new int[] {0};
 		
-		System.out.println("reject 테스트");
-		System.out.println(StreamUtils.reject(users,u->u.age>30));
-		System.out.println(Stream.stream(users).reject(u->u.age>30).toList());
+		List<User> list3 = Stream.stream(users)
+			.filter(u-> {cnt1[0]++; return u.email.contains("@kakao");} )//분포도가 좋다.
+			.filter(u-> {cnt1[0]++; return u.age/10 == 2;})
+			.filter(u-> {cnt1[0]++; return Objects.equals("여자", u.gender);})
+			.toList();
+		//스트림 순서도 중요하다. 분포도를 따졌을 때 첫번째 필터 조건에서 최대한 걸러내야 
+		//다음 로직에 넘겨줄 요소가 적기 때문이다.
 		
-		System.out.println("min, max, minBy, maxBy 테스트");
-		System.out.println("나이 "+StreamUtils.min(users, (u1,u2)->Integer.compare(u1.age,u2.age)));
-		System.out.println("나이 "+StreamUtils.max(users, (u1,u2)->Integer.compare(u1.age,u2.age)));
-		System.out.println("이름 "+StreamUtils.min(users, (u1,u2)-> u1.name.compareTo(u2.name) ));
-		System.out.println("이름 "+StreamUtils.max(users, (u1,u2)-> u1.name.compareTo(u2.name) ));
-		System.out.println("나이 "+StreamUtils.minBy(users, Integer::compare, u->u.age));
-		System.out.println("나이 "+StreamUtils.maxBy(users, Integer::compare, u->u.age));
-		System.out.println(
-				Stream.stream(users)
-					.map(u->u.age)
-					.max(Integer::compare));
-		System.out.println(
-				Stream.stream(users)
-				.minBy(Long::compare,u->u.id));
+		int[] cnt2 = new int[] {0};
+		List<User> collect = users.stream()
+			.filter(u-> {cnt2[0]++; return Objects.equals("여자", u.gender);})//분포도가 안좋다.
+			.filter(u-> {cnt2[0]++; return u.email.contains("@kakao");} )
+			.filter(u-> {cnt2[0]++; return u.age/10 == 2;})
+			.collect(toList());
+		println("비교 결과 = " + list3.containsAll(collect)+"\n"+list3);
+		println("cnt 비교 결과 = cnt1("+cnt1[0]+") cnt2("+cnt2[0]+")");
+		println("\n");
+		//저 요인 만이 전부는 아니다. 자바 Stream은 지연로딩 기법으로 최종연산 전까진 로직을 수행하지 않는다.
+		//최종 연산이 호출된 순간 리스트 속 요소 하나하나가 스트림 중간연산을 통과한다.
+		//모든 요소가 중간연산을 통과하고 그 결과를 다음 중간연산으로 보내는 방식이 아니다.
+		cnt1[0] = 0;
+		cnt2[0] = 0;
 		
-		System.out.println(StreamUtils.groupBy(users, u->u.age-u.age%10));
-		System.out.println(StreamUtils.countBy(users, u->u.age-u.age%10));
-		System.out.println(Stream.stream(users).groupBy(u->u.age-u.age%10));
-		System.out.println(Stream.stream(users).countBy(u->u.age-u.age%10));
+		long count1 = Stream.stream(users)
+				.map(u->{cnt1[0]++; return u.age;})
+				.filter(age->{cnt1[0]++; return age>40;})
+				.count();
+		long count2 = list.stream()
+			.map(u->{cnt2[0]++; return u.age;})
+			.filter(age->{cnt2[0]++; return age>40;})
+			.count();
+		println("비교 결과 = " + (count1==count2));
+		println("내가 만든 stream은 최적화가 전혀 없기 때문에 users 크기 * 2 (map,filter) 만큼 반복될 것이다.");
+		println(cnt1[0]+"   "+cnt2[0]);
+		println("\n");
 		
+		
+		//남자, 여자 수
+		Map<String, Long> countBy = Stream.stream(users)
+			.countBy(u->u.gender);
+		
+		Map<String, Long> collect2 = users.stream()
+			.collect(groupingBy(u->u.gender, counting()));
+		println("비교 결과 = " + countBy.entrySet().equals(collect2.entrySet()) +"\n"+collect2);
+		println("\n");
+		
+		
+		//40대 남자, 30대 여자 유저
+		Map<String, List<User>> groupBy = Stream.stream(users)
+			.filter(u-> (u.age/10==3 && Objects.equals("여자", u.gender))
+					|| u.age/10==4 && Objects.equals("남자", u.gender))
+			.groupBy(u-> Objects.equals("남자", u.gender) 
+					? "40대 남자" :"30대 여자");
+		Map<String, List<User>> collect3 = users.stream()
+			.filter(u-> (u.age/10==3 && Objects.equals("여자", u.gender))
+					|| u.age/10==4 && Objects.equals("남자", u.gender))
+			.collect(groupingBy(u-> Objects.equals("남자", u.gender) 
+					? "40대 남자" :"30대 여자"));
+		println("비교 결과 = " + groupBy.entrySet().equals(collect3.entrySet()) +"\n"+collect3);
+		println("\n");
+		
+		
+		//새대별 남,여 자산 정보
+		//이 정도로 그룹화하는 정보는 현재 구현한 스트림으로 불가
+		Map<String, Map<Integer, LongSummaryStatistics>> collect4 = users.stream()
+			.collect((groupingBy(u->u.gender
+					,groupingBy(u->u.age/10*10, TreeMap::new ,summarizingLong(u->u.money)))));
+		collect4.forEach((gender,data)->{
+			println(gender);
+			data.forEach((age, data2)-> println(age+" "+data2));
+		});
+		
+		
+		//메일별, 세대 , 남녀 사용자
+		TreeMap<String, TreeMap<Integer, Map<String, List<User>>>> collect5 = users.stream()
+			.collect(groupingBy(u->u.email.substring(u.email.indexOf("@")+1, u.email.lastIndexOf(".")), TreeMap::new ,
+						groupingBy(u->u.age/10*10,TreeMap::new,
+							groupingBy(u->u.gender))));
+		collect5.forEach( (email, data1)->{
+			println(email);
+			data1.forEach((age,data2)->{
+				println("  "+age);
+				data2.forEach((gender,user)->{
+					println("    "+gender);
+					user.forEach(u->println("      "+u));
+				});
+			});
+		});
 	}
-
-	
 	
 	static class StreamUtils{
 		private StreamUtils() {}
@@ -400,6 +457,10 @@ public class FuncEx01 {
 			//방어적 복사
 			return new ArrayList<>(this.list);
 		}
+		long count() {
+			return this.list.size();
+		}
+		
 	}
 	
 	static class User{
@@ -457,7 +518,7 @@ public class FuncEx01 {
 		
 		static ThreadLocalRandom ran = ThreadLocalRandom.current();
 		static List<User> users() {
-			return IntStream.range(0, 20)
+			return IntStream.range(0, USER_SIZE)
 					.mapToObj(n-> getUser())
 					.collect(Collectors.toList());
 		}
