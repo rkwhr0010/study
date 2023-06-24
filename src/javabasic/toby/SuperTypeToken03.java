@@ -2,7 +2,9 @@ package javabasic.toby;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -14,6 +16,8 @@ public class SuperTypeToken03 {
 			map.put(tr, v);
 		}
 		<T> T get(TypeReference<T> tr) {
+			//단순 타입이면 문제없지만, 컨테이너 타입이면 캐스팅을 못한다. 
+			//<String> ok ,  <List<String>> not ok
 			return ((Class<T>)tr.type).cast(map.get(tr));
 		}
 	}
@@ -42,6 +46,7 @@ public class SuperTypeToken03 {
 			//우리는 현재 클래스가 아닌 클래스속 Type 이 목적이다.
 			if (obj == null || getClass().getSuperclass() != obj.getClass().getSuperclass())
 				return false;
+			//이 클래스의 익명 클래스를 사용하기 때문에 슈퍼클래스가 익명클래스가 된다.
 			TypeReference<?> other = (TypeReference<?>) obj;
 			return Objects.equals(type, other.type);
 		}
@@ -61,6 +66,9 @@ public class SuperTypeToken03 {
 		//컬렉션에서 요소가 같은 값인지 판단하는 기준은 Object.equals()메소드 결과다.
 		//따라서 아래와 같은 경우는 다른 key로 인식하여 값을 가져오지 못한다.
 		
+		//현재 컨테이너 같은 타입이 들어오면 캐스팅을 못한다.
+		typesafeMap.put(new TypeReference<List<String>>() {}, Arrays.asList("하나","둘","셋"));
+		typesafeMap.get(new TypeReference<List<String>>() {});
 		
 		
 		
