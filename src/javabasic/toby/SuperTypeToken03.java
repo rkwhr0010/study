@@ -4,6 +4,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SuperTypeToken03 {
 	static class TypesafeMap{
@@ -28,6 +29,22 @@ public class SuperTypeToken03 {
 			} 
 			else throw new RuntimeException();
 		}
+		
+		//IDE에서 제공한 자동 생성 코드
+		@Override
+		public int hashCode() {
+			return Objects.hash(type);
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj) return true;
+			//getClass() != obj.getClass() 여기에 걸려 false를 리턴해 현재 동작하지 않는다.
+			if (obj == null || getClass() != obj.getClass())
+				return false;
+			TypeReference<?> other = (TypeReference<?>) obj;
+			return Objects.equals(type, other.type);
+		}
+		
 	}
 	
 	public static void main(String[] args) {
