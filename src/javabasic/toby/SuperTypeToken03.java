@@ -39,7 +39,8 @@ public class SuperTypeToken03 {
 		public boolean equals(Object obj) {
 			if (this == obj) return true;
 			//getClass() != obj.getClass() 여기에 걸려 false를 리턴해 현재 동작하지 않는다.
-			if (obj == null || getClass() != obj.getClass())
+			//우리는 현재 클래스가 아닌 클래스속 Type 이 목적이다.
+			if (obj == null || getClass().getSuperclass() != obj.getClass().getSuperclass())
 				return false;
 			TypeReference<?> other = (TypeReference<?>) obj;
 			return Objects.equals(type, other.type);
@@ -59,6 +60,9 @@ public class SuperTypeToken03 {
 		System.out.println(typesafeMap.get(new TypeReference<Integer>() {}));
 		//컬렉션에서 요소가 같은 값인지 판단하는 기준은 Object.equals()메소드 결과다.
 		//따라서 아래와 같은 경우는 다른 key로 인식하여 값을 가져오지 못한다.
+		
+		
+		
 		
 	}
 }
