@@ -7,10 +7,9 @@ import java.util.Map;
 
 public class SuperTypeToken01 {
 	public static void main(String[] args) throws Exception {
-//		System.out.println(TypeToken01.create().getClass());
-//		System.out.println(TypeToken01.create(String.class).getClass());
-//		System.out.println(TypeToken01.create(Integer.class).getClass());//예외발생, 기본 생성자가 없음
-//		new Integer()
+		System.out.println(TypeToken01.create().getClass());
+		System.out.println(TypeToken01.create(String.class).getClass());
+		System.out.println(TypeToken01.create(Integer.class).getClass());//예외발생, 기본 생성자가 없음
 		
 		//지네릭은 컴파일러에게 정보를 주는 것
 		//type erasure에 의해 런타임 시 제거됨(형변환으로 치환됨)
@@ -33,7 +32,7 @@ public class SuperTypeToken01 {
 		
 		map.put(List.class, Arrays.asList(1,2,3));
 		//타입 토큰의 한계, 지네릭 정보까지 포함한 타입 토큰은 사용이 불가능
-		//type erasure에 의해 런타임에 지네릭 정보가 제거되고, 캐스팅만 남기때문 따라서 다 Object
+		//type eraser에 의해 런타임에 지네릭 정보가 제거되고, 캐스팅만 남기때문 따라서 다 Object
 		//JDK 1.5 이전 호환성을 위한 선택
 //		map.put(List<Integer>.class, Arrays.asList(1,2,3));
 		map.put(List.class, Arrays.asList("1","3","5"));
@@ -67,7 +66,7 @@ public class SuperTypeToken01 {
 		//지네릭 타입 토큰
 		static <T> T create(Class<T> clazz) throws Exception{
 			//지네릭 타입은 컴파일 시점에 타입이 결정되어 있기 때문에 타입 안정성이 높다
-			return clazz.newInstance(); //그 증거로 개발자가 코드로 형변환 할 필요없다.(type erasure) _ (T)clazz.newInstance()
+			return clazz.newInstance(); //그 증거로 개발자가 코드로 형변환 할 필요없다.(type eraser) _ (T)clazz.newInstance()
 		}
 		static void examNonTypeSafe() {
 			Object o = "123";

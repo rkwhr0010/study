@@ -18,7 +18,12 @@ public class SuperTypeToken03 {
 		<T> T get(TypeReference<T> tr) {
 			//단순 타입이면 문제없지만, 컨테이너 타입이면 캐스팅을 못한다. 
 			//<String> ok ,  <List<String>> not ok
-			return ((Class<T>)tr.type).cast(map.get(tr));
+			
+			if(tr.type instanceof Class<?>)
+				return ((Class<T>)tr.type).cast(map.get(tr));
+			else 
+				return ((Class<T>)((ParameterizedType)tr.type).getRawType()).cast(map.get(tr));
+				
 		}
 	}
 	
@@ -50,26 +55,34 @@ public class SuperTypeToken03 {
 			TypeReference<?> other = (TypeReference<?>) obj;
 			return Objects.equals(type, other.type);
 		}
-		
 	}
 	
 	public static void main(String[] args) {
-		
 		TypesafeMap typesafeMap = new TypesafeMap();
 		//되는 경우
 		TypeReference<String> tr = new TypeReference<String>() {};
 		typesafeMap.put(tr, "하나둘");
 		System.out.println(typesafeMap.get(tr));
-		//안되는 경우
+		//안되는 경우, equals()메서드를 오버라이딩 하지 않을 경우, 물리적 주소 값을 비교하게 되어 불가능
 		typesafeMap.put(new TypeReference<Integer>() {}, 123);
 		System.out.println(typesafeMap.get(new TypeReference<Integer>() {}));
 		//컬렉션에서 요소가 같은 값인지 판단하는 기준은 Object.equals()메소드 결과다.
 		//따라서 아래와 같은 경우는 다른 key로 인식하여 값을 가져오지 못한다.
 		
-		//현재 컨테이너 같은 타입이 들어오면 캐스팅을 못한다.
 		typesafeMap.put(new TypeReference<List<String>>() {}, Arrays.asList("하나","둘","셋"));
-		typesafeMap.get(new TypeReference<List<String>>() {});
+		System.out.println(typesafeMap.get(new TypeReference<List<String>>() {}));
+		typesafeMap.put(new TypeReference<List<List<String>>>() {}, Arrays.asList(Arrays.asList("하나"),Arrays.asList("둘"),Arrays.asList("셋")));
+		System.out.println(typesafeMap.get(new TypeReference<List<List<String>>>() {}));
 		
+		
+		//get() 메서드 추가 설명 
+		TypeReference<String> typeReference1 = new TypeReference<String>() {};
+		TypeReference<List<String>> typeReference2 = new TypeReference<List<String>>() {};
+		System.out.println(typeReference1.type);
+		System.out.println(typeReference1.type instanceof ParameterizedType);
+		System.out.println(typeReference2.type);
+		System.out.println(typeReference2.type instanceof ParameterizedType);
+		System.out.println(((ParameterizedType)typeReference2.type).getRawType());
 		
 		
 	}
