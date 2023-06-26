@@ -12,21 +12,19 @@ import static java.lang.Math.*;
 public class SortEx02 {
 	public static void main(String[] args) {
 		ThreadLocalRandom current = ThreadLocalRandom.current();
-		Integer[] array = current.ints(0,30).distinct().limit(10).boxed().toArray(Integer[]::new);
+		Integer[] array = current.ints(0,300).distinct().limit(15).boxed().toArray(Integer[]::new);
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		list.add(new MergeSortLogicalArr());
-//		list.add(new MergeSortPhysicalArr());
-//		list.add(new QuickSortLeft());
-//		list.add(new QuickSortMid());
+		list.add(new MergeSortPhysicalArr());
+		list.add(new QuickSortLeft());
+		list.add(new QuickSortMid());
 		list.add(new RadixSort());
 		
 		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"\n");
 		for(SortStategy<Integer> sort : list) 
 			System.out.printf("%-20s  %s%n",sort.getClass().getSimpleName(),
 					Arrays.toString(sort.sort(array)));
-		
-		
 		
 	}
 	
@@ -58,11 +56,9 @@ public class SortEx02 {
 				nums = buckets.stream()
 					.flatMap(List::stream)
 					.toArray(Integer[]::new);
-				for(int i = 0;i<buckets.size();i++) {
-					System.out.println(i+" = "+buckets.get(i));
-				}
-				
-				System.out.println(Arrays.toString(nums));
+//				for(int i = 0;i<buckets.size();i++) 
+//					System.out.println(i+" = "+buckets.get(i));
+//				System.out.println(Arrays.toString(nums));
 			}
 			return nums;
 		}
@@ -74,7 +70,7 @@ public class SortEx02 {
 		
 		//i의 자리수의 숫자를 구한다.
 		private int getDigit(int num,int i) {
-			return (int)(abs(num)/pow(10,i-1D) % 10);
+			return (int)(abs(num)/pow(10,i) % 10);
 		}
 		//주어진 숫자의 자리수를 구한다.
 		private int getDigitCount(int num) {
