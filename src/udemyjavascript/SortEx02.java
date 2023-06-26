@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static java.lang.Math.*;
 
 public class SortEx02 {
 	public static void main(String[] args) {
@@ -12,17 +16,20 @@ public class SortEx02 {
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		list.add(new MergeSortLogicalArr());
-		list.add(new MergeSortPhysicalArr());
-		list.add(new QuickSortLeft());
-		list.add(new QuickSortMid());
+//		list.add(new MergeSortPhysicalArr());
+//		list.add(new QuickSortLeft());
+//		list.add(new QuickSortMid());
+		list.add(new RadixSort());
 		
-		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"%n");
+		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"\n");
 		for(SortStategy<Integer> sort : list) 
 			System.out.printf("%-20s  %s%n",sort.getClass().getSimpleName(),
 					Arrays.toString(sort.sort(array)));
 		
 		
+		
 	}
+	
 	
 	static interface SortStategy<T>{
 		T[] sort(T[] arr);
@@ -31,6 +38,55 @@ public class SortEx02 {
 			Integer tmp = clone[i];
 			clone[i] = clone[j];
 			clone[j] = tmp;
+		}
+		
+	}
+	
+	static class RadixSort implements SortStategy<Integer>{
+		public Integer[] sort(Integer[] arr) {
+			Integer[] nums = arr.clone();
+			
+			final int maxDigitCount = getMaxDigitCount(nums);
+			//자리수 순회용 1의 자리부터 가장 큰 자리수까지
+			for(int k=0;k<maxDigitCount;k++) {
+				List<List<Integer>> buckets = getBuckets();
+				//메인 배열 순회용
+				for(int i=0;i<nums.length;i++) {
+					int digit = getDigit(nums[i], k);
+					buckets.get(digit).add(nums[i]);
+				}
+				nums = buckets.stream()
+					.flatMap(List::stream)
+					.toArray(Integer[]::new);
+				for(int i = 0;i<buckets.size();i++) {
+					System.out.println(i+" = "+buckets.get(i));
+				}
+				
+				System.out.println(Arrays.toString(nums));
+			}
+			return nums;
+		}
+		private List<List<Integer>> getBuckets(){
+			return IntStream.range(0, 10)
+						.mapToObj(ArrayList<Integer>::new)
+						.collect(Collectors.toList());
+		}
+		
+		//i의 자리수의 숫자를 구한다.
+		private int getDigit(int num,int i) {
+			return (int)(abs(num)/pow(10,i-1D) % 10);
+		}
+		//주어진 숫자의 자리수를 구한다.
+		private int getDigitCount(int num) {
+			if(num==0) return 1;
+			return (int)log10(abs(num))+1;
+		}
+		//주어진 배열에서 가장 큰 자리수를 구한다.
+		private int getMaxDigitCount(Integer[] arr) {
+			int result = -1;
+			for(Integer num : arr)
+				result = max(result,getDigitCount(num));
+			return result;
 		}
 		
 	}
@@ -163,5 +219,6 @@ public class SortEx02 {
 	    	return arr;
 	    }
 	}
+	
 	
 }
