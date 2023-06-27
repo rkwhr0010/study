@@ -12,13 +12,14 @@ import static java.lang.Math.*;
 public class SortEx02 {
 	public static void main(String[] args) {
 		ThreadLocalRandom current = ThreadLocalRandom.current();
-		Integer[] array = current.ints(0,300).distinct().limit(15).boxed().toArray(Integer[]::new);
+		Integer[] array = current.ints(0,100).distinct().limit(8).boxed().toArray(Integer[]::new);
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		list.add(new MergeSortLogicalArr<>());
 		list.add(new MergeSortPhysicalArr());
 		list.add(new QuickSortLeft());
 		list.add(new QuickSortMid());
+		list.add(new QuickSortMid2<>());
 		list.add(new RadixSort());
 		
 		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"\n");
@@ -32,8 +33,8 @@ public class SortEx02 {
 	static interface SortStategy<T extends Comparable<T>>{
 		T[] sort(T[] arr);
 		
-		default void swap(Integer[] clone, int i, int j) {
-			Integer tmp = clone[i];
+		default void swap(T[] clone, int i, int j) {
+			T tmp = clone[i];
 			clone[i] = clone[j];
 			clone[j] = tmp;
 		}
@@ -142,6 +143,34 @@ public class SortEx02 {
 			swap(arr,swapIdx,start);
 			return swapIdx;
 		}
+	}
+	static class QuickSortMid2<T extends Comparable<T>> implements SortStategy<T>{
+
+		@Override
+		public T[] sort(T[] arr) {
+			return sort(arr.clone(), 0, arr.length-1);
+		}
+		private T[] sort(T[] arr, int left, int right) {
+			int lt = left;
+			int rt = right;
+			int mid = (lt+rt)/2;
+			T pivot = arr[mid];
+			
+			//재귀 회차 
+			while(lt<=rt) {
+				//lt가 피봇보다 크면 멈춘다.(스왑을 위함)
+				while(arr[lt].compareTo(pivot) < 0 ) lt++;
+				//rt가 피봇보다 작으면 멈춘다.(스왑을 위함)
+				while(arr[rt].compareTo(pivot) > 0 ) rt--;
+				//스왑할 때 반드시 lt가 rt보다 작아야한다.
+				//스왑 이후 대상 인덱스는 볼 일이 끝났으므로, 넘어간다.
+				if(lt<=rt) swap(arr, lt++, rt--);
+			}
+			if(left<rt) sort(arr,left,rt);
+			if(lt<right) sort(arr, lt, right);
+			return arr;
+		}
+		
 	}
 	
 	static class QuickSortMid implements SortStategy<Integer>{
