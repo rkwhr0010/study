@@ -15,7 +15,7 @@ public class SortEx02 {
 		Integer[] array = current.ints(0,300).distinct().limit(15).boxed().toArray(Integer[]::new);
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
-		list.add(new MergeSortLogicalArr());
+		list.add(new MergeSortLogicalArr<>());
 		list.add(new MergeSortPhysicalArr());
 		list.add(new QuickSortLeft());
 		list.add(new QuickSortMid());
@@ -29,7 +29,7 @@ public class SortEx02 {
 	}
 	
 	
-	static interface SortStategy<T>{
+	static interface SortStategy<T extends Comparable<T>>{
 		T[] sort(T[] arr);
 		
 		default void swap(Integer[] clone, int i, int j) {
@@ -40,90 +40,48 @@ public class SortEx02 {
 		
 	}
 	
-	static class RadixSort implements SortStategy<Integer>{
-		public Integer[] sort(Integer[] arr) {
-			Integer[] nums = arr.clone();
-			
-			final int maxDigitCount = getMaxDigitCount(nums);
-			//자리수 순회용 1의 자리부터 가장 큰 자리수까지
-			for(int k=0;k<maxDigitCount;k++) {
-				List<List<Integer>> buckets = getBuckets();
-				//메인 배열 순회용
-				for(int i=0;i<nums.length;i++) {
-					int digit = getDigit(nums[i], k);
-					buckets.get(digit).add(nums[i]);
-				}
-				nums = buckets.stream()
-					.flatMap(List::stream)
-					.toArray(Integer[]::new);
-//				for(int i = 0;i<buckets.size();i++) 
-//					System.out.println(i+" = "+buckets.get(i));
-//				System.out.println(Arrays.toString(nums));
-			}
-			return nums;
-		}
-		private List<List<Integer>> getBuckets(){
-			return IntStream.range(0, 10)
-						.mapToObj(ArrayList<Integer>::new)
-						.collect(Collectors.toList());
-		}
-		
-		//i의 자리수의 숫자를 구한다.
-		private int getDigit(int num,int i) {
-			return (int)(abs(num)/pow(10,i) % 10);
-		}
-		//주어진 숫자의 자리수를 구한다.
-		private int getDigitCount(int num) {
-			if(num==0) return 1;
-			return (int)log10(abs(num))+1;
-		}
-		//주어진 배열에서 가장 큰 자리수를 구한다.
-		private int getMaxDigitCount(Integer[] arr) {
-			int result = -1;
-			for(Integer num : arr)
-				result = max(result,getDigitCount(num));
-			return result;
-		}
-		
-	}
 	/*
 	 * 물리적 배열로 나누지 않고 논리적 배열로 나눠 처리한다.
 	 */
-	static class MergeSortLogicalArr implements SortStategy<Integer>{
-		Integer[] tmpArr;
-		Integer[] arr;
+	static class MergeSortLogicalArr<T extends Comparable<T>> implements SortStategy<T>{
+		T[] swapArr;
+		T[] clone;
 		
-		public Integer[] sort(Integer[] arr) {
-			tmpArr = new Integer[arr.length]; //배열 정렬 시 사용할 임시 배열
-			this.arr = arr.clone();
-			return sort(0, arr.length-1); //정렬을 index기준으로 다룰 것
+		@Override
+		public T[] sort(T[] arr) {
+			swapArr = arr.clone(); //스왑용 배열
+			clone = arr.clone();   //원본 배열 손상 방지
+			return split(0,arr.length-1);
 		}
-		private Integer[] sort(int left, int right) {
-			int mid = (left+right)/2;
-			//종료 조건, left 가 mid와 같다면 논리적 배열 길이는 1이다.
-			if(left!= mid) sort(left,mid);
-			//종료 조건, right 가 mid+1와 같다면 논리적 배열 길이는 1이다.
-			if(right!= mid+1) sort(mid+1,right);
-			return merge(left,mid,right);
+		//배열을 논리적으로 쪼갠다.
+		private T[] split(int lt, int rt) {
+			int mid = (lt+rt)/2;
+			if(lt != mid) split(lt,mid);
+			if(rt != mid+1) split(mid+1,rt);
+			return mergeSort(lt, mid, rt);
 		}
-		
-		private Integer[] merge(final int left,final int mid, final int right) {
-			int lt = left;
-			int ltEnd = mid;
-			int rt = mid+1 ;
-			int rtEnd = right;
+		//논리적으로 쪼개진 두 배열을 입력으로 받아, 병합하면서 정렬한다.
+		private T[] mergeSort(int lt, int mid, int rt) {
+			//병합 정렬 중 덮어씌워지는 값을 스왑용 배열에 저장해둔다.
+			System.arraycopy(clone, lt, swapArr, lt, 1+rt-lt);
 			
-			//일단 임시배열에 두 논리적 배열 값을 채움, 정렬 배열에 값을 덮어씌울 때 값 손실 때문
-			System.arraycopy(arr, lt, tmpArr, lt, rtEnd-lt+1);
+			int ltS = lt;
+			int ltE = mid;
+			int rtS = mid+1;
+			int rtE = rt;
+			
 			int i = lt;
-			while(lt<=ltEnd &&rt<= rtEnd) 
-				arr[i++] = tmpArr[lt]>tmpArr[rt] ? tmpArr[rt++] : tmpArr[lt++];
-			while(lt<=ltEnd)
-				arr[i++] = tmpArr[lt++];
-			while(rt<= rtEnd)
-				arr[i++] = tmpArr[rt++];
-			
-			return arr;
+			while(ltS <= ltE && rtS <= rtE) {
+				clone[i++] = swapArr[ltS].compareTo(swapArr[rtS]) <= 0 
+						? swapArr[ltS++] : swapArr[rtS++];
+			}
+			while(ltS <= ltE) {
+				clone[i++] = swapArr[ltS++];
+			}
+			while(rtS <= rtE) {
+				clone[i++] = swapArr[rtS++];
+			}
+			return clone;
 		}
 	}
 	
@@ -216,5 +174,51 @@ public class SortEx02 {
 	    }
 	}
 	
-	
+
+	static class RadixSort implements SortStategy<Integer>{
+		public Integer[] sort(Integer[] arr) {
+			Integer[] nums = arr.clone();
+			
+			final int maxDigitCount = getMaxDigitCount(nums);
+			//자리수 순회용 1의 자리부터 가장 큰 자리수까지
+			for(int k=0;k<maxDigitCount;k++) {
+				List<List<Integer>> buckets = getBuckets();
+				//메인 배열 순회용
+				for(int i=0;i<nums.length;i++) {
+					int digit = getDigit(nums[i], k);
+					buckets.get(digit).add(nums[i]);
+				}
+				nums = buckets.stream()
+					.flatMap(List::stream)
+					.toArray(Integer[]::new);
+//				for(int i = 0;i<buckets.size();i++) 
+//					System.out.println(i+" = "+buckets.get(i));
+//				System.out.println(Arrays.toString(nums));
+			}
+			return nums;
+		}
+		private List<List<Integer>> getBuckets(){
+			return IntStream.range(0, 10)
+						.mapToObj(ArrayList<Integer>::new)
+						.collect(Collectors.toList());
+		}
+		
+		//i의 자리수의 숫자를 구한다.
+		private int getDigit(int num,int i) {
+			return (int)(abs(num)/pow(10,i) % 10);
+		}
+		//주어진 숫자의 자리수를 구한다.
+		private int getDigitCount(int num) {
+			if(num==0) return 1;
+			return (int)log10(abs(num))+1;
+		}
+		//주어진 배열에서 가장 큰 자리수를 구한다.
+		private int getMaxDigitCount(Integer[] arr) {
+			int result = -1;
+			for(Integer num : arr)
+				result = max(result,getDigitCount(num));
+			return result;
+		}
+		
+	}
 }
