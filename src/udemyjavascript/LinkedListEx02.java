@@ -76,7 +76,40 @@ public class LinkedListEx02 {
 			result.next = null;
 			return result;
 		}
+		//첫자리에 삽입
+		DoublyLinkedList<T> unShift(T val) {
+			Node<T> newNode = new Node<>(val);
+			head.prev = newNode;
+			head = head.prev;
+			
+			if(length == 0) {
+				tail = newNode;
+			}
+			
+			return this;
+		}
+		//데이터 찾기
+		Node<T> get(int index){
+			return null;
+		}
 		
+		//데이터 수정
+		Boolean set(int index, T val) {
+			return true;
+		}
+		
+		boolean insert(int index, T val){
+			return true;
+		}
+		
+		Node<T> remove(int index){
+			return null;
+		}
+		
+		
+		DoublyLinkedList<T> reverse() {
+			return this;
+		}
 		
 		public String toString() {
 			return "\n head : "+ head + " tail : " + tail + " length : "+length+"\n"+toString(head);
