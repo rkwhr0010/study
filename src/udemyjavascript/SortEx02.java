@@ -19,7 +19,7 @@ public class SortEx02 {
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		list.add(new MergeSortLogicalArr<>());
 		list.add(new MergeSortPhysicalArr<>());
-		list.add(new QuickSortLeft());
+		list.add(new QuickSortLeft<>());
 		list.add(new QuickSortMid<>());
 		list.add(new RadixSort());
 		
@@ -107,13 +107,13 @@ public class SortEx02 {
 		 * 이를 이용해 병합 정렬은 길이가 1이 될 때까지 배열을 나눈 후 합치는 과정을 거친다.
 		 */
 		private T[] merge(T[] lArr, T[] rArr) {
-			Object newArr = Array.newInstance(lArr.getClass().getComponentType(), lArr.length+rArr.length);
+			Object newArr = Array.newInstance(lArr.getClass().getComponentType(), lArr.length + rArr.length);
 			@SuppressWarnings("unchecked")
 			T[] mArr = (T[]) newArr;
 			int i=0;
 			int lt=0;
 			int rt=0;
-			while(lt<lArr.length&&rt<rArr.length) 
+			while(lt < lArr.length && rt < rArr.length) 
 				mArr[i++] = lArr[lt].compareTo(rArr[rt]) <= 0 
 					? lArr[lt++] : rArr[rt++];
 			while(lt < lArr.length)
@@ -125,31 +125,31 @@ public class SortEx02 {
 		
 	}
 	
-	static class QuickSortLeft implements SortStategy<Integer>{
-		public Integer[] sort(Integer[] arr) {
-			return sort(arr.clone(),0,arr.length-1);
+	static class QuickSortLeft<T extends Comparable<T>> implements SortStategy<T>{
+		public T[] sort(T[] arr) {
+			return sort(arr.clone(), 0, arr.length - 1);
 		}
 		
-		public Integer[] sort(Integer[] arr,Integer lt, Integer rt) {
-			if(lt<rt) {
-				Integer pivotIndex = pivot(arr, lt, rt);
-				sort(arr,lt,pivotIndex-1);
-				sort(arr,pivotIndex+1,rt);
+		public T[] sort(T[] arr, int lt, int rt) {
+			if(lt < rt) {
+				int pivotIndex = pivot(arr, lt, rt);
+				sort(arr, lt, pivotIndex - 1);
+				sort(arr, pivotIndex + 1, rt);
 			}
 			return arr;
 		}
 		
-		private Integer pivot(Integer[] arr, Integer start, Integer end) {
-			Integer pivot = arr[start];//좌측부터 시작
-			int swapIdx =start;
-			for(int i=start+1;i<arr.length;i++) 
-				if(pivot>arr[i] ) swap(arr, ++ swapIdx, i);
+		private int pivot(T[] arr, int start, int end) {
+			T pivot = arr[start];//좌측부터 시작
+			int swapIdx = start;
+			for(int i = start + 1 ; i < arr.length ; i++) 
+				if(pivot.compareTo(arr[i]) > 0) swap(arr, ++swapIdx, i);
 			swap(arr,swapIdx,start);
 			return swapIdx;
 		}
 	}
+	
 	static class QuickSortMid<T extends Comparable<T>> implements SortStategy<T>{
-
 		@Override
 		public T[] sort(T[] arr) {
 			return sort(arr.clone(), 0, arr.length-1);
