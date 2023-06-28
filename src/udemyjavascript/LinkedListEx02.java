@@ -131,6 +131,30 @@ public class LinkedListEx02 {
 		}
 		
 		boolean insert(int index, T val){
+			Node<T> node = get(index);
+			if(node == null) return false;
+			
+			if(index == 0) {
+				unShift(val);
+				
+				return true;
+			}
+			if(index == length-1) {
+				push(val);
+				
+				return true;
+			}
+			
+			Node<T> newNode = new Node<>(val);
+			Node<T> prevNode = node.prev;
+			
+			newNode.next = node;
+			node.prev = newNode;
+			
+			prevNode.next = newNode;
+			newNode.prev = prevNode;
+			length++;
+			
 			return true;
 		}
 		
@@ -162,9 +186,7 @@ public class LinkedListEx02 {
 		DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
 		IntStream.range(0, 10).forEach(list::push);
 		System.out.println(list);
-		System.out.println(list.set(2, 1000));
-		System.out.println(list);
-		System.out.println(list.set(8, 1030));
+		System.out.println(list.insert(9, 999));
 		System.out.println(list);
 		
 	}
