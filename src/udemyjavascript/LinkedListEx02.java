@@ -99,21 +99,18 @@ public class LinkedListEx02 {
 				return result;
 			}
 			
-			int start = 0;
-			int end = length-1 ;
 			//tail 시작
-			if(end >> 1 <= index) {
+			if(length-1 >> 1 <= index) {
 				result = tail;
-				while(index != end) {
+				for(int end = length-1 ; index != end ; end--) {
 					result = result.prev;
-					end--;
+					
 				}
 			//head 시작
 			} else {
 				result = head;
-				while(index != start) {
-					result = head.next;
-					start++;
+				for(int start = 0; start != index ; start++) {
+					result = result.next;
 				}
 			}
 			
@@ -122,7 +119,15 @@ public class LinkedListEx02 {
 		
 		//데이터 수정
 		Boolean set(int index, T val) {
-			return true;
+			Node<T> node = get(index);
+			if(node == null) {
+				
+				return false;
+			} else {
+				node.val = val;
+				
+				return true;
+			}
 		}
 		
 		boolean insert(int index, T val){
@@ -155,27 +160,12 @@ public class LinkedListEx02 {
 	
 	public static void main(String[] args) {
 		DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
-		IntStream.range(1, 11).forEach(list::push);
+		IntStream.range(0, 10).forEach(list::push);
 		System.out.println(list);
-		System.out.println(list.get(1));
-		System.out.println(list.get(3));
-		System.out.println(list.get(5));
-		System.out.println(list.get(6));
-		System.out.println(list.get(7));
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list);
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list);
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list.shift());
-//		System.out.println(list);
+		System.out.println(list.set(2, 1000));
+		System.out.println(list);
+		System.out.println(list.set(8, 1030));
+		System.out.println(list);
 		
 	}
 }
