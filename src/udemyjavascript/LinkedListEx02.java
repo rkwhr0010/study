@@ -1,6 +1,7 @@
 package udemyjavascript;
 
 import java.util.StringJoiner;
+import java.util.stream.IntStream;
 
 public class LinkedListEx02 {
 	static class DoublyLinkedList<T>{
@@ -22,7 +23,7 @@ public class LinkedListEx02 {
 		Node<T> head;
 		Node<T> tail;
 		int length;
-		
+		//맨 뒤 추가
 		Node<T> push(T val){
 			Node<T> newNode = new Node<>(val);
 			if(length == 0) {
@@ -37,7 +38,7 @@ public class LinkedListEx02 {
 			
 			return tail;
 		}
-		
+		//맨 뒤 제거/ 리턴
 		Node<T> pop(){
 			Node<T> result;
 			if(length == 0) 
@@ -58,10 +59,27 @@ public class LinkedListEx02 {
 			
 			return result;
 		}
+		//맨앞 제거/리턴
+		Node<T> shift(){
+			if(length == 0) return null;
+			Node<T> result = head;
+			
+			head = head.next;
+			if(length == 1) {
+				tail = null;
+			}else {
+				head.prev = null;
+			}
+			
+			length--;
+			//노드가 아닌 값을 리턴할 거면 필요없는 코드
+			result.next = null;
+			return result;
+		}
 		
 		
 		public String toString() {
-			return "length : "+length+"\n"+toString(head);
+			return "\n head : "+ head + " tail : " + tail + " length : "+length+"\n"+toString(head);
 		}
 		private String toString(Node<T> node) {
 			StringJoiner sb = new StringJoiner(", ", "[", "]");
@@ -77,17 +95,21 @@ public class LinkedListEx02 {
 	
 	public static void main(String[] args) {
 		DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
-		list.push(1);
-		list.push(2);
-		list.push(3);
-		list.push(4);
+		IntStream.range(1, 11).forEach(list::push);
 		System.out.println(list);
-		System.out.println(list.pop());
-		System.out.println(list.pop());
-		System.out.println(list.pop());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
 		System.out.println(list);
-		System.out.println(list.pop());
-		System.out.println(list.pop());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
+		System.out.println(list);
+		System.out.println(list.shift());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
+		System.out.println(list.shift());
 		System.out.println(list);
 		
 	}
