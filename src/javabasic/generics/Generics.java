@@ -2,12 +2,15 @@ package javabasic.generics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Generics {
 
 	
-	//? 와일드카드는 ? extends Object와 같다고 헀는데 Object를 안쓰는 이유는
+	//? 와일드카드는 <? extends Object>와 같다고 헀는데 Object를 안쓰는 이유는
 	//호출하는 쪽에서 List<Object> 타입만 넣을 수 있기 때문이다. 
 	static void method1(List<Object> list) {}
 	//아래 두 개 차이는?? 
@@ -25,11 +28,48 @@ public class Generics {
 		}
 	}
 	public static void main(String[] args) {
-		List<Integer> list = Arrays.asList(1,2,3,4,5);
-		
-		reverse3(list);
-		System.out.println(list);
+		List<Integer> asList = Arrays.asList(1,2,3,4,5,6);
+		reverse(asList);
+		System.out.println(asList);
 	}
+	
+	static void reverse(List<?> list) {
+		List l = list;
+		int low = 0;
+		int high = list.size()-1;
+		
+		for(;low<high;low++,high--) {
+			final Object tmp = l.get(low);
+			l.set(low, l.get(high));
+			l.set(high, tmp);
+		}
+//		extracted(list);
+	}
+	private static <T> void extracted(List<T> list) {
+		int low = 0;
+		int high = list.size()-1;
+		
+		for(;low<high;low++,high--) {
+			final T tmp = list.get(low);
+			list.set(low, list.get(high));
+			list.set(high, tmp);
+		}
+	}
+	
+	
+	static <T extends Comparable<? super T>> boolean granterThan(List<T> list, T o) {
+		return list.stream().filter(a->a.compareTo(o)>0).count()>0;
+	}
+	
+	static long frequency(Collection<?> list , Object data) {
+		return list.stream().filter(arg->arg.equals(data)).count();
+	}
+	
+	static <T extends Comparable<? super T>> T max(List<? extends T> list) {
+		return list.stream().reduce((a,b)-> a.compareTo(b) > 0 ? a : b).get();
+	}
+	
+	
 	
 	
 	//API 설계에서 T타입의 노출은 내부에서 T타입을 사용한다는 것을 의미한다.
