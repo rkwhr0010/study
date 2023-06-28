@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 
 import static java.lang.Math.*;
 
+import java.lang.reflect.Array;
+
 public class SortEx02 {
 	public static void main(String[] args) {
 		ThreadLocalRandom current = ThreadLocalRandom.current();
@@ -16,10 +18,9 @@ public class SortEx02 {
 		
 		List<SortStategy<Integer>> list = new ArrayList<>();
 		list.add(new MergeSortLogicalArr<>());
-		list.add(new MergeSortPhysicalArr());
+		list.add(new MergeSortPhysicalArr<>());
 		list.add(new QuickSortLeft());
-		list.add(new QuickSortMid());
-		list.add(new QuickSortMid2<>());
+		list.add(new QuickSortMid<>());
 		list.add(new RadixSort());
 		
 		System.out.println(array.getClass().getSimpleName()+"  "+ Arrays.toString(array)+"\n");
@@ -86,16 +87,16 @@ public class SortEx02 {
 		}
 	}
 	
-	static class MergeSortPhysicalArr implements SortStategy<Integer>{
-		public Integer[] sort(Integer[] arr) {
+	static class MergeSortPhysicalArr<T extends Comparable<T>> implements SortStategy<T>{
+		public T[] sort(T[] arr) {
 			/* 
 			 * 종료 조건
 			 * 길이가 1일 때까지 배열을 두 개로 나눈다.
 			 */
 			if(arr.length == 1) return arr;
-			Integer mid = arr.length/2;
-			Integer[] ltArr = Arrays.copyOfRange(arr, 0, mid);
-			Integer[] rtArr = Arrays.copyOfRange(arr, mid, arr.length);
+			int mid = arr.length/2;
+			T[] ltArr = Arrays.copyOfRange(arr, 0, mid);
+			T[] rtArr = Arrays.copyOfRange(arr, mid, arr.length);
 			
 			return merge(sort(ltArr), sort(rtArr));
 		}
@@ -105,13 +106,16 @@ public class SortEx02 {
 		 * 따라서 길이가 1인 배열 두 개를 합치는 것은 정렬된 배열 두 개를 합치는 것과 같다.
 		 * 이를 이용해 병합 정렬은 길이가 1이 될 때까지 배열을 나눈 후 합치는 과정을 거친다.
 		 */
-		private Integer[] merge(Integer[] lArr, Integer[] rArr) {
-			Integer[] mArr = new Integer[lArr.length+rArr.length];
-			Integer i=0;
-			Integer lt=0;
-			Integer rt=0;
+		private T[] merge(T[] lArr, T[] rArr) {
+			Object newArr = Array.newInstance(lArr.getClass().getComponentType(), lArr.length+rArr.length);
+			@SuppressWarnings("unchecked")
+			T[] mArr = (T[]) newArr;
+			int i=0;
+			int lt=0;
+			int rt=0;
 			while(lt<lArr.length&&rt<rArr.length) 
-				mArr[i++] = lArr[lt]< rArr[rt] ? lArr[lt++] : rArr[rt++];
+				mArr[i++] = lArr[lt].compareTo(rArr[rt]) <= 0 
+					? lArr[lt++] : rArr[rt++];
 			while(lt < lArr.length)
 				mArr[i++] = lArr[lt++];
 			while(rt < rArr.length)
@@ -144,7 +148,7 @@ public class SortEx02 {
 			return swapIdx;
 		}
 	}
-	static class QuickSortMid2<T extends Comparable<T>> implements SortStategy<T>{
+	static class QuickSortMid<T extends Comparable<T>> implements SortStategy<T>{
 
 		@Override
 		public T[] sort(T[] arr) {
@@ -153,55 +157,30 @@ public class SortEx02 {
 		private T[] sort(T[] arr, int left, int right) {
 			int lt = left;
 			int rt = right;
-			int mid = (lt+rt)/2;
-			T pivot = arr[mid];
+			T pivot = arr[lt + rt >>> 1]; //인덱스 중간 값
 			
 			//재귀 회차 
-			while(lt<=rt) {
+			while(lt <= rt) {
 				//lt가 피봇보다 크면 멈춘다.(스왑을 위함)
 				while(arr[lt].compareTo(pivot) < 0 ) lt++;
 				//rt가 피봇보다 작으면 멈춘다.(스왑을 위함)
 				while(arr[rt].compareTo(pivot) > 0 ) rt--;
-				//스왑할 때 반드시 lt가 rt보다 작아야한다.
-				//스왑 이후 대상 인덱스는 볼 일이 끝났으므로, 넘어간다.
-				if(lt<=rt) swap(arr, lt++, rt--);
+				
+				//lt가 rt보다 작거나 같아야 유효하다. 스왑 이후 대상 인덱스는 볼 일이 끝났으므로, 넘어간다.
+				if(lt <= rt) swap(arr, lt++, rt--);
+				//lt == rt 경우   같은 위치(lt++,rt--) =>  rt , lt  크로스하게 된다.
 			}
-			if(left<rt) sort(arr,left,rt);
-			if(lt<right) sort(arr, lt, right);
+			//시작 left 값은 고정이고 rt-- 가 점점 가다온다. 이때 left는 무조건 작아야 유효하다.
+			//유효한 값 == 적여도 left ~ rt 사이 요소가 2개 이상
+			if(left < rt) sort(arr, left, rt);
+			//종료 right 값은 고정이고 lt++ 가 점점 가다온다. 이때 right는 무조건 커야 유효하다.
+			//유효한 값 == 적여도 lt ~ right 사이 요소가 2개 이상
+			if(lt < right) sort(arr, lt, right);
 			return arr;
 		}
 		
 	}
 	
-	static class QuickSortMid implements SortStategy<Integer>{
-	    public Integer[] sort(Integer[] arr) {
-	    	return sort(arr.clone(), 0, arr.length-1);
-	    }
-
-	    Integer[] sort(final Integer[] arr,final Integer left,final Integer right) {
-	    	//left, right 파라미터는 훼손되선 안된다.
-	    	Integer lt = left;
-	    	Integer rt = right;
-	    	Integer pivot = arr[(lt+rt)/2];
-	    	
-	    	//out while이 끝나면 1회 끝, 
-	    	while(lt<=rt) {
-	    		while(arr[lt]<pivot) lt++;
-	    		while(pivot<arr[rt]) rt--;
-	    		//같은 자리인 경우도 스왑한다. 이 경우 lt-rt가 rt-lt 와 같이 크로스된다.
-	    		if(lt<=rt) swap(arr, lt++, rt--);
-	    		//lt==rt   =>  lt++, rt-- => rt lt 
-	    	}
-	    	
-	    	//종료 조건
-	    	//left == rt 위치가 같아질 때까지 범위를 접어가며 재귀호출한다. log N
-	    	if(left<rt) sort(arr, left, rt);
-	    	//lt == right 위치가 같아질 때까지 범위를 접어가며 재귀호출한다. log N
-	    	if(lt<right) sort(arr, lt, right);
-	    	
-	    	return arr;
-	    }
-	}
 	
 
 	static class RadixSort implements SortStategy<Integer>{
