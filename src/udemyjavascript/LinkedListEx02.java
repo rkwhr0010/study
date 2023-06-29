@@ -176,25 +176,26 @@ public class LinkedListEx02 {
 		
 		
 		DoublyLinkedList<T> reverse() {
-			Node<T> curNode = head;
-			head = tail;
-			tail = curNode;
-			
+			//필요한 참조 변수 3개
+			Node<T> curNode = null;
 			Node<T> nextNode = null;
 			Node<T> prevNode = null;
 			
+			//헤더, 테일 교환
+			curNode = head;
+			head = tail;
+			tail = curNode;
+			
+			//시작은 이전 헤더(현재 테일)
 			for(int i = 0; i < length; i++) {
-				nextNode = curNode.next;
+				nextNode = curNode.next; //다음 노드 참조 저장
 				
-				curNode.next = prevNode;
-				curNode.prev = nextNode;
+				curNode.next = prevNode; //핵심 목표, 내 다음이 이전 노드(리버스)
+				curNode.prev = nextNode; //핵심 목표, 내 이전이 다음 노드(리버스)
 				
 				prevNode = curNode;
 				curNode = nextNode;
-				
 			}
-			
-			
 			
 			return this;
 		}
