@@ -176,6 +176,26 @@ public class LinkedListEx02 {
 		
 		
 		DoublyLinkedList<T> reverse() {
+			Node<T> curNode = head;
+			head = tail;
+			tail = curNode;
+			
+			Node<T> nextNode = null;
+			Node<T> prevNode = null;
+			
+			for(int i = 0; i < length; i++) {
+				nextNode = curNode.next;
+				
+				curNode.next = prevNode;
+				curNode.prev = nextNode;
+				
+				prevNode = curNode;
+				curNode = nextNode;
+				
+			}
+			
+			
+			
 			return this;
 		}
 		
@@ -196,10 +216,10 @@ public class LinkedListEx02 {
 	
 	public static void main(String[] args) {
 		DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
-		IntStream.range(0, 5).forEach(list::push);
+		IntStream.rangeClosed(1, 10).forEach(list::push);
 		System.out.println(list);
-		System.out.println(list.remove(2));
-		System.out.println(list);
+		System.out.println(list.reverse());
+//		System.out.println(list);
 		
 	}
 }
