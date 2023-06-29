@@ -135,19 +135,20 @@ public class LinkedListEx01 {
 		
 		SingleLinkedList<T> reverse() {
 			//머리, 꼬리 변경
-			Node<T> node = head;
+			Node<T> curN = head;
 			head = tail;
-			tail = node;
+			tail = curN;
 			
 			//스왑용 로컬 변수
-			Node<T> prev = null;
-			Node<T> next = null;
+			Node<T> prevN = null;
+			Node<T> nextN = null;
 			
 			for(int i=0;i<length;i++) {
-				next = node.next; //한 칸 전진
-				node.next = prev; //이전 방향 바라봄
-				prev = node; //현재 노드가 이전이됨
-				node = next; //다음 노드가 현재 노드가 됨
+				nextN = curN.next; //다음 노드 참조 저장
+				curN.next = prevN; //목표 로직
+				
+				prevN = curN; //현재 노드가 이전이됨
+				curN = nextN; //다음 노드가 현재 노드가 됨
 				
 			}
 			return this;
@@ -183,11 +184,12 @@ public class LinkedListEx01 {
 //		for(int i = 0;i<5;i++) {
 //			list.shift();
 //		}
-		list.push("하나");
-		list.push("둘");
-		list.push("셋");
-		list.push("넷");
-		list.push("다섯");
+		list.push("1");
+		list.push("2");
+		list.push("3");
+		list.push("4");
+		list.push("5");
+		list.push("6");
 		System.out.println(list);
 		list.reverse();
 		System.out.println(list);
