@@ -16,7 +16,7 @@ public class LinkedListEx02 {
 			public String toString() {
 				String prevVal = prev == null ? "null" : prev.val.toString();
 				String nextVal = next == null ? "null" : next.val.toString();
-				return "{"+prevVal+", "+val.toString()+", "+nextVal+"}";
+				return "{"+prevVal+", "+val+", "+nextVal+"}";
 			}
 		}
 		
@@ -159,7 +159,19 @@ public class LinkedListEx02 {
 		}
 		
 		Node<T> remove(int index){
-			return null;
+			Node<T> removeNode = get(index);
+			if(removeNode == null) return removeNode;
+			if(index == 0) return shift();
+			if((length - 1) == index) return pop();
+			//여기 도달 하려면 최소 length는 반드시 3 이상
+			
+			Node<T> prevNode = removeNode.prev;
+			Node<T> nextNode = removeNode.next;
+			prevNode.next = nextNode;
+			nextNode.prev = prevNode;
+			length--;
+			
+			return removeNode;
 		}
 		
 		
@@ -184,9 +196,9 @@ public class LinkedListEx02 {
 	
 	public static void main(String[] args) {
 		DoublyLinkedList<Integer> list = new DoublyLinkedList<>();
-		IntStream.range(0, 10).forEach(list::push);
+		IntStream.range(0, 5).forEach(list::push);
 		System.out.println(list);
-		System.out.println(list.insert(9, 999));
+		System.out.println(list.remove(2));
 		System.out.println(list);
 		
 	}
