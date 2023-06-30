@@ -2,7 +2,10 @@ package udemyjavascript;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SortEx01 {
@@ -16,14 +19,14 @@ public class SortEx01 {
 		list.add(new BubbleSort());
 		list.add(new BubbleSortOp());
 		list.add(new SelectionSort());
-//		list.add(new InsertSort());
+		list.add(new InsertSort<>());
 		
 		for(SortStategy<Integer> sort : list) 
 			System.out.printf("%-20s  %s%n",sort.getClass().getSimpleName(),
 					Arrays.toString(sort.sort(array)));
 	}
 	
-	static interface SortStategy<T>{
+	static interface SortStategy<T extends Comparable<T>>{
 		T[] sort(T[] arr);
 		//자리 바꿈 메서드
 		default void swap(Integer[] clone, int i, int j) {
@@ -88,25 +91,29 @@ public class SortEx01 {
 			return clone;
 		}
 	}
-	
-	static class InsertSort implements SortStategy<Integer>{
-		//논리적으로 순회 마다 작은 서브배열을 만든다고 가정한다.
-		//1부터 시작
-		public Integer[] sort(Integer[] arr) {
-			Integer[] clone = arr.clone();
-			//배열이 단 한개는 이미 정렬된 것이다. (논리적 배열)
-			for(int i = 1;i<clone.length;i++) {
-				//배열 shift 하는 동안 값 손실 때문이 임시 저장
-				Integer newMember = clone[i];
-				Integer j = i-1;
-				//새로운 멤버 clone[i]
-				for(;j>=0 && newMember < clone[j];j--) {
+	//앞에서 부터 미리 정렬된 배열 부분과 비교하여, 자신의 위치를 찾아 삽입한다.
+	//거의 정렬된 배열에서 빠른 속도를 보인다.
+	static class InsertSort<T extends Comparable<T>> implements SortStategy<T>{
+		@Override
+		public T[] sort(T[] arr) {
+			T[] clone = arr.clone();
+			//요소가 1개인 배열은 이미 정렬된 것, 따라서 1부터 시작한다.
+			for(int i = 1; i < clone.length; i++) {
+				//자리 마련 동안 이 값이 손실될 수 있어 임시 저장
+				T newMember = clone[i];
+				//정렬 시작
+				int j = i-1;
+				//newMember가 들어갈 자리를 마련하기 위한 반복문
+				for(; j>=0 && greaterThan(clone[j], newMember); j--) {
 					clone[j+1] = clone[j];
 				}
-				//들어갈 자리 j-- 보정 값 +1
-				clone[j+1] = newMember;
+				//for문 탈출 시 j-- 값 보정
+				clone[++j] = newMember;
 			}
 			return clone;
+		}
+		private boolean greaterThan(T left, T right) {
+			return left.compareTo(right) > 0;
 		}
 	}
 }
