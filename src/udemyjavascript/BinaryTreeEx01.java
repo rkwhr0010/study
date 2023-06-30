@@ -1,5 +1,7 @@
 package udemyjavascript;
 
+import java.util.LinkedList;
+
 import udemyjavascript.BinaryTreeEx01.BinaryTree;
 
 public class BinaryTreeEx01 {
@@ -12,6 +14,10 @@ public class BinaryTreeEx01 {
 			super();
 			this.val = val;
 		}
+		@Override
+		public String toString() {
+			return val.toString();
+		}
 	}
 	
 	static class BinaryTree<T extends Comparable<T>>{
@@ -22,26 +28,66 @@ public class BinaryTreeEx01 {
 			if(root == null) {
 				root = node;
 			} else {
-				add(root, node);
+				Node<T> parents = root;
+				while(true) {
+					if(parents.val.compareTo(node.val) > 0) {
+						if(parents.left == null) {
+							parents.left = node;
+							break;
+						} else {
+							parents = parents.left;
+						}
+					} else {
+						if(parents.right == null) {
+							parents.right = node;
+							break;
+						} else {
+							parents = parents.right;
+						}
+					}
+				}
+//				add(root, node);
 			}
 			return this;
 		}
 		
-		BinaryTree<T> add(Node<T> pare, Node<T> node) {
-			if(pare.val.compareTo(node.val) > 0) {
-				if(pare.left == null) {
-					pare.left = node;
+		BinaryTree<T> add(Node<T> parents, Node<T> node) {
+			//부모가 더 크다.
+			if(parents.val.compareTo(node.val) > 0) {
+				if(parents.left == null) {
+					parents.left = node;
 				} else {
-					add(pare.left, node );
+					add(parents.left, node );
 				}
+			//부모가 더 작다.
 			} else {
-				if(pare.right == null) {
-					pare.right = node;
+				if(parents.right == null) {
+					parents.right = node;
 				} else {
-					add(pare.left, node );
+					add(parents.right, node );
 				}
 			}
 			return this;
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			
+			//level 별 출력을 위한 큐
+			LinkedList<Node<T>> q = new LinkedList<>();
+			q.offer(root);
+			
+			while(!q.isEmpty()) {
+				sb.append(q).append("\n");
+				int len = q.size();
+				for(int i = 0; i< len; i++) {
+					Node<T> cur = q.poll();
+					if(cur.left != null) q.add(cur.left);
+					if(cur.right != null) q.add(cur.right);
+				}
+			}
+			return sb.toString();
 		}
 		
 	}
@@ -49,10 +95,15 @@ public class BinaryTreeEx01 {
 	
 	public static void main(String[] args) {
 		BinaryTree<Integer> binaryTree = new BinaryTree<Integer>();
-		binaryTree.add(1);
+		binaryTree.add(10);
+		binaryTree.add(5);
 		binaryTree.add(2);
-//		binaryTree.add(3);
-//		binaryTree.add(4);
-//		binaryTree.add(5);
+		binaryTree.add(7);
+		binaryTree.add(13);
+		binaryTree.add(11);
+		binaryTree.add(16);
+		
+		System.out.println(binaryTree);
+		
 	}
 }
