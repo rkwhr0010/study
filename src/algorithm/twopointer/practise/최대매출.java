@@ -41,7 +41,7 @@ public class 최대매출 {
 			result += arr[i];
 		}
 		int tmp = result;
-		for(int i = 3; i < arr.length; i++) {
+		for(int i = k; i < arr.length; i++) {
 			tmp = tmp - arr[i-k] + arr[i];
 			result = Integer.max(result, tmp);
 		}
