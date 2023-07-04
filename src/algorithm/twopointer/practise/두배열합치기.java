@@ -1,42 +1,52 @@
 package algorithm.twopointer.practise;
 
-import java.util.ArrayList;
+import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.IntStream;
 
 public class 두배열합치기 {
 	public static void main(String[] args) {
 		//입력 데이터
-		int[] arr1 = IntStream.generate( ()->  (int)(Math.random()*50)+1).limit(10).toArray();
-		int[] arr2 = IntStream.generate( ()->  (int)(Math.random()*50)+1).limit(10).toArray();
+		Integer[] arr1 = IntStream.generate( ()->  (int)(Math.random()*50)+1).distinct().limit(10).boxed().toArray(Integer[]::new);
+		Integer[] arr2 = IntStream.generate( ()->  (int)(Math.random()*50+51)).distinct().limit(10).boxed().toArray(Integer[]::new);
 		
-		//1 정렬
+		//정렬된 두 배열을 병합하는 코드
+		//병합 정렬에서 사용되는 핵심 코드 중 한 쪽이다.
 		Arrays.sort(arr1);
 		Arrays.sort(arr2);
 		
-		//2 저장소
-		List<Integer> list = new ArrayList<>((arr1.length+arr2.length)+(arr1.length+arr2.length)>>2 );  
+		Integer[] merge = merge(arr1, arr2);
+		System.out.println(Arrays.toString(merge));
 		
-		//3 투포인터
+	}
+	
+	static <T extends Comparable<T>> T[] merge(T[] a, T[] b) {
+		@SuppressWarnings("unchecked")
+		T[] resultArr = (T[])Array.newInstance(a.getClass().getComponentType(), a.length + b.length);
+		
+		int i = 0;
+		//투 포인터 알고리즘
 		int p1 = 0;
 		int p2 = 0;
 		
-		while(p1<arr1.length && p2<arr2.length) {
-			if(arr1[p1]<arr2[p2]) {
-				list.add(arr1[p1++]);
-			}else {
-				list.add(arr2[p2++]);
+		for(; p1 < a.length && p2 < b.length; i++) {
+			if(a[p1].compareTo(b[p2]) <= 0) {
+				resultArr[i] = a[p1++];
+			} else {
+				resultArr[i] = b[p2++];
 			}
 		}
+		for(; p1 < a.length; i++, p1++) {
+			resultArr[i] = a[p1];
+		}
+		for(; p2 < b.length; i++, p2++) {
+			resultArr[i] = b[p2];
+		}
 		
-		while(p1<arr1.length) list.add(arr1[p1++]);
-		while(p2<arr2.length) list.add(arr2[p2++]);
-		System.out.println(Arrays.toString(arr1));
-		System.out.println(Arrays.toString(arr2));
-		System.err.println(list);
-		
-		
-		
+		return resultArr;
 	}
+	
+	
 }
+
+
