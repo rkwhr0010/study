@@ -33,18 +33,17 @@ public class 연속부분수열 {
 		for(int low = 0, high = 0, sum = 0
 			; high < in.n
 			; high++) {
+			
+			//누산
 			sum += in.arr[high];
+			//값 변경 시 반드시 체크
+			if(sum == in.m) result++;
 			
-			if(sum == in.m) {
-				result++;
-			}
-			
-			for(;sum > in.m; low++) {
-				sum -= in.arr[low];
-				
-				if(sum == in.m) {
-					result++;
-				}
+			//누산 값이 목표 값과 크면 작아질 때까지 빼준다.
+			while(sum > in.m) {
+				sum -= in.arr[low++];
+				//값 변경 시 반드시 체크
+				if(sum == in.m) result++;
 			}
 		}
 		
