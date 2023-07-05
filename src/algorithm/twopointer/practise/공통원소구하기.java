@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+
 /*
 설명
 
@@ -72,7 +73,7 @@ public class 공통원소구하기 {
 			map.computeIfPresent(num, (k, v)-> num.equals(k) ? Boolean.TRUE : Boolean.FALSE);
 		}
 		return map.entrySet().stream()
-				.filter( en -> Boolean.TRUE.equals(en.getValue()))
+				.filter(Entry::getValue)
 				.map(Entry::getKey)
 				.collect(Collectors.toList())
 				.toString();
