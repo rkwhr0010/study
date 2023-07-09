@@ -42,14 +42,14 @@ public class 매출액의종류 {
 		input();
 		
 		for(int i = 0; i < k - 1; i++) {
-			map.compute(arr[i], (k, v)-> v == null ? 1 : v + 1);
+			map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
 		}
 		for(int i = k - 1; i < n; i++) {
-			map.compute(arr[i], (k, v)-> v == null ? 1 : v + 1);
+			map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
 			list.add(map.size());
 			int lt = i-k+1;
-			map.compute(arr[lt], (k, v)-> v == null ? 1 : v - 1);
-			if(map.get(arr[lt]).equals(0)) map.remove(arr[lt]);
+			map.compute(arr[lt], (k, v)-> v - 1);
+			if(map.get(arr[lt]).intValue() == 0) map.remove(arr[lt]);
 		}
 		
 		for(Integer num : list) {
