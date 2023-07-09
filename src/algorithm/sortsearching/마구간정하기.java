@@ -30,8 +30,59 @@ public class 마구간정하기 {
 	
 	public static void main(String[] args) {
 		input();
+		
+//		System.out.println(solution());
+		System.out.println(solution2());
+		
+	}
+	static int solution2() {
+		int result = 0;
+		//이분 검색은 정렬이 필수
 		Arrays.sort(arr);
 		
+		//마구간 거리 최소는 1
+		int lt = 1;
+		//최대는 가장 먼 마구간 거리
+		int rt = arr[n-1];
+		
+		while(lt <= rt) {
+			int mid = lt + rt >> 1;
+			//마구간 거리에 배치 가능한 말 수 검증
+			//mid는 최소이 것보다 넓게 배치가능하냐
+			if(count2(mid) >= c) {
+				//일단 된다. 점차 최적값을 탐색
+				result = mid;
+				//최대한 넓게 배치 가능한 값 탐색
+				lt = mid + 1;
+			} else {
+				//안되니 좁게 배치 가능한 값 탐색
+				rt = mid - 1;
+			}
+		}
+		return result;
+	}
+	
+	static int count2(int distance) {
+		//첫 말은 배치하고 시작
+		int cnt = 1;
+		int prev = arr[0];
+		
+		for(int i = 1; i < arr.length; i++) {
+			if(arr[i] - prev >= distance) {
+				prev = arr[i];
+				cnt++;
+			}
+		}
+		
+		
+		return cnt;
+	}
+	
+	
+
+	private static int solution() {
+		//이분 검색은 정렬이 필수
+		Arrays.sort(arr);
 		int answer = 0;
 		//1이 최소거리
 		int lt = 1;
@@ -53,7 +104,7 @@ public class 마구간정하기 {
 				rt = mid - 1;
 			}
 		}
-		System.out.println(answer);
+		return answer;
 	}
 
 	private static int count(int mid) {
