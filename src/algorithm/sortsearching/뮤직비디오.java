@@ -59,7 +59,8 @@ public class 뮤직비디오 {
 	
 	private static int dvdCnt(int mid) {
 		int sum = 0;
-		int result = 1; //dvd 한 개 소모 
+		//dvd 1개를 사용해 담은 것으로 시작
+		int result = 1; 
 		for(int song : songs) {
 			sum += song;
 			if(sum > mid) {
