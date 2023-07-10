@@ -1,6 +1,8 @@
 package algorithm.sortsearching;
 
 import java.util.Arrays;
+import java.util.IntSummaryStatistics;
+import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -24,17 +26,58 @@ C마리의 말을 N개의 마구간에 배치했을 때 가장 가까운 두 말
 3
  */
 public class 마구간정하기 {
-	static int n;
-	static int c;
-	static int[] arr;
+	static int n; // 마구간 수
+	static int c; // 말 수
+	static int[] arr;// 마구간
 	
 	public static void main(String[] args) {
 		input();
 		
 //		System.out.println(solution());
-		System.out.println(solution2());
+		System.out.println(solution3());
 		
 	}
+	static int solution3() {
+		int result = 0;
+		//이분 정렬 응용, 결정 알고리즘은 정렬 필수
+		Arrays.sort(arr);
+		int lt = 1; //말 간 최소 거리는 1
+		int rt = arr[n-1];//말간 최대 거리는 최대 마구간 거리
+		
+		while(lt <= rt) {
+			int mid = lt + rt >> 1;
+			//현재 값(mid) 거리 간격으로 말을 배치 가능하냐?
+			if(count3(mid) >= c) {
+				//일단 결정, 이후 최선의 값으로 갱신
+				result = mid;
+				//가능하니 거리를 벌려본다.
+				lt = mid + 1;
+			} else {
+				//불가능 하니 거리를 좁혀 본다.
+				rt = mid - 1;
+			}
+		}
+		
+		return result;
+	}
+	
+	static int count3(int val) {
+		//일단 말 하나 배치 후 시작
+		int cnt = 1;
+		int prev = arr[0];
+		
+		for(int i = 1; i < n; i++) {
+			//현재 val 보다 간격이 넓으니 배치 가능 
+			if(arr[i] - prev >= val) {
+				cnt++;
+				prev = arr[i];
+			}
+		}
+		return cnt;
+	}
+	
+	
+	
 	static int solution2() {
 		int result = 0;
 		//이분 검색은 정렬이 필수
