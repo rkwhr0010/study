@@ -43,29 +43,36 @@ public class 송아지찾기 {
 	}
 
 	private static int solution() {
-		int result = 0;
+		int step = 0;
+		chk[start] = 1; //방문
 		Queue<Integer> q = new LinkedList<>();
 		q.offer(start);
-		chk[start] = 1;
 		
 		while(!q.isEmpty()) {
-			int size = q.size();
-			Integer val = q.poll();
-			for(int i = 0; i < size; i++) {
-				for(final int next : nextArr) {
-					int tmp = val + next;
-					if(result>= 1 && result <= 10000 && chk[tmp] == 0) {
-						chk[tmp] = 1;
-						q.offer(tmp);
-						if(tmp == end) {
-							break;
-						}
-					}
+			//깊이 한 단계 증가
+			step++;
+			//같은 깊이 요소만큼 반복문으로 추출
+			for(int i = 0, len = q.size(); i < len; i++) {
+				int now = q.poll();
+				if(end == now) {
+					return step;
 				}
+				
+				for(int path : nextArr) {
+					//지금 위치에서 다음 경로값 
+					int nextPath = now + path;
+					//범위 유효성, 다음 경로를 방문한 적 있는지 체크
+					if((1 <= nextPath && nextPath <= 10000) && chk[nextPath] != 1) {
+						//첫 방문, 방문 체크
+						chk[nextPath] = 1;
+						//다음 위치 탐색을 위한 저장
+						q.offer(nextPath);
+					}
+					
+				}
+				
 			}
-			result++;
 		}
-		
-		return result;
+		return step;
 	}
 }
