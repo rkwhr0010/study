@@ -49,8 +49,6 @@ public class 송아지찾기 {
 		q.offer(start);
 		
 		while(!q.isEmpty()) {
-			//깊이 한 단계 증가
-			step++;
 			//같은 깊이 요소만큼 반복문으로 추출
 			for(int i = 0, len = q.size(); i < len; i++) {
 				int now = q.poll();
@@ -62,16 +60,16 @@ public class 송아지찾기 {
 					//지금 위치에서 다음 경로값 
 					int nextPath = now + path;
 					//범위 유효성, 다음 경로를 방문한 적 있는지 체크
-					if((1 <= nextPath && nextPath <= 10000) && chk[nextPath] != 1) {
+					if((1 <= nextPath && nextPath <= 10000) && chk[nextPath] == 0) {
 						//첫 방문, 방문 체크
 						chk[nextPath] = 1;
 						//다음 위치 탐색을 위한 저장
 						q.offer(nextPath);
 					}
-					
 				}
-				
 			}
+			//깊이 한 단계 증가
+			step++;
 		}
 		return step;
 	}
