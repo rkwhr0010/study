@@ -27,50 +27,58 @@ import java.util.Scanner;
 5
  */
 public class 송아지찾기 {
-	static int[] nextArr = {1, -1, 5};
-	static int start;
-	static int end;
-	static int[] chk = new int[10001];
+	static int[] nextArr = {1, -1, 5}; // 방향
+	static int start; //시작
+	static int end;   //목표
+	static int[] chk = new int[10001]; //재방문 방지
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		start = sc.nextInt();
 		end = sc.nextInt();
 		sc.close();
-		System.out.println(solution());
+		System.out.println(sol());
 		
 		
 	}
-
-	private static int solution() {
-		int step = 0;
-		chk[start] = 1; //방문
+	
+	static int sol() {
+		//몇번만에
+		int level = 0;
 		Queue<Integer> q = new LinkedList<>();
+		//방문
+		chk[start] = 1;
+		//BFS 상태 트리 시작
 		q.offer(start);
 		
+		//깊이 만큼 반복
 		while(!q.isEmpty()) {
-			//같은 깊이 요소만큼 반복문으로 추출
+			//한 단계 깊이 들어간다.
+			level++;
+			//같은 레벨 요소만큼 순회
 			for(int i = 0, len = q.size(); i < len; i++) {
-				int now = q.poll();
-				if(end == now) {
-					return step;
-				}
-				
-				for(int path : nextArr) {
-					//지금 위치에서 다음 경로값 
-					int nextPath = now + path;
-					//범위 유효성, 다음 경로를 방문한 적 있는지 체크
-					if((1 <= nextPath && nextPath <= 10000) && chk[nextPath] == 0) {
-						//첫 방문, 방문 체크
-						chk[nextPath] = 1;
-						//다음 위치 탐색을 위한 저장
-						q.offer(nextPath);
+				//현 위치
+				int c = q.poll();
+				//다음으로 갈 위치
+				for(int n : nextArr) {
+					int cn = c + n;
+					//첫 방문인지
+					if(isFirstVisit(cn)) {
+						//다음 경로가 목적지인지
+						if(cn == end) return level;
+						//방문
+						chk[cn] = 1;
+						q.offer(cn);
 					}
 				}
 			}
-			//깊이 한 단계 증가
-			step++;
 		}
-		return step;
+		
+		return -1;
 	}
+
+	private static boolean isFirstVisit(int cn) {
+		return (1 <= cn && cn <= 10000) && chk[cn] == 0;
+	}
+	
 }
