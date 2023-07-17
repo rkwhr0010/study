@@ -7,6 +7,8 @@ package designpattern.behavioral.strategy;
  * 
  * 전략 패턴은 정책(Policy)이라고도 합니다.
  * 
+ * 전략을 선택하는 주체는 Client입니다.
+ * 
  * # 구성요소
  * Client
  * 전략을 선택할 주체
@@ -30,20 +32,24 @@ package designpattern.behavioral.strategy;
  * OCP, 런타임 
  * </pre>
  */
-public class StrategeDriver {
+public class NavigationEx {
 	public static void main(String[] args) {
-		Strategy eventDiscount = new EventDiscount();
-		Strategy noDiscount = new NoDiscount();
-		
-		Context context = new Context(noDiscount);
-		System.out.println(context.execute(65000));
-		context.setStrategy(eventDiscount);
-		System.out.println(context.execute(65000));
-		context.setStrategy(price -> {
-			System.out.println("반값 할인!!");
-			return price / 100*(100-50); 
-		});
-		System.out.println(context.execute(65000));
+		//클라이언트 코드는 편의상 익명 객체로 
+		Client client = new Client(){
+			@Override
+			void run() {
+				MapContext mapContext = new MapContext();
+				mapContext.setStrategy(new CostFirst());
+				mapContext.execute();
+				
+				mapContext.setStrategy(new DistanceFirst());
+				mapContext.execute();
+				
+				mapContext.setStrategy(new ClearRoadFirst());
+				mapContext.execute();
+			}
+		};
+		client.run();
 	}
 	
 	/**
@@ -52,8 +58,8 @@ public class StrategeDriver {
 	 * 추상화된 공통 행동을 정의한다.
 	 * </pre>
 	 */
-	static interface Strategy {
-		int execute(int price);
+	static interface FindStrategy {
+		public void findRoute();
 		default int calculate(int price, int percent) {
 			return price/100*(100 - percent );
 		}
@@ -65,18 +71,22 @@ public class StrategeDriver {
 	 * 알맞은 알고리즘을 구현한다.
 	 *  </pre>
 	 */
-	static class EventDiscount implements Strategy{
+	static class DistanceFirst implements FindStrategy{
 		@Override
-		public int execute(int price) {
-			System.out.println("할인 금액 적용!!");
-			return calculate(price,30);
+		public void findRoute() {
+			System.out.println("가장 빠른 길로!!");
 		}
 	}
-	static class NoDiscount implements Strategy{
+	static class ClearRoadFirst implements FindStrategy{
 		@Override
-		public int execute(int price) {
-			System.out.println("결제 완료!!");
-			return price;
+		public void findRoute() {
+			System.out.println("안막히는 길로!!");
+		}
+	}
+	static class CostFirst implements FindStrategy{
+		@Override
+		public void findRoute() {
+			System.out.println("톨비없는 길로!!");
 		}
 	}
 	
@@ -87,24 +97,29 @@ public class StrategeDriver {
 	 *  </pre>
 	 */
 	
-	static class Context{
-		private Strategy strategy;
+	static class MapContext{
+		private FindStrategy strategy;
 
-		public Context(Strategy strategy) {
-			super();
+		public MapContext() {}
+		public MapContext(FindStrategy strategy) {
 			this.strategy = strategy;
 		}
 
-		public void setStrategy(Strategy strategy) {
+		public void setStrategy(FindStrategy strategy) {
 			this.strategy = strategy;
 		}
 		
-		public int execute(int price) {
-			return strategy.execute(price);
+		public void execute() {
+			strategy.findRoute();
 		}
 		
 	}
-	
-	
-	
+	/**
+	 * <pre>
+	 * 4. 클라이언트가 "런타임"에 알맞은 전략을 선택해 주입한다.
+	 * </pre>
+	 */
+	abstract static class Client{
+		abstract void run();
+	}
 }
