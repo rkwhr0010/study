@@ -37,38 +37,37 @@ public class 송아지찾기 {
 		start = sc.nextInt();
 		end = sc.nextInt();
 		sc.close();
-		System.out.println(sol());
+		System.out.println(solution());
 		
 		
 	}
-	
-	static int sol() {
-		//몇번만에
+	static int solution() {
+		//얼마만에 찾았는지 깊이 변수
 		int level = 0;
+		//좌표용 큐
 		Queue<Integer> q = new LinkedList<>();
 		//방문
 		chk[start] = 1;
-		//BFS 상태 트리 시작
 		q.offer(start);
 		
-		//깊이 만큼 반복
+		//방문 좌표 순회
 		while(!q.isEmpty()) {
-			//한 단계 깊이 들어간다.
+			//탐색 깊이 하나 증가
 			level++;
-			//같은 레벨 요소만큼 순회
-			for(int i = 0, len = q.size(); i < len; i++) {
-				//현 위치
-				int c = q.poll();
-				//다음으로 갈 위치
-				for(int n : nextArr) {
-					int cn = c + n;
-					//첫 방문인지
-					if(isFirstVisit(cn)) {
-						//다음 경로가 목적지인지
-						if(cn == end) return level;
-						//방문
-						chk[cn] = 1;
-						q.offer(cn);
+			//BFS에서 같은 레벨을 판별하는 중요한 길이 변수
+			final int sameLevelSize = q.size();
+			for(int i = 0; i < sameLevelSize; i++) {
+				int cur = q.poll();
+				//다음 좌표 가중치
+				for(final int next : nextArr) {
+					//다음 좌표
+					final int nextV = cur + next;
+					//첫 방문 체크
+					if((0 <= nextV && nextV <= 10000) && chk[nextV] == 0) {
+						//핵심 로직(탈출 조건)
+						if(nextV == end) return level;
+						chk[nextV] = 1;
+						q.offer(nextV);
 					}
 				}
 			}
@@ -76,9 +75,4 @@ public class 송아지찾기 {
 		
 		return -1;
 	}
-
-	private static boolean isFirstVisit(int cn) {
-		return (1 <= cn && cn <= 10000) && chk[cn] == 0;
-	}
-	
 }
