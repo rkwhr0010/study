@@ -73,7 +73,9 @@ public class SortEx02 {
 			int rtE = rt;
 			
 			int i = lt;
+			
 			while(ltS <= ltE && rtS <= rtE) {
+				//각 논리 배열 첫자리부터 가장 작은 수를 앞에 대입한다.
 				clone[i++] = swapArr[ltS].compareTo(swapArr[rtS]) <= 0 
 						? swapArr[ltS++] : swapArr[rtS++];
 			}

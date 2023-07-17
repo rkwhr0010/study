@@ -107,7 +107,7 @@ public class SortEx01 {
 				for(; j>=0 && greaterThan(clone[j], newMember); j--) {
 					clone[j+1] = clone[j];
 				}
-				//for문 탈출 시 j-- 값 보정
+				//핵심, 다 밀었다고 가정, 그 다음 앞에 대입
 				clone[++j] = newMember;
 			}
 			return clone;
