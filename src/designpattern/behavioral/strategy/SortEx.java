@@ -23,7 +23,7 @@ public class SortEx {
 			}
 
 			private int[] createIntArr() {
-				return ThreadLocalRandom.current().ints(15, 1, 50).distinct().toArray();
+				return ThreadLocalRandom.current().ints(1, 50).distinct().limit(10).toArray();
 			}
 		};
 		client.run();

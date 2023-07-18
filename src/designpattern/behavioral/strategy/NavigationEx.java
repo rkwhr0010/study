@@ -35,6 +35,7 @@ package designpattern.behavioral.strategy;
 public class NavigationEx {
 	public static void main(String[] args) {
 		//클라이언트 코드는 편의상 익명 객체로 
+		//클라이언트가 선택한 전략을 문맥이 실행한다.
 		Client client = new Client(){
 			@Override
 			void run() {
