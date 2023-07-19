@@ -37,7 +37,126 @@ package designpattern.behavioral.state;
  * 이 패턴은 당신이 클래스 필드들의 현재 값들에 따라 클래스가 행동하는 방식을 변경하는 거대한 조건문들로 오염된 클래스가 있을 때 사용하세요.
  * 상태 패턴은 유사한 상태들에 중복 코드와 조건문-기반 상태 머신의 천이가 많을 때 사용하세요.
  */
-public class Temp {
+public class CarEx {
 	public static void main(String[] args) {
 	}
+	
+	//State
+	static interface State{
+		void turnOn();
+		void turnOff();
+		void hitBreakPedal();
+		void hitAcceleratorPedal();
+	}
+	
+	//중간 공통 state 추상 클래스
+	//편의를 목적으로 중간에 공통 클래스를 두는 경우도 있다.
+	abstract static class BaseState implements State{
+		Car car;
+		int gas;
+	}
+	
+	static class OperationState extends BaseState{
+		public void turnOn() {}
+		public void turnOff() {
+		}
+		public void hitBreakPedal() {
+		}
+		public void hitAcceleratorPedal() {
+		}
+	}
+	static class StopState extends BaseState{
+		public void turnOn() {
+			if(gas < 1) {
+				System.out.println("기름이 없어 시동을 못킵니다.");
+				car.setState(car.getNoGasState());
+			} 
+			System.out.println("시동을 켭니다.");
+			if(5 < gas) {
+				car.setState(car.getShortageGasState());
+			} else {
+				car.setState(car.getOperationState());
+			}
+		}
+		public void turnOff() {
+		}
+		public void hitBreakPedal() {
+		}
+		public void hitAcceleratorPedal() {
+		}
+	}
+	static class ShortageGasState extends BaseState{
+		public void turnOn() {
+		}
+		public void turnOff() {
+		}
+		public void hitBreakPedal() {
+		}
+		public void hitAcceleratorPedal() {
+		}
+	}
+	static class NoGasState extends BaseState{
+		public void turnOn() {
+		}
+		public void turnOff() {
+		}
+		public void hitBreakPedal() {
+		}
+		public void hitAcceleratorPedal() {
+		}
+	}
+	
+	
+	//Context
+	static class Car implements State{
+		private State state;
+		
+		private BaseState operationState = new OperationState();
+		private BaseState stopState = new StopState();
+		private BaseState shortageGasState = new ShortageGasState();
+		private BaseState noGasState = new NoGasState();
+		
+		public Car() {
+			state = this.stopState;
+		}
+		public void turnOn() {
+			state.turnOn();
+		}
+		public void turnOff() {
+			state.turnOff();
+		}
+		public void hitBreakPedal() {
+			state.hitBreakPedal();
+		}
+		public void hitAcceleratorPedal() {
+			state.hitAcceleratorPedal();
+		}
+		
+		public void setState(State state) {
+			this.state = state;
+		}
+
+		public State getState() {
+			return state;
+		}
+
+		public BaseState getOperationState() {
+			return operationState;
+		}
+
+		public BaseState getStopState() {
+			return stopState;
+		}
+
+		public BaseState getNoGasState() {
+			return noGasState;
+		}
+
+		public BaseState getShortageGasState() {
+			return shortageGasState;
+		}
+		
+		
+	}
+	
 }
