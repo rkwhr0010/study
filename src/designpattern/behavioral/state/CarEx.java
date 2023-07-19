@@ -39,7 +39,31 @@ package designpattern.behavioral.state;
  */
 public class CarEx {
 	public static void main(String[] args) {
+		Client client = new Client() {
+			void run() {
+				Car car = new Car();
+				car.turnOn();
+				car.fillGas(3);
+				car.turnOn();
+				car.hitAcceleratorPedal();
+				car.turnOff();
+				car.turnOff();
+				car.turnOn();
+				car.hitAcceleratorPedal();
+				car.hitAcceleratorPedal();
+				car.hitAcceleratorPedal();
+				car.fillGas(3);
+				car.hitAcceleratorPedal();
+				car.fillGas(3);
+				
+			}
+		};
+		client.run();
 	}
+	abstract static class Client{
+		abstract void run ();
+	}
+	
 	
 	//State
 	static interface State{
@@ -47,74 +71,119 @@ public class CarEx {
 		void turnOff();
 		void hitBreakPedal();
 		void hitAcceleratorPedal();
+		void fillGas();
 	}
 	
 	//중간 공통 state 추상 클래스
 	//편의를 목적으로 중간에 공통 클래스를 두는 경우도 있다.
 	abstract static class BaseState implements State{
 		Car car;
-		int gas;
+		
+		public BaseState(Car car) {
+			this.car = car;
+		}
+
+		@Override
+		public void turnOn() {
+			System.out.print(this.getClass().getSimpleName()+"-turnOn ");
+		}
+		@Override
+		public void turnOff() {
+			System.out.print(this.getClass().getSimpleName()+"-turnOff ");
+		}
+		@Override
+		public void hitBreakPedal() {
+			System.out.print(this.getClass().getSimpleName()+"-hitBreakPedal ");
+		}
+		@Override
+		public void hitAcceleratorPedal() {
+			System.out.print(this.getClass().getSimpleName()+"-hitAcceleratorPedal ");
+		}
+		@Override
+		public void fillGas() {
+			System.out.print(this.getClass().getSimpleName()+"-fillGas ");
+		}
 	}
 	
 	static class OperationState extends BaseState{
-		public void turnOn() {}
-		public void turnOff() {
+		public OperationState(Car car) {
+			super(car);
 		}
-		public void hitBreakPedal() {
-		}
-		public void hitAcceleratorPedal() {
-		}
-	}
-	static class StopState extends BaseState{
+
+		@Override
 		public void turnOn() {
-			if(gas < 1) {
-				System.out.println("기름이 없어 시동을 못킵니다.");
-				car.setState(car.getNoGasState());
-			} 
-			System.out.println("시동을 켭니다.");
-			if(5 < gas) {
-				car.setState(car.getShortageGasState());
+			super.turnOn();
+			System.out.println("이미 시동이 켜져 있습니다.");
+		}
+		@Override
+		public void turnOff() {
+			super.turnOff();
+			System.out.println("시동을 끕니다.");
+			car.setState(car.getStopState());
+		}
+		@Override
+		public void hitBreakPedal() {
+			super.hitBreakPedal();
+			System.out.println("멈춥니다.");
+		}
+		@Override
+		public void hitAcceleratorPedal() {
+			super.hitAcceleratorPedal();
+			if(car.getGas() == 0) {
+				System.out.println("연료가 없어 멈춥니다.");
+				car.setState(car.getStopState());
 			} else {
-				car.setState(car.getOperationState());
+				System.out.println("달립니다.");
+				car.setGas(car.getGas() - 1);
 			}
 		}
-		public void turnOff() {
-		}
-		public void hitBreakPedal() {
-		}
-		public void hitAcceleratorPedal() {
-		}
-	}
-	static class ShortageGasState extends BaseState{
-		public void turnOn() {
-		}
-		public void turnOff() {
-		}
-		public void hitBreakPedal() {
-		}
-		public void hitAcceleratorPedal() {
-		}
-	}
-	static class NoGasState extends BaseState{
-		public void turnOn() {
-		}
-		public void turnOff() {
-		}
-		public void hitBreakPedal() {
-		}
-		public void hitAcceleratorPedal() {
+		@Override
+		public void fillGas() {
+			super.fillGas();
+			System.out.println("주행 중엔 연료를 넣을 수 없습니다.");
 		}
 	}
 	
+	static class StopState extends BaseState{
+		public StopState(Car car) {
+			super(car);
+		}
+
+		@Override
+		public void turnOn() {
+			super.turnOn();
+			System.out.println("시동을 켭니다.");
+			car.setState(car.getOperationState());
+		}
+		@Override
+		public void turnOff() {
+			super.turnOff();
+			System.out.println();
+		}
+		@Override
+		public void hitBreakPedal() {
+			super.hitBreakPedal();
+			System.out.println();
+		}
+		@Override
+		public void hitAcceleratorPedal() {
+			super.hitAcceleratorPedal();
+			System.out.println();
+		}
+		@Override
+		public void fillGas() {
+			super.fillGas();
+			System.out.println("연료를 주입합니다.");
+		}
+	}
 	
 	//Context
-	static class Car implements State{
+	static class Car{
 		private State state;
+		private int gas;
 		
-		private BaseState operationState = new OperationState();
-		private BaseState stopState = new StopState();
-		private BaseState shortageGasState = new ShortageGasState();
-		private BaseState noGasState = new NoGasState();
+		private BaseState operationState = new OperationState(this);
+		private BaseState stopState = new StopState(this);
 		
 		public Car() {
 			state = this.stopState;
@@ -131,13 +200,20 @@ public class CarEx {
 		public void hitAcceleratorPedal() {
 			state.hitAcceleratorPedal();
 		}
+		public void fillGas(int gas) {
+			this.gas = gas;
+			state.fillGas();
+		}
 		
 		public void setState(State state) {
 			this.state = state;
 		}
-
-		public State getState() {
-			return state;
+		
+		int getGas() {
+			return gas;
+		}
+		void setGas(int gas) {
+			this.gas = gas;
 		}
 
 		public BaseState getOperationState() {
@@ -147,16 +223,5 @@ public class CarEx {
 		public BaseState getStopState() {
 			return stopState;
 		}
-
-		public BaseState getNoGasState() {
-			return noGasState;
-		}
-
-		public BaseState getShortageGasState() {
-			return shortageGasState;
-		}
-		
-		
 	}
-	
 }
