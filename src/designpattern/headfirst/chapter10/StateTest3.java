@@ -1,7 +1,5 @@
 package designpattern.headfirst.chapter10;
 
-import designpattern.headfirst.chapter10.StateTest3.BaseState;
-
 public class StateTest3 {
 	static interface State{
 		public abstract void insertQuarter();//동전 넣기

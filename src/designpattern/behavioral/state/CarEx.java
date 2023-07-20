@@ -181,7 +181,7 @@ public class CarEx {
 	static class Car{
 		private State state;
 		private int gas;
-		
+		//구상 상태 객체의 생애주기를 Context가 관리한다는 점이 전략패턴과 큰 차이다.
 		private BaseState operationState = new OperationState(this);
 		private BaseState stopState = new StopState(this);
 		
