@@ -1,4 +1,8 @@
 package designpattern.behavioral.observer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  *옵서버 패턴은 당신이 여러 객체에 자신이 관찰 중인 객체에 발생하는 
  *모든 이벤트에 대하여 알리는 구독 메커니즘을 정의할 수 있도록 하는 행동 디자인 패턴입니다. 
@@ -28,5 +32,103 @@ package designpattern.behavioral.observer;
  * 이 패턴은 앱의 일부 객체들이 제한된 시간 동안 또는 특정 경우에만 다른 객체들을 관찰해야 할 때 사용하세요.
  */
 public class 구체화된예시 {
-
+	public static void main(String[] args) {
+		Subject<String> youtuber1 = new Youtuber<>();		
+		Subject<String> youtuber2 = new PullYoutuber<>();		
+		
+		Observer<String> Subscriber1 = new Subscriber<>("옥희");
+		Observer<String> Subscriber2 = new Subscriber<>("철수");
+		Observer<String> Subscriber3 = new Subscriber<>("앙드레");
+		Observer<String> Subscriber4 = new Subscriber<>("권호");
+		
+		youtuber1.subscribe(Subscriber1);
+		youtuber1.subscribe(Subscriber2);
+		youtuber1.subscribe(Subscriber3);
+		youtuber2.subscribe(Subscriber3);
+		youtuber2.subscribe(Subscriber4);
+		
+		youtuber1.setData("정치 동영상");
+		youtuber2.setData("예능 동영상");
+		
+	}
+	
 }
+//Subject
+interface Subject<T>{
+	void subscribe(Observer<T> observer);
+	void remove(Observer<T> observer);
+	void pull();
+	void push();
+	void setData(T data);
+	T getData();
+}
+//Obsever
+interface Observer<T>{
+	void update(T data);
+	void update(Subject<T> subject);
+}
+
+class Youtuber<T> implements Subject<T>{
+	protected T lastVideo;
+	private List<Observer<T>> observers = new ArrayList<>();
+	
+	@Override
+	public void subscribe(Observer<T> observer) {
+		observers.add(observer);
+	}
+
+	@Override
+	public void remove(Observer<T> observer) {
+		observers.remove(observer);
+	}
+	@Override
+	public void push() {
+		for(Observer<T> ob : observers) {
+			ob.update(lastVideo);
+		}
+	}
+	@Override
+	public void pull() {
+		for(Observer<T> ob : observers) {
+			ob.update(this);
+		}
+	}
+	//기본 동작은 푸시
+	public void setData(T data) {
+		System.out.println(data + " 푸시 방식으로 보내기");
+		this.lastVideo = data;
+		push();
+	}
+	public T getData() {
+		return lastVideo;
+	}
+}
+//풀방식
+class PullYoutuber<T> extends Youtuber<T>{
+	@Override
+	public void setData(T data) {
+		System.out.println(data + " 풀 방식으로 보내기");
+		super.lastVideo = data;
+		pull();
+	}
+}
+
+
+class Subscriber<T> implements Observer<T>{
+	T data;
+	final String name;
+	
+	public Subscriber(String name) {
+		this.name = name;
+	}
+	public void update(T data) {
+		System.out.println("\t"+name+" 푸시 방식으로 데이터를 받았습니다.");
+		this.data = data;
+	}
+	public void update(Subject<T> subject) {
+		System.out.println("\t"+name+" 풀 방식으로 데이터를 받았습니다.");
+		this.data = subject.getData();
+	}
+}
+
+
