@@ -1,4 +1,4 @@
-package javabasic.calendar;
+package javabasic.timedatecalendar;
 
 import java.time.*;
 import java.util.Date;

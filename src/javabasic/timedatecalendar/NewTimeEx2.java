@@ -1,14 +1,14 @@
-package javabasic.calendar;
+package javabasic.timedatecalendar;
 
 import java.time.*;
 import java.time.temporal.*;
 
 class NewTimeEx2 {
 	public static void main(String[] args) {
-		LocalDate date = LocalDate.of(2015, 12, 31); // 2015³â 12¿ù 31ÀÏ
-		LocalTime time = LocalTime.of(12,34,56);     // 12½Ã 23ºÐ 56ÃÊ
+		LocalDate date = LocalDate.of(2015, 12, 31); // 2015ï¿½ï¿½ 12ï¿½ï¿½ 31ï¿½ï¿½
+		LocalTime time = LocalTime.of(12,34,56);     // 12ï¿½ï¿½ 23ï¿½ï¿½ 56ï¿½ï¿½
 
-		// 2015³â 12¿ù 31ÀÏ 12½Ã 23ºÐ 56ÃÊ
+		// 2015ï¿½ï¿½ 12ï¿½ï¿½ 31ï¿½ï¿½ 12ï¿½ï¿½ 23ï¿½ï¿½ 56ï¿½ï¿½
 		LocalDateTime dt  = LocalDateTime.of(date, time);
 	
 		ZoneId zid = ZoneId.of("Asia/Seoul");

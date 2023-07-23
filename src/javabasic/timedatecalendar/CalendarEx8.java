@@ -1,4 +1,4 @@
-package javabasic.calendar;
+package javabasic.timedatecalendar;
 
 class CalendarEx8 { 
       public static void main(String[] args){ 

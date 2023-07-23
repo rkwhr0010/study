@@ -1,12 +1,12 @@
-package javabasic.calendar;
+package javabasic.timedatecalendar;
 
 import java.util.*;
 import java.text.*;
 
 class ChoiceFormatEx1 {
 	public static void main(String[] args) {
-		double[] limits = {60, 70, 80, 90};	// ³·Àº °ªºÎÅÍ Å« °ªÀÇ ¼ø¼­·Î Àû¾î¾ßÇÑ´Ù.
-		// limits, grades°£ÀÇ ¼ø¼­¿Í °³¼ö¸¦ ¸ÂÃß¾î¾ß ÇÑ´Ù. 
+		double[] limits = {60, 70, 80, 90};	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å« ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+		// limits, gradesï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß¾ï¿½ï¿½ ï¿½Ñ´ï¿½. 
 		String[] grades = {"D", "C", "B", "A"};	
 		ChoiceFormat form = new ChoiceFormat(limits, grades);
 		

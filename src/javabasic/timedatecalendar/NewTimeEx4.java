@@ -1,4 +1,4 @@
-package javabasic.calendar;
+package javabasic.timedatecalendar;
 
 import java.time.*;
 import java.time.temporal.*;
@@ -19,7 +19,7 @@ class NewTimeEx4 {
 		System.out.println("DAY="  +pe.get(ChronoUnit.DAYS));  
 
 		LocalTime time1 = LocalTime.of( 0, 0, 0); 
-		LocalTime time2 = LocalTime.of(12,34,56); // 12½Ã°£ 23ºÐ 56ÃÊ
+		LocalTime time2 = LocalTime.of(12,34,56); // 12ï¿½Ã°ï¿½ 23ï¿½ï¿½ 56ï¿½ï¿½
 
 		Duration du = Duration.between(time1, time2);
 
