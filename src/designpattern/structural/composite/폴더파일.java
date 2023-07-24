@@ -5,6 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class 폴더파일 {
+	public static void main(String[] args) {
+		File file = new File("D:/asissource");
+		
+		FolderOrFile fof = new MyFolder(file.getName(), true);
+		
+		copy(file, fof);
+		
+		fof.print();
+		
+	}
+	
+	
 	static int cnt = 0;
 	
 	//component 
@@ -83,20 +95,10 @@ public class 폴더파일 {
 		}
 		@Override
 		public String toString() {
-			return "[File]"+getName()+" "+getDescription();
+			return "[File] "+getName()+" "+getDescription();
 		}
 	}
 	
-	public static void main(String[] args) {
-		File file = new File("c:/git");
-		
-		FolderOrFile fof = new MyFolder(file.getName(), true);
-		
-		copy(file, fof);
-		
-		fof.print();
-		
-	}
 	static void copy(File file, FolderOrFile folderOrFile) {
 		if(file.isDirectory()) {
 			folderOrFile.add(new MyFolder(file.getName(), true));
@@ -104,7 +106,7 @@ public class 폴더파일 {
 				copy(f , folderOrFile);
 			}
 		}else {
-			folderOrFile.add(new MyFile(file.getName(), false, file.length()+"바이트" ));
+			folderOrFile.add(new MyFile(file.getName(), false, file.length()+" Bytes" ));
 		}
 	}
 }
