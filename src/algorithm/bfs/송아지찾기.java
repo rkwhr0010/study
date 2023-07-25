@@ -37,10 +37,38 @@ public class 송아지찾기 {
 		start = sc.nextInt();
 		end = sc.nextInt();
 		sc.close();
-		System.out.println(solution());
+		System.out.println(sol());
+//		System.out.println(solution());
 		
 		
 	}
+	static int sol() {
+		int result = 0 ;
+		//방문
+		chk[start] = 1;
+		
+		LinkedList<Integer> q = new LinkedList<>();
+		q.offer(start);
+		
+		while(!q.isEmpty()) {
+			result++; //찾은 수 추가
+			int size = q.size();
+			for(int i = 0; i < size; i++) {
+				int cur = q.poll();
+				for(int next : nextArr) {
+					int nextVal = cur + next;
+					if(0 <= nextVal && nextVal <= 10000 && chk[nextVal] == 0) {
+						if (nextVal == end) return result;
+						chk[nextVal] = 1;
+						q.offer(nextVal);
+					}
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 	static int solution() {
 		//얼마만에 찾았는지 깊이 변수
 		int level = 0;
