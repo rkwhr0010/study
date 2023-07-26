@@ -21,7 +21,6 @@ package javabasic.solid;
  */
 public class InterfaceSegregation {
 	/* 다소 과격한 예시, 구도만 인식할 것
-	 * 
 	 * 거대한 인터페이스 CRUD 전부 가능하다.
 	 */
 	interface CrudDatabase{

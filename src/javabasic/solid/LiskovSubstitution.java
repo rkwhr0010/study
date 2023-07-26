@@ -1,7 +1,5 @@
 package javabasic.solid;
 
-import java.util.List;
-
 /*
  * 클래스 A가 클래스 B의 하위 유형인 경우 프로그램의 동작을 방해하지 않고 B를 A로 대체할 수 있어야 합니다.
  * 서브 타입은 언제나 기반 타입으로 교체할 수 있어야 한다.
@@ -53,11 +51,6 @@ public class LiskovSubstitution {
 			throw new AssertionError("I don't have an engine!");
 		}
 		public void accelerate() {
-//			engine.powerOn(1000);
 		}
 	}
-	
-	
-	
-	
 }
