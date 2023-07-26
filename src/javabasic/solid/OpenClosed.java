@@ -49,7 +49,6 @@ public class OpenClosed {
 		public StringToXml2(String data) {
 			this.data = data;
 		}
-		@Override
 		public String converting() {
 			return "<xml>"+data+"</xml>";
 		}
