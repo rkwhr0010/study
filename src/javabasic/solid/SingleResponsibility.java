@@ -11,6 +11,12 @@ package javabasic.solid;
  * 무조건 책임을 분리한다고 SRP가 적용되는 건 아닙니다. 
  * 각 개체 간의 응집력이 있다면 병합이 순 작용의 수단이 되고 
  * 결합력이 있다면 분리가 순 작용의 수단이 됩니다.
+ * 
+ * #적은 책임 이점
+ * 단위가 작아 테스트가 용이하다
+ * 재사용성이 증가된다.
+ * 낮은 결합을 유지하게 된다.
+ * 재사용성+낮은 결합의 결과로 조합성이 높아진다.
  */
 public class SingleResponsibility {
 	
@@ -50,7 +56,7 @@ public class SingleResponsibility {
 			this.data = data;
 		}
 		public String toJson() {
-			return "<xml>"+data+"</xml>";
+			return "{'data' : " + data +"}";
 		}
 	}
 	
@@ -78,7 +84,7 @@ public class SingleResponsibility {
 			this.data = data;
 		}
 		public String converting() {
-			return "<xml>"+data+"</xml>";
+			return "{'data' : " + data +"}";
 		}
 	}
 	
