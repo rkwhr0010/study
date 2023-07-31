@@ -20,32 +20,46 @@ import java.util.Scanner;
 3
  */
 public class 이분검색 {
+	static int[] arr ;
+	static int target ;
+	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int size = sc.nextInt();
-		int target = sc.nextInt();
+		target = sc.nextInt();
 		
-		int[] arr = new int[size];
+		arr = new int[size];
 		for(int i = 0; i < arr.length; i++) {
 			arr[i] = sc.nextInt();
 		}
 		sc.close();
 		
+		binarySearch(size, target);
+	}
+
+	public static void binarySearch(int size, int target) {
 		//정렬 필수
 		Arrays.sort(arr);
 		int lt = 0;
 		int rt = size-1;
 		
 		while(lt <= rt) {
-			int mid = (lt+rt) >> 1;
-			if(target == arr[mid]) {
+			int mid = lt + rt >> 1;
+			
+			switch (compare(mid)) {
+			case 0:
 				System.out.println(mid+1);
-				break;
-			} else if (target < arr[mid]) {
+				return;
+			case 1:
 				rt = mid - 1;
-			} else {
+				break;
+			default:
 				lt = mid + 1;
+				break;
 			}
 		}
+	}
+	private static int compare(int mid) {
+		return Integer.compare(arr[mid], target);
 	}
 }
