@@ -20,46 +20,56 @@ import java.util.Scanner;
 3
  */
 public class 이분검색 {
-	static int[] arr ;
-	static int target ;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		int size = sc.nextInt();
-		target = sc.nextInt();
+		int target = sc.nextInt();
 		
-		arr = new int[size];
+		int[] arr = new int[size];
 		for(int i = 0; i < arr.length; i++) {
 			arr[i] = sc.nextInt();
 		}
 		sc.close();
+		BinarySearch search = new BinarySearch(arr, target);
 		
-		binarySearch(size, target);
+		System.out.println(search.binarySearch());
 	}
 
-	public static void binarySearch(int size, int target) {
-		//정렬 필수
-		Arrays.sort(arr);
-		int lt = 0;
-		int rt = size-1;
+	private static class BinarySearch {
+		private final int[] arr ;
+		private final int target ;
 		
-		while(lt <= rt) {
-			int mid = lt + rt >> 1;
+		private BinarySearch(int[] arr, int target) {
+			this.arr = arr;
+			this.target = target;
+		}
+		
+		public int binarySearch() {
+			Arrays.sort(arr);//정렬 필수
+			int lt = 0 ;
+			int rt = arr.length - 1;
 			
-			switch (compare(mid)) {
-			case 0:
-				System.out.println(mid+1);
-				return;
-			case 1:
-				rt = mid - 1;
-				break;
-			default:
-				lt = mid + 1;
-				break;
+			while(lt <= rt) {
+				int mid = lt + rt >> 1;
+			
+				switch (compare(mid)) {
+					case 0:
+						return mid + 1;
+					case 1:
+						rt = mid - 1;
+						break;
+					case -1:
+						lt = mid + 1;
+						break;
+				}
 			}
+			return -1;
+		}
+		
+		private int compare(int mid) {
+			return Integer.compare(arr[mid], target);
 		}
 	}
-	private static int compare(int mid) {
-		return Integer.compare(arr[mid], target);
-	}
+	
 }
