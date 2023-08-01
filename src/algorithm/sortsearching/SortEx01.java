@@ -94,56 +94,34 @@ public class SortEx01 {
 	//앞에서 부터 미리 정렬된 배열 부분과 비교하여, 자신의 위치를 찾아 삽입한다.
 	//거의 정렬된 배열에서 빠른 속도를 보인다.
 	static class InsertSort<T extends Comparable<T>> implements SortStategy<T>{
-		public T[] sort3(T[] arr) {
-			T[] clone = arr.clone();
-			//요소가 1개인 배열은 이미 정렬된 것, 따라서 1부터 시작한다.
-			for(int i = 1; i < clone.length; i++) {
-				//자리 마련 동안 이 값이 손실될 수 있어 임시 저장
-				T newMember = clone[i];
-				//정렬 시작
-				int j = i-1;
-				//newMember가 들어갈 자리를 마련하기 위한 반복문
-				for(; j>=0 && greaterThan(clone[j], newMember); j--) {
-					clone[j+1] = clone[j];
-				}
-				//핵심, 다 밀었다고 가정, 그 다음 앞에 대입
-				clone[++j] = newMember;
-			}
-			return clone;
-		}
-		private boolean greaterThan(T left, T right) {
-			return left.compareTo(right) > 0;
-		}
-		/*
-		 * 삽입정렬은 논리적으로 작은 배열부터, 신규 멤버를 추가한다고 생각해야한다.
-		 * 즉, 원본배열에서 논리적으로 작은 서브배열이 있다고 생각하고 점차 키워가며 정렬한다.
-		 */
+		T[] clone;
+		
 		public T[] sort(T[] arr) {
-			//같은 크기 임시 저장소
-			T[] clone = arr.clone();
+			return cloneArrSort(arr);
+		}
+		//기존 배열에 복사본으로 작업을 하여 리턴한다.
+		public T[] cloneArrSort(T[] arr) {
+			clone = arr.clone();
 			
-			//명시적으로 첫 값은 이미 정렬된 것이나 다름 없다.
-			//하지만 별차이 없으므로 그냥 0부터 시작한다.
 			for(int i = 0; i < clone.length; i++) {
-				clone[arrShift(clone, i)] = arr[i];
+				shiftArr(i, clone[i]);
 			}
 			
 			return clone;
-			
 		}
-		//필요한 만큼 쉬프트한 배열 인덱스를 리턴한다
-		public int arrShift(T[] clone, int i) {
-			T newValue = clone[i];
-			int j = i - 1 ;
-			
-			while(isArrShift(clone, newValue, j)) {
+		//신규 값이 들어갈 자리까지 배열을 한 칸씩 반복적으로 밀어, 신규 값을 넣는다.
+		//신규값이 비교값보다 커지는 지점이 들어갈 자리
+		public void shiftArr(int i, T newVal) {
+			int j = i - 1;
+			for(;greaterThanNewVal(newVal, j); j--) {
 				clone[j + 1] = clone[j];
-				j--;
 			}
-			return j + 1;
+			//반복문 탈출 시 j-- 값을 보정해 그 자리에 넣는다.
+			clone[j + 1] = newVal;
 		}
-		public boolean isArrShift(T[] clone, T newValue, int j) {
-			return j >= 0 && !(newValue.compareTo(clone[j]) > 0);
+		//j가 유효한 인덱스인지, 클론값이 신규값보다 큰지 판단한다.
+		public boolean greaterThanNewVal(T newVal, int j) {
+			return j >= 0 && clone[j].compareTo(newVal) > 0;
 		}
 	}
 }
