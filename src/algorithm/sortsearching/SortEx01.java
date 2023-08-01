@@ -94,8 +94,7 @@ public class SortEx01 {
 	//앞에서 부터 미리 정렬된 배열 부분과 비교하여, 자신의 위치를 찾아 삽입한다.
 	//거의 정렬된 배열에서 빠른 속도를 보인다.
 	static class InsertSort<T extends Comparable<T>> implements SortStategy<T>{
-		@Override
-		public T[] sort(T[] arr) {
+		public T[] sort3(T[] arr) {
 			T[] clone = arr.clone();
 			//요소가 1개인 배열은 이미 정렬된 것, 따라서 1부터 시작한다.
 			for(int i = 1; i < clone.length; i++) {
@@ -114,6 +113,37 @@ public class SortEx01 {
 		}
 		private boolean greaterThan(T left, T right) {
 			return left.compareTo(right) > 0;
+		}
+		/*
+		 * 삽입정렬은 논리적으로 작은 배열부터, 신규 멤버를 추가한다고 생각해야한다.
+		 * 즉, 원본배열에서 논리적으로 작은 서브배열이 있다고 생각하고 점차 키워가며 정렬한다.
+		 */
+		public T[] sort(T[] arr) {
+			//같은 크기 임시 저장소
+			T[] clone = arr.clone();
+			
+			//명시적으로 첫 값은 이미 정렬된 것이나 다름 없다.
+			//하지만 별차이 없으므로 그냥 0부터 시작한다.
+			for(int i = 0; i < clone.length; i++) {
+				clone[arrShift(clone, i)] = arr[i];
+			}
+			
+			return clone;
+			
+		}
+		//필요한 만큼 쉬프트한 배열 인덱스를 리턴한다
+		public int arrShift(T[] clone, int i) {
+			T newValue = clone[i];
+			int j = i - 1 ;
+			
+			while(isArrShift(clone, newValue, j)) {
+				clone[j + 1] = clone[j];
+				j--;
+			}
+			return j + 1;
+		}
+		public boolean isArrShift(T[] clone, T newValue, int j) {
+			return j >= 0 && !(newValue.compareTo(clone[j]) > 0);
 		}
 	}
 }
