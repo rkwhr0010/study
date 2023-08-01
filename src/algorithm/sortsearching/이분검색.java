@@ -33,7 +33,7 @@ public class 이분검색 {
 		sc.close();
 		BinarySearch search = new BinarySearch(arr, target);
 		
-		System.out.println(search.binarySearch());
+		System.out.println(search.sol());
 	}
 
 	private static class BinarySearch {
@@ -66,6 +66,30 @@ public class 이분검색 {
 			}
 			return -1;
 		}
+		int sol() {
+			Arrays.sort(arr);
+			
+			int lt = 0;
+			int rt = arr.length + 1;
+			
+			while(lt <= rt) {
+				int mid = lt + rt >> 1;
+				
+				//같으면 0 , 작으면 -1, 크면 1
+				switch (Integer.compare(arr[mid], target)) {
+				case 0: //같다
+					return mid + 1;
+				case 1: //크다
+					rt = mid - 1;
+					break;
+				case -1://작다
+					lt = mid + 1;
+					break;
+				}
+			}
+			return -1;
+		}
+		
 		
 		private int compare(int mid) {
 			return Integer.compare(arr[mid], target);
