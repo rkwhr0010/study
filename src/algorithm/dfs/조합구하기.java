@@ -3,8 +3,8 @@ package algorithm.dfs;
 import java.util.Arrays;
 
 public class 조합구하기 {
-	static int n  = 6;
-	static int m  = 4;
+	static int n  = 3;
+	static int m  = 2;
 	
 	static int[] combi = new int[m];
 	public static void main(String[] args) {
