@@ -5,7 +5,7 @@ public class 순열 {
 	static int chk[] = new int[arr.length];
 	
 	static int size = 2;
-	static int[] pm = new int[size];
+	static int[] pm = new int[arr.length];
 	
 	public static void main(String[] args) {
 		DFS(0);

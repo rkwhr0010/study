@@ -35,6 +35,24 @@ public class 중요_UnionFind연습 {
 	}
 	
 	
+	static class UnionAndFind {
+		int[] groupId;
+		
+		//종단 값까지 재귀적으로 탐색한다.
+		int find(int value) {
+			//종료 조건_나랑 같은 그룹이면, 내가 종단 값인 것
+			if(groupId[value] == value) return value;
+			return groupId[value] = groupId[find(value)];
+		}
+		
+		void union(int value, int otherValue) {
+			if(groupId[find(value)] == groupId[find(otherValue)]) return;
+			groupId[groupId[find(value)]] = groupId[find(otherValue)];
+		}
+		
+	}
+	
+	
 	
 	public static void main(String[] args){
 		int n=9; //반 학생수
