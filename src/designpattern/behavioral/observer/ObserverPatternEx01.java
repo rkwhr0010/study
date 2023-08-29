@@ -1,9 +1,6 @@
 package designpattern.behavioral.observer;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 public class ObserverPatternEx01 {
     public static void main(String[] args) {
@@ -11,7 +8,7 @@ public class ObserverPatternEx01 {
     }
 
     /*
-     * 문제 1, 고객이 
+     * 문제 1, 고객이 지속적으로 신상품 입고에 관심을 가져야 한다.
      */
     private static void problem1() {
         //가게와 고객들
@@ -19,12 +16,11 @@ public class ObserverPatternEx01 {
         Customer c1 = new Customer(store);
         Customer c2 = new Customer(store);
         Customer c3 = new Customer(store);
+        
+        Thread t1 = new Thread(runnableTemplate(c1::checkNewProduct));
+        Thread t2 = new Thread(runnableTemplate(c2::checkNewProduct));
+        Thread t3 = new Thread(runnableTemplate(c3::checkNewProduct));
 
-        
-        
-        Thread t1 = new Thread(runnableTemplate(() -> c1.checkNewProduct()));
-        Thread t2 = new Thread(runnableTemplate(() -> c2.checkNewProduct()));
-        Thread t3 = new Thread(runnableTemplate(() -> c3.checkNewProduct()));
         t1.start();
         t2.start();
         t3.start();
@@ -34,43 +30,37 @@ public class ObserverPatternEx01 {
     }
 
     static Runnable runnableTemplate(Runnable run){
-        return () -> {
-            for(int i = 0; i < 5; i++){
-                run.run();
-                try {
-                    Thread.sleep(ThreadLocalRandom.current().nextInt(1000));
-                } catch (InterruptedException e) {
-                    System.exit(0);
-                }
-            }
-        };
+        return run::run;
     }
 
 }
-
-
-/*
-고객들이 존재하며, 고객들 일부만 신상에 관심이 있다.
-*/
 class Customer {
+    static Long serial = 1L;
+    Long id;
     Store store;
     
     public Customer(Store store) {
+        id = serial++;
         this.store = store;
     }
 
-    void checkNewProduct(){
-        if(store.existNewProduct()){
-            System.out.println("야호! 이 신상은 내꺼 : " + store.getNewProduct());
-        } else {
-            System.out.println("신상은 놓쳤어....");
+    void checkNewProduct() {
+        System.out.println(id++ + " 신상품 입고 대기 중 !!!");
+
+        while(true && !store.existNewProduct()){
+            System.out.println(id+ " 야호! 구매했다. " + store.getNewProduct());
+            try{
+                Thread.sleep(ThreadLocalRandom.current().nextInt(1000));
+            } catch (Exception e) {}
+
+            return;
         }
     }
 }
 
 class Store {
     String name;
-    List<Product> products = new ArrayList<>();
+    Product product; 
     boolean existNewProduct = false;
 
     public Store(String name) {
@@ -78,7 +68,7 @@ class Store {
     }
 
     void addProduct(Product product){
-        products.add(product);
+        this.product = product;
         existNewProduct = true;
     }
 
@@ -87,14 +77,7 @@ class Store {
     }
 
     Product getNewProduct(){
-        //누가 신상품 가져감
-        if(!existNewProduct){
-            return null;
-        }
-
-        existNewProduct = false;
-
-        return products.get(products.size() - 1);
+        return product;
     }
 }
 class Product {
@@ -103,5 +86,9 @@ class Product {
     public Product(String name) {
         this.name = name;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Product [name=" + name + "]";
+    }
 }
