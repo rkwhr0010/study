@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.LongSummaryStatistics;
 import java.util.Map;
@@ -38,7 +39,14 @@ public class FuncEx01 {
 	public static void main(String[] args) {
 		List<User> users = DB.users();
 		
+		users.stream()
+				.reduce(new);
 		
+		example(users);
+	}
+
+
+	private static void example(List<User> users) {
 		/*
 		 * 실습, 만든 Stream과 실제 java Stream 비교
 		 * 단, 자바 Stream.toList()의 경우 JDK 16부터 추가된 것이라 collect()메서드를 사용했다.
@@ -483,6 +491,51 @@ public class FuncEx01 {
 			return "[id=" + id + ", name=" + name + ", age=" + age + ", gender=" + gender + ", money=" + money
 					+ ", email=" + email + "]\n";
 		}
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + (int) (id ^ (id >>> 32));
+			result = prime * result + ((name == null) ? 0 : name.hashCode());
+			result = prime * result + age;
+			result = prime * result + ((gender == null) ? 0 : gender.hashCode());
+			result = prime * result + money;
+			result = prime * result + ((email == null) ? 0 : email.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			User other = (User) obj;
+			if (id != other.id)
+				return false;
+			if (name == null) {
+				if (other.name != null)
+					return false;
+			} else if (!name.equals(other.name))
+				return false;
+			if (age != other.age)
+				return false;
+			if (gender == null) {
+				if (other.gender != null)
+					return false;
+			} else if (!gender.equals(other.gender))
+				return false;
+			if (money != other.money)
+				return false;
+			if (email == null) {
+				if (other.email != null)
+					return false;
+			} else if (!email.equals(other.email))
+				return false;
+			return true;
+		}
+		
 	}
 	
 	static class DB{

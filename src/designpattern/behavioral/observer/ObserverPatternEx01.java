@@ -161,19 +161,20 @@ class Problem2 {
 }
 
 class Resolution {
-    interface Publisher {
+    interface Publisher<T> {
         void addSubscriber(Subscriber subscriber);
         void removeSubscriber(Subscriber subscriber);
         void notifySubscribers();
+        T getSuject();
     }
 
     interface Subscriber {
-        void update();
+        void update(Object subject);
         void update(Publisher publisher);
     }
 
 
-    class Store <T> implements Publisher {
+    class Store<T> implements Publisher<T> {
         List<Subscriber> subscribers = new ArrayList<>();
 
         T product;
@@ -188,10 +189,21 @@ class Resolution {
         public void notifySubscribers(){
             subscribers.stream().forEach(s -> s.update(this));
         }
+        public T getSuject() {
+            return product;
+        }
     }
 
     class Customer implements Subscriber {
+        List<? super Object> lists = new ArrayList<>();
 
+        public void update(Object subject) {
+            lists.add(subject);
+        }
+
+        public void update(Publisher publisher) {
+            lists.add(publisher.getSuject());
+        }
     }
 
 }
