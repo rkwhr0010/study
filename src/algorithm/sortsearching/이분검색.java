@@ -20,20 +20,75 @@ import java.util.Scanner;
 3
  */
 public class 이분검색 {
+	static int[] numberArr;
+	static int target;
 	
-	public static void main(String[] args) {
+	static void input() {
 		Scanner sc = new Scanner(System.in);
-		int size = sc.nextInt();
-		int target = sc.nextInt();
-		
-		int[] arr = new int[size];
-		for(int i = 0; i < arr.length; i++) {
-			arr[i] = sc.nextInt();
+
+		int length = sc.nextInt();
+		target = sc.nextInt();
+
+		numberArr = new int[length];
+
+		for (int i = 0; i < length; i++) {
+			numberArr[i] = sc.nextInt();
 		}
+
 		sc.close();
-		BinarySearch search = new BinarySearch(arr, target);
+	}
+
+	static class BiSearch {
+		private final int[] numberArr;
+		private final int target;
+		private int lt;
+		private int rt;
+		private int mid;
+
+		private BiSearch(int[] numberArr, int target) {
+			//이분검색은 반드시 정렬되야 동작한다.
+			Arrays.sort(numberArr);
+
+			this.numberArr = numberArr;
+			this.target = target;
+			this.lt = 0;
+			this.rt = numberArr.length - 1;
+			this.mid = rt >> 1;
+		}
+
+		private int search() {
+			switch (Integer.compare(numberArr[mid], target)) {
+				case -1:
+					lt = mid + 1;
+					return search();
+				case 1:
+					rt = mid - 1;
+					return search();
+				default:
+					return mid;
+			}
+		}
+	}
+
+
+
+
+	public static void main(String[] args) {
+		input();
+		System.out.println(new BiSearch(numberArr, target).search());
+
+		// Scanner sc = new Scanner(System.in);
+		// int size = sc.nextInt();
+		// int target = sc.nextInt();
 		
-		System.out.println(search.sol());
+		// int[] arr = new int[size];
+		// for(int i = 0; i < arr.length; i++) {
+		// 	arr[i] = sc.nextInt();
+		// }
+		// sc.close();
+		// BinarySearch search = new BinarySearch(arr, target);
+		
+		// System.out.println(search.sol());
 	}
 
 	private static class BinarySearch {
