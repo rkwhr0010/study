@@ -39,8 +39,6 @@ public class FuncEx01 {
 	public static void main(String[] args) {
 		List<User> users = DB.users();
 		
-		users.stream()
-				.reduce(new);
 		
 		example(users);
 	}

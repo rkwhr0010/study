@@ -4,6 +4,20 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /*
+이분검색은 자료구조의 한 종류로, 자료의 중간값을 기준으로 자료의 탐색을 진행하는 검색 알고리즘입니다. 
+이분검색은 자료가 정렬되어 있을 때만 사용할 수 있는 알고리즘입니다.
+
+이분검색의 동작 과정은 다음과 같습니다.
+
+1. 자료의 중간값을 찾습니다.
+2. 중간값과 찾고자 하는 값을 비교합니다.
+3. 중간값이 찾고자 하는 값보다 크면, 중간값의 왼쪽 부분을 탐색합니다.
+4. 중간값이 찾고자 하는 값보다 작으면, 중간값의 오른쪽 부분을 탐색합니다.
+5. 자료의 모든 부분을 탐색할 때까지 2~4번의 과정을 반복합니다.
+
+이분검색은 자료의 크기가 n일 때, 최악의 경우에도 O(log n)의 시간 복잡도를 가지기 때문에, 
+자료의 크기가 큰 경우에도 효율적으로 탐색할 수 있습니다.
+
 이분검색
 임의의 N개의 숫자가 입력으로 주어집니다. N개의 수를 오름차순으로 정렬한 다음 N개의 수
 중 한 개의 수인 M이 주어지면 이분검색으로 M이 정렬된 상태에서 몇 번째에 있는지 구하는
@@ -28,7 +42,6 @@ public class 이분검색 {
 
 		int length = sc.nextInt();
 		target = sc.nextInt();
-
 		numberArr = new int[length];
 
 		for (int i = 0; i < length; i++) {
@@ -36,6 +49,11 @@ public class 이분검색 {
 		}
 
 		sc.close();
+	}
+
+	public static void main(String[] args) {
+		input();
+		System.out.println(new BiSearch(numberArr, target).search());
 	}
 
 	static class BiSearch {
@@ -70,27 +88,8 @@ public class 이분검색 {
 		}
 	}
 
-
-
-
-	public static void main(String[] args) {
-		input();
-		System.out.println(new BiSearch(numberArr, target).search());
-
-		// Scanner sc = new Scanner(System.in);
-		// int size = sc.nextInt();
-		// int target = sc.nextInt();
-		
-		// int[] arr = new int[size];
-		// for(int i = 0; i < arr.length; i++) {
-		// 	arr[i] = sc.nextInt();
-		// }
-		// sc.close();
-		// BinarySearch search = new BinarySearch(arr, target);
-		
-		// System.out.println(search.sol());
-	}
-
+	
+	
 	private static class BinarySearch {
 		private final int[] arr ;
 		private final int target ;
