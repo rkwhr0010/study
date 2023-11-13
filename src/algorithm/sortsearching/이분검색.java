@@ -53,101 +53,35 @@ public class 이분검색 {
 
 	public static void main(String[] args) {
 		input();
-		System.out.println(new BiSearch(numberArr, target).search());
+		System.out.println(BinarySearch.findIndex(numberArr, target) + 1);
 	}
-
-	static class BiSearch {
-		private final int[] numberArr;
-		private final int target;
-		private int lt;
-		private int rt;
-		private int mid;
-
-		private BiSearch(int[] numberArr, int target) {
-			//이분검색은 반드시 정렬되야 동작한다.
-			Arrays.sort(numberArr);
-
-			this.numberArr = numberArr;
-			this.target = target;
-			this.lt = 0;
-			this.rt = numberArr.length - 1;
-			this.mid = rt >> 1;
-		}
-
-		private int search() {
-			switch (Integer.compare(numberArr[mid], target)) {
-				case -1:
-					lt = mid + 1;
-					return search();
-				case 1:
-					rt = mid - 1;
-					return search();
-				default:
-					return mid;
-			}
-		}
-	}
-
 	
-	
-	private static class BinarySearch {
-		private final int[] arr ;
-		private final int target ;
+	static class BinarySearch {
 		
-		private BinarySearch(int[] arr, int target) {
-			this.arr = arr;
-			this.target = target;
-		}
-		
-		public int binarySearch() {
-			Arrays.sort(arr);//정렬 필수
-			int lt = 0 ;
-			int rt = arr.length - 1;
-			
-			while(lt <= rt) {
-				int mid = lt + rt >> 1;
-			
-				switch (compare(mid)) {
-					case 0:
-						return mid + 1;
-					case 1:
-						rt = mid - 1;
-						break;
-					case -1:
-						lt = mid + 1;
-						break;
-				}
-			}
-			return -1;
-		}
-		int sol() {
+		static int findIndex(int[] arr, int targer) {
+			int result = -1;
+			//반드시 정렬 필수
 			Arrays.sort(arr);
 			
 			int lt = 0;
-			int rt = arr.length + 1;
+			int rt = arr.length - 1;
 			
-			while(lt <= rt) {
+			//lt와 rt 가 같은 지점에도 검사
+			while (lt <= rt) {
+				//반복 마다 중간 인덱스 갱신한다.
 				int mid = lt + rt >> 1;
-				
-				//같으면 0 , 작으면 -1, 크면 1
-				switch (Integer.compare(arr[mid], target)) {
-				case 0: //같다
-					return mid + 1;
-				case 1: //크다
-					rt = mid - 1;
-					break;
-				case -1://작다
+				if (arr[mid] == target) {
+					return mid;
+				}
+				//찾은 찾이 더 작다
+				if (arr[mid] < target) {
 					lt = mid + 1;
-					break;
+				} else {
+					rt = mid - 1;
 				}
 			}
-			return -1;
-		}
-		
-		
-		private int compare(int mid) {
-			return Integer.compare(arr[mid], target);
+			
+			return result;
 		}
 	}
-	
 }
