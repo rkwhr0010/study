@@ -53,7 +53,8 @@ public class 이분검색 {
 
 	public static void main(String[] args) {
 		input();
-		System.out.println(BinarySearch.findIndex(numberArr, target) + 1);
+//		System.out.println(BinarySearch.findIndex(numberArr, target) + 1);
+		System.out.println(BinarySearch.findIndex2(numberArr, target) + 1);
 	}
 	
 	static class BinarySearch {
@@ -71,10 +72,10 @@ public class 이분검색 {
 				//반복 마다 중간 인덱스 갱신한다.
 				int mid = lt + rt >> 1;
 				if (arr[mid] == target) {
-					return mid;
+					result = mid;
 				}
 				//찾은 찾이 더 작다
-				if (arr[mid] < target) {
+				if (arr[mid] <= target) {
 					lt = mid + 1;
 				} else {
 					rt = mid - 1;
@@ -82,6 +83,35 @@ public class 이분검색 {
 			}
 			
 			return result;
+		}
+		
+		//결정 알고리즘으로 변환
+		static int findIndex2(int[] arr, int targer) {
+			int result = -1;
+			//반드시 정렬 필수
+			Arrays.sort(arr);
+			
+			int lt = 0;
+			int rt = arr.length - 1;
+			
+			//lt와 rt 가 같은 지점에도 검사
+			while (lt <= rt) {
+				//반복 마다 중간 인덱스 갱신한다.
+				int mid = lt + rt >> 1;
+			
+				if (count(arr, mid) <= target) {
+					result = mid;
+					lt = mid + 1;
+				}else {
+					rt = mid - 1;
+				}
+			}
+			
+			return result;
+		}
+
+		private static int count(int[] arr, int mid) {
+			return arr[mid];
 		}
 	}
 }
