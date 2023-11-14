@@ -5,6 +5,21 @@ import java.util.IntSummaryStatistics;
 import java.util.Scanner;
 
 /*
+답을 정하고 이 답이 유효한지 확인해 가면서 더 좋은 답을 찾아가는 방식
+
+파라매트릭 서치는 조합 최적화를 위한 알고리즘의 설계 및 분석에서 
+결정 알고리즘을 최적화 알고리즘으로 변환하기 위해 Nimrod Megiddo가 발명한 기술입니다. 
+계산 기하학에서 최적화 문제를 해결하는 데 자주 사용됩니다.
+
+파라매트릭 서치는 매개변수 값을 조정하여 최적화 문제를 해결합니다. 
+매개변수 값을 조정하는 방법은 다음과 같습니다.
+
+1. 매개변수 값의 범위를 정의합니다.
+2. 매개변수 값을 범위 내에서 순차적으로 탐색합니다.
+3. 매개변수 값을 탐색하면서 최적의 값을 찾습니다. (핵심)
+
+파라매트릭 서치는 결정 알고리즘을 최적화 알고리즘으로 변환하여 최적화 문제를 해결하는 데 효율적입니다.
+
 뮤직비디오(결정알고리즘)
 지니레코드에서는 불세출의 가수 조영필의 라이브 동영상을 DVD로 만들어 판매하려 한다.
 DVD에는 총 N개의 곡이 들어가는데, DVD에 녹화할 때에는 라이브에서의 순서가 그대로 유지
@@ -15,10 +30,12 @@ DVD에는 총 N개의 곡이 들어가는데, DVD에 녹화할 때에는 라이�
 DVD를 가급적 줄이려고 한다. 고민 끝에 지니레코드는 M개의 DVD에 모든 동영상을 녹화하기
 로 하였다. 이 때 DVD의 크기(녹화 가능한 길이)를 최소로 하려고 한다. 그리고 M개의 DVD는
 모두 같은 크기여야 제조원가가 적게 들기 때문에 꼭 같은 크기로 해야 한다.
+
 ▣ 입력설명
 첫째 줄에 자연수 N(1≤N≤1,000), M(1≤M≤N)이 주어진다. 다음 줄에는 조영필이 라이브에서
 부른 순서대로 부른 곡의 길이가 분 단위로(자연수) 주어진다. 부른 곡의 길이는 10,000분을
 넘지 않는다고 가정하자.
+
 ▣ 출력설명
 첫 번째 줄부터 DVD의 최소 용량 크기를 출력하세요.
 ▣ 입력예제 1
@@ -33,43 +50,65 @@ public class 뮤직비디오 {
 	static int n;
 	static int m;
 	static int[] songs;
-	public static void main(String[] args) {
-		input();
+	
+	static class Decision {
+		private final int songCnt;
+		private final int albumCnt;
+		private final int[] songs;
 		
-		IntSummaryStatistics statistics = Arrays.stream(songs).summaryStatistics();
-		//가장 최소 값은 제일 긴 곡 하나
-		int lt = statistics.getMax();
-		//가장 최대 값은 전체 곡 길이 합
-		int rt = (int)statistics.getSum();
-		int answer = 0;
-		
-		while(lt <= rt) {
-			//중간 곡 길이
-			int mid = lt + rt >> 1;
-			int dvdCnt = dvdCnt(mid);
-			if(dvdCnt <= m) {
-				answer = mid;
-				rt = mid - 1;
-			} else {
-				lt = mid + 1;
-			}
+		public Decision(int albumCnt, int[] songs) {
+			this(songs.length, albumCnt, songs);
 		}
-		System.out.println(answer);
+		
+		public Decision(int songCnt, int albumCnt, int[] songs) {
+			this.songCnt = songCnt;
+			this.albumCnt = albumCnt;
+			this.songs = songs;
+		}
+		
+		public int search() {
+			IntSummaryStatistics statistics = Arrays.stream(songs).summaryStatistics();
+			
+			int result = -1;
+			//가장 적은 곡 수, 음반 하나에 가장 긴 곡 한 개
+			int lt = statistics.getMax();
+			//가장 많은 곡 수, 음반에 모든 음악이 들어감
+			int rt = (int) statistics.getSum();
+			
+			while (lt <= rt) {
+				int mid = lt + rt >> 1;
+				//조건에 충족하냐
+				if (count(mid) <= albumCnt) {
+					//일단 충족만 하면 답으로 넣고, 더 정교한 답을 찾아간다.
+					result = mid;
+					rt = mid - 1;
+				} else {
+					lt = mid + 1;
+				}
+			}
+			
+			return result;
+		}
+
+		private int count(int mid) {
+			int cnt = 1; //일단 앨범 한 개 사용
+			int sum = 0;
+			for (int i = 0; i < songCnt; i++) {
+				if (sum + songs[i] > mid) {
+					sum = songs[i];
+					cnt++;
+				} else {
+					sum += songs[i];
+				}
+			}
+			return cnt;
+		}
 	}
 	
-	private static int dvdCnt(int mid) {
-		int sum = 0;
-		//dvd 1개를 사용해 담은 것으로 시작
-		int result = 1; 
-		for(int song : songs) {
-			sum += song;
-			if(sum > mid) {
-				result++;
-				//허용량 초과 시 담을 수 없으므로 sum을 song으로 초기화
-				sum = song;
-			}
-		}
-		return result;
+	
+	public static void main(String[] args) {
+		input();
+		System.out.println(new Decision(n, m, songs).search());
 	}
 	
 	private static void input() {
