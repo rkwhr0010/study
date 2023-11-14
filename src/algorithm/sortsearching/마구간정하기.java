@@ -1,8 +1,6 @@
 package algorithm.sortsearching;
 
 import java.util.Arrays;
-import java.util.IntSummaryStatistics;
-import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -30,139 +28,63 @@ public class 마구간정하기 {
 	static int c; // 말 수
 	static int[] arr;// 마구간
 	
+	static class Decision {
+		private final int stallCnt;
+		private final int horseCnt;
+		private final int[] stallArr;
+		
+		public Decision(int horse, int[] stallArr) {
+			this(stallArr.length, horse, stallArr);
+		}
+		
+		public Decision(int stall, int horse, int[] stallArr) {
+			this.stallCnt = stall;
+			this.horseCnt = horse;
+			this.stallArr = stallArr;
+		}
+		
+		public int search() {
+			int result = 0;
+			// 정렬은 필수
+			Arrays.sort(stallArr);
+			
+			// 마구간 사이 최소 거리는 1, stallArr[0] 안된다
+			// 해당 값으로 lt <= rt 시 해당하는 값이 하나도 없으면 결과 자체가 않나온다.
+			int lt = 1;
+			// 제일 멀리 있는 마구간 거리
+			int rt = stallArr[stallCnt - 1];
+			
+			while (lt <= rt) {
+				int mid = lt + rt >> 1;
+				//배치할 수 있는 말이 더 많다.
+				if (count(mid) >= horseCnt) {
+					result = mid;
+					lt = mid + 1;
+				} else {
+					rt = mid - 1;
+				}
+			}
+			
+			return result;
+		}
+		
+		private int count(int distance) {
+			//말 하나 배치하고 시작
+			int cnt = 1;
+			for (int i = 1, prev = stallArr[0]; i < stallArr.length; i++) {
+				if (stallArr[i] - prev >= distance) {
+					prev = stallArr[i];
+					cnt++;
+				}
+			}
+			return cnt;
+		}
+	}
+	
 	public static void main(String[] args) {
 		input();
 		
-//		System.out.println(solution());
-		System.out.println(solution3());
-		
-	}
-	static int solution3() {
-		int result = 0;
-		//이분 정렬 응용, 결정 알고리즘은 정렬 필수
-		Arrays.sort(arr);
-		int lt = 1; //말 간 최소 거리는 1
-		int rt = arr[n-1];//말간 최대 거리는 최대 마구간 거리
-		
-		while(lt <= rt) {
-			int mid = lt + rt >> 1;
-			//현재 값(mid) 거리 간격으로 말을 배치 가능하냐?
-			if(count3(mid) >= c) {
-				//일단 결정, 이후 최선의 값으로 갱신
-				result = mid;
-				//가능하니 거리를 벌려본다.
-				lt = mid + 1;
-			} else {
-				//불가능 하니 거리를 좁혀 본다.
-				rt = mid - 1;
-			}
-		}
-		
-		return result;
-	}
-	
-	static int count3(int val) {
-		//일단 말 하나 배치 후 시작
-		int cnt = 1;
-		int prev = arr[0];
-		
-		for(int i = 1; i < n; i++) {
-			//현재 val 보다 간격이 넓으니 배치 가능 
-			if(arr[i] - prev >= val) {
-				cnt++;
-				prev = arr[i];
-			}
-		}
-		return cnt;
-	}
-	
-	
-	
-	static int solution2() {
-		int result = 0;
-		//이분 검색은 정렬이 필수
-		Arrays.sort(arr);
-		
-		//마구간 거리 최소는 1
-		int lt = 1;
-		//최대는 가장 먼 마구간 거리
-		int rt = arr[n-1];
-		
-		while(lt <= rt) {
-			int mid = lt + rt >> 1;
-			//마구간 거리에 배치 가능한 말 수 검증
-			//mid는 최소이 것보다 넓게 배치가능하냐
-			if(count2(mid) >= c) {
-				//일단 된다. 점차 최적값을 탐색
-				result = mid;
-				//최대한 넓게 배치 가능한 값 탐색
-				lt = mid + 1;
-			} else {
-				//안되니 좁게 배치 가능한 값 탐색
-				rt = mid - 1;
-			}
-		}
-		return result;
-	}
-	
-	static int count2(int distance) {
-		//첫 말은 배치하고 시작
-		int cnt = 1;
-		int prev = arr[0];
-		
-		for(int i = 1; i < arr.length; i++) {
-			if(arr[i] - prev >= distance) {
-				prev = arr[i];
-				cnt++;
-			}
-		}
-		
-		
-		return cnt;
-	}
-	
-	
-
-	private static int solution() {
-		//이분 검색은 정렬이 필수
-		Arrays.sort(arr);
-		int answer = 0;
-		//1이 최소거리
-		int lt = 1;
-		//가장 큰 마구간 거리가 최대 길이
-		int rt = arr[n-1];
-		
-		while(lt <= rt) {
-			//중간 거리
-			int mid = lt + rt >> 1;
-			
-			//중간 거리로 말 개수만 큼 배치가 가능한지 
-			if(count(mid) >= c) {
-				//가능하니 일단 답으로
-				answer = mid;
-				//범위 증가
-				lt = mid + 1;
-			} else {
-				//범위 감소
-				rt = mid - 1;
-			}
-		}
-		return answer;
-	}
-
-	private static int count(int mid) {
-		//첫 말 배치하고 시작
-		int result = 1;
-		int prev = arr[0];
-		
-		for(int i = 1; i < arr.length; i++) {
-			//지금 마구간 거리가 이전 배치해둔 마두간 거리가 목표 거리보다 크거나 같은지
-			if(arr[i] - prev >= mid) {
-				prev = arr[i];
-				result++;
-			}
-		}
-		return result;
+		System.out.println(new Decision(n, c, arr).search());
 	}
 
 	private static void input() {
