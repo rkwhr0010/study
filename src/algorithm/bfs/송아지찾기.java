@@ -27,6 +27,51 @@ import java.util.Scanner;
 5
  */
 public class 송아지찾기 {
+	static class TestCase {
+		final int[] input;
+		final int result;
+		
+		public TestCase(int[] input, int result) {
+			this.input = input;
+			this.result = result;
+		}
+	}
+	
+	static TestCase[] testCases = {
+		new TestCase(new int[] {8, 3}, 5),	
+		new TestCase(new int[] {8, 3}, 5),	
+		new TestCase(new int[] {8, 3}, 5),	
+		new TestCase(new int[] {8, 3}, 5),	
+		new TestCase(new int[] {8, 3}, 5),	
+	};
+	
+/*
+입력
+8 3
+츨력
+5
+
+입력
+13 35
+출력
+6
+
+입력
+1 21
+출력
+4
+
+입력
+3 4356
+출력
+873
+
+입력
+7 8945
+출력
+1790
+*/	
+	
 	static int[] nextArr = {1, -1, 5}; // 방향
 	static int start; //시작
 	static int end;   //목표
