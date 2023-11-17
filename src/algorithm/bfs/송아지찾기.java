@@ -39,38 +39,11 @@ public class 송아지찾기 {
 	
 	static TestCase[] testCases = {
 		new TestCase(new int[] {8, 3}, 5),	
-		new TestCase(new int[] {8, 3}, 5),	
-		new TestCase(new int[] {8, 3}, 5),	
-		new TestCase(new int[] {8, 3}, 5),	
-		new TestCase(new int[] {8, 3}, 5),	
+		new TestCase(new int[] {13, 35}, 6),	
+		new TestCase(new int[] {1, 21}, 4),	
+		new TestCase(new int[] {3, 4356}, 873),	
+		new TestCase(new int[] {7, 8945}, 1790),	
 	};
-	
-/*
-입력
-8 3
-츨력
-5
-
-입력
-13 35
-출력
-6
-
-입력
-1 21
-출력
-4
-
-입력
-3 4356
-출력
-873
-
-입력
-7 8945
-출력
-1790
-*/	
 	
 	static int[] nextArr = {1, -1, 5}; // 방향
 	static int start; //시작
@@ -78,10 +51,6 @@ public class 송아지찾기 {
 	static int[] chk = new int[10001]; //재방문 방지
 	
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		start = sc.nextInt();
-		end = sc.nextInt();
-		sc.close();
 		System.out.println(sol());
 //		System.out.println(solution());
 		
